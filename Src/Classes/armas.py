@@ -11,16 +11,16 @@ class Arma():
         for i in range(qtd_ammunition):
             x = projectile(False)
             self.ammunitionList.append(x)
-        self.currentMuni = [0]
     def reloadMuni(self):
         self.ammunitionList.clear()
         for i in range(self.qtd_ammunition):
             x = self.projectile()
+            print(x)
             self.ammunitionList.append(x)
-        self.currentMuni = [0]
     def shoot(self):
         if self.projectilesDisparados < self.qtd_ammunition:
             self.ammunitionList[self.projectilesDisparados].fired = True
+            print(self.ammunitionList[self.projectilesDisparados])
             self.projectilesDisparados += 1
         else:
             self.atirou = False
@@ -56,10 +56,10 @@ class PedraSeno(Projectile):
     def __init__(self, fired = False):
         super().__init__(800, 250, "../Img/pedra_poo.png", -0.2)
         self.fired = fired
-    def shootSeno(super):
-        super.helper += 0.1
-        super.x -= 10
-        super.y = ((math.sin(super.helper)*250) + 250)
+    def shootSeno(self):
+        self.helper += 0.1
+        self.x -= 10
+        self.y = ((math.sin(self.helper)*250) + 250)
     def update(self):
         if self.fired == True:
             self._show()
@@ -82,33 +82,55 @@ class FogoReto(Projectile):
         else:
             self._hide()
 
-class PedraY(Projectile):
-    def __init__(self, fired = False, y_Direction = 0):
+class PedraY3(Projectile):
+    def __init__(self, fired = False, y_Direction = 0, clone = False):
         super().__init__(800, 250, "../Img/pedra_poo.png", -0.2)
         self.fired = fired
         self.y_Direction = y_Direction
-    def shootStraight(super, self):
-        super.x -= 20
-        super.y -= self.y_Direction
+        self.clone = clone
+        self.count = 0
+    def shootStraight(self):
+        self.x -= 9
+        self.y -= self.y_Direction
     def update(self):
         if self.fired == True:
             self._show()
             self.shootStraight()
+            if self.clone == False and self.count == 0:
+                print(self.count)
+                self.count += 1
+                print(self.count)
+                x = PedraY3(True, -2, True)
+                y = PedraY3(True, 2, True)
             super().stopShot()
         else:
             self._hide()
 
-class PedraTripla:
-    def __init__(self, fired = False):
-        self.pedras = []
-        self.pedras.append(PedraY(False, 0))
-        self.pedras.append(PedraY(False, 20))
-        self.pedras.append(PedraY(False, -20))
+class PedraY5(Projectile):
+    def __init__(self, fired = False, y_Direction = 0, clone = False):
+        super().__init__(800, 250, "../Img/pedra_poo.png", -0.2)
         self.fired = fired
+        self.y_Direction = y_Direction
+        self.clone = clone
+        self.count = 0
+    def shootStraight(self):
+        self.x -= 9
+        self.y -= self.y_Direction
     def update(self):
         if self.fired == True:
-            for i in range(3):
-                self.pedras[i].fired = True
+            self._show()
+            self.shootStraight()
+            if self.clone == False and self.count == 0:
+                self.count += 1
+                x = PedraY5(True, -2, True)
+                y = PedraY5(True, 2, True)
+                x = PedraY5(True, -4, True)
+                y = PedraY5(True, 4, True)
+                
+            super().stopShot()
+        else:
+            self._hide()
+
                 
             
         

@@ -12,7 +12,6 @@ class Vilao_test_1(Personagem):
     def __init__(self, x, y, image, life, armas):
         super().__init__(x, y, image, life, armas)
         self.shooting = False
-        self.armas = armas
     def justShoot(self):
         if keyboard.is_key_just_down('space'):
             self.armas[0].atirou = True
@@ -20,6 +19,8 @@ class Vilao_test_1(Personagem):
             self.armas[1].atirou = True
         if keyboard.is_key_just_down('Left'):  
             self.armas[2].atirou = True
+        if keyboard.is_key_just_down('Right'):  
+            self.armas[3].atirou = True
     def update(self):
         self.justShoot()
         for i in range(len(self.armas)):
