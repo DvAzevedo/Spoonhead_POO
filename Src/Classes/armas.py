@@ -38,7 +38,7 @@ class Projectile(Image):
     def isOutScreen(self, x, y):
         if x < 0:
             return True
-        if x > 800:
+        if x > 780:
             return True
         if y > 500:
             return True
