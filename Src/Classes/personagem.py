@@ -1,5 +1,5 @@
 from tupy import*
-
+from Classes.animacao import Contador
 class Personagem(Image):
     def __init__(self, x, y, image, life, armas):
         self.file = image[0]
@@ -10,6 +10,7 @@ class Personagem(Image):
         self.armas = armas
 
 class Heroi_test_1(Personagem):
+    MAX_CONTADOR_UPDATES = 5
     def __init__(self, image, vilao, armas = None, life = 3, x=240, y=240):
         super().__init__(x, y, image, life, armas)
         self.k = 30
@@ -17,12 +18,18 @@ class Heroi_test_1(Personagem):
         self.is_atk_possible = True
         self.c = 0
         self.vilao = vilao
-        
+        self._contador = Contador(Heroi_test_1.MAX_CONTADOR_UPDATES)
+        self._contador_de_imagens = Contador(3)
+
     def update(self) -> None:
         self.change_direction()
         self.common_attack()
         self.flee()
-
+        self._contador.incrementa()
+        if(self._contador.esta_zerado()):
+            self._file = self.imgs[self._contador_de_imagens._contador]
+            self._contador_de_imagens.incrementa()
+        
     def change_direction(self):
         if keyboard.is_key_just_down('Left'):
             self.x -= self.k
