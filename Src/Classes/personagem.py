@@ -10,12 +10,13 @@ class Personagem(Image):
         self.armas = armas
 
 class Heroi_test_1(Personagem):
-    def __init__(self, image, armas = None, life = 3, x=240, y=240):
+    def __init__(self, image, vilao, armas = None, life = 3, x=240, y=240):
         super().__init__(x, y, image, life, armas)
         self.k = 30
         self.atk_c = 0
         self.is_atk_possible = True
         self.c = 0
+        self.vilao = vilao
         
     def update(self) -> None:
         self.change_direction()
@@ -35,9 +36,9 @@ class Heroi_test_1(Personagem):
     def common_attack(self):
         if keyboard.is_key_just_down('space'):
             if self.atk_c % 2 == 0:
-                b = Bullet(self.x,self.y + 8)
+                b = Bullet(self.x,self.y + 8, self.vilao)
             else:
-                b = Bullet(self.x,self.y - 8)
+                b = Bullet(self.x,self.y - 8, self.vilao)
             self.atk_c += 1
 
     def flee(self):
@@ -49,15 +50,18 @@ class Heroi_test_1(Personagem):
         
 class Bullet(Image):
 
-    def __init__(self,x,y):
+    def __init__(self,x,y, vilao):
         self.x = x
         self.y = y
         self.file = "../Img/Bullet.png"
         self.v = 25
+        self.vilao = vilao
 
     def update(self) -> None:
         self.x += self.v
         if self.x > 840:
+            self.destroy()
+        if self._collides_with(self.vilao):
             self.destroy()
 
 class Vilao_test_1(Personagem):
@@ -68,19 +72,19 @@ class Vilao_test_1(Personagem):
         self.imgChange = 1
         self.count = 0
     def justShoot(self):
-        if keyboard.is_key_down('space'):
+        if keyboard.is_key_down('q'):
             self.armas[0].x = self.x -20
             self.armas[0].y = self.y +(self.y_upDo)
             self.armas[0].atirou = True
-        if keyboard.is_key_down('Up'):  
+        if keyboard.is_key_down('q'):  
             self.armas[1].x = self.x -20
             self.armas[1].y = self.y +(self.y_upDo)
             self.armas[1].atirou = True
-        if keyboard.is_key_down('Left'):  
+        if keyboard.is_key_down('q'):  
             self.armas[2].x = self.x -20
             self.armas[2].y = self.y+(self.y_upDo)
             self.armas[2].atirou = True
-        if keyboard.is_key_down('Right'):  
+        if keyboard.is_key_down('q'):  
             self.armas[3].x = self.x -20
             self.armas[3].y = self.y+(self.y_upDo)
             self.armas[3].atirou = True
