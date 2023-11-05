@@ -9,6 +9,57 @@ class Personagem(Image):
         self.life = life
         self.armas = armas
 
+class Heroi_test_1(Personagem):
+    def __init__(self, image, armas = None, life = 3, x=240, y=240):
+        super().__init__(x, y, image, life, armas)
+        self.k = 30
+        self.atk_c = 0
+        self.is_atk_possible = True
+        self.c = 0
+        
+    def update(self) -> None:
+        self.change_direction()
+        self.common_attack()
+        self.flee()
+
+    def change_direction(self):
+        if keyboard.is_key_just_down('Left'):
+            self.x -= self.k
+        if keyboard.is_key_just_down('Right'):
+            self.x += self.k
+        if keyboard.is_key_just_down('Up'):
+            self.y -= self.k
+        if keyboard.is_key_just_down('Down'):
+            self.y += self.k
+
+    def common_attack(self):
+        if keyboard.is_key_just_down('space'):
+            if self.atk_c % 2 == 0:
+                b = Bullet(self.x,self.y + 8)
+            else:
+                b = Bullet(self.x,self.y - 8)
+            self.atk_c += 1
+
+    def flee(self):
+        if keyboard.is_key_just_down('q'):
+            self.y -= 20
+    # Break temporary your character attack
+    def b_atk(self,status: bool):
+        self.is_atk_possible = status
+        
+class Bullet(Image):
+
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+        self.file = "../Img/Bullet.png"
+        self.v = 25
+
+    def update(self) -> None:
+        self.x += self.v
+        if self.x > 840:
+            self.destroy()
+
 class Vilao_test_1(Personagem):
     def __init__(self, x, y, image, life, armas):
         super().__init__(x, y, image, life, armas)
