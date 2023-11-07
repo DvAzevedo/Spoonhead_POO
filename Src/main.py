@@ -4,6 +4,11 @@ from Classes.personagem import Vilao_test_1, Heroi_test_1
 import pygame
 from pygame.locals import * 
 from Classes.cenario import *
+from HildaBerg.hildaBerg import *
+
+# hildaNormalIdle = ["../../Img/HildaNormal/Idle/blimp_idle_0001.png"]
+# for i in range(2, 22):
+#     hildaNormalIdle.append(f"../../Img/HildaNormal/Idle/blimp_idle_{i:04d}.png")
 
 pygame.init()
 
@@ -20,6 +25,9 @@ pedra = Arma(1, PedraSeno)
 fogo = Arma(1, FogoReto)
 pedray3 = Arma(1, PedraY3)
 pedray5 = Arma(1, PedraY5)
-vi = Vilao_test_1(800, 300, ["../Img/fork.png", "../Img/fork.png" ],200, [pedra, fogo, pedray3, pedray5])
+#vi = Vilao_test_1(800, 300, ["../Img/blimp_idle_0001.png", "../Img/blimp_idle_0001.png" ],200, [pedra, fogo, pedray3, pedray5])
+
+vi = HildaBergNormal(800, 300)
 s = Heroi_test_1(["../Img/Test1.png", "../Img/Test2.png", "../Img/Test3.png", "../Img/Test4.png"], vi)
+
 run(globals())
