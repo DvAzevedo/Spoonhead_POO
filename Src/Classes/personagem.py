@@ -1,5 +1,6 @@
 from tupy import*
 from Classes.animacao import Contador
+
 class Personagem(Image):
     def __init__(self, x, y, image, life, armas):
         self.file = image[0]
@@ -41,7 +42,7 @@ class Heroi_test_1(Personagem):
             self.y += self.k
 
     def common_attack(self):
-        if keyboard.is_key_just_down('space'):
+        if keyboard.is_key_down('space'):
             if self.atk_c % 2 == 0:
                 b = Bullet(self.x,self.y + 8, self.vilao)
             else:
@@ -83,15 +84,15 @@ class Vilao_test_1(Personagem):
             self.armas[0].x = self.x -20
             self.armas[0].y = self.y +(self.y_upDo)
             self.armas[0].atirou = True
-        if keyboard.is_key_down('q'):  
+        if keyboard.is_key_down('w'):  
             self.armas[1].x = self.x -20
             self.armas[1].y = self.y +(self.y_upDo)
             self.armas[1].atirou = True
-        if keyboard.is_key_down('q'):  
+        if keyboard.is_key_down('e'):  
             self.armas[2].x = self.x -20
             self.armas[2].y = self.y+(self.y_upDo)
             self.armas[2].atirou = True
-        if keyboard.is_key_down('q'):  
+        if keyboard.is_key_down('r'):  
             self.armas[3].x = self.x -20
             self.armas[3].y = self.y+(self.y_upDo)
             self.armas[3].atirou = True
@@ -100,10 +101,10 @@ class Vilao_test_1(Personagem):
         #     self.file = self.imgs[1]
         
         if self.y == 400 or self.y == 100:
-            if self.imgChange == 0:
-                self.imgChange = 1
-            else:
-                self.imgChange = 0
+            # if self.imgChange == 0:
+            #     self.imgChange = 1
+            # else:
+            #     self.imgChange = 0
             self.y_upDo = -(1)*self.y_upDo
             self.file = self.imgs[self.imgChange]
             
