@@ -27,7 +27,7 @@ pedray3 = Arma(1, PedraY3)
 pedray5 = Arma(1, PedraY5)
 #vi = Vilao_test_1(800, 300, ["../Img/blimp_idle_0001.png", "../Img/blimp_idle_0001.png" ],200, [pedra, fogo, pedray3, pedray5])
 
-vi = HildaBergNormal(800, 300)
+vi = HildaBergNormal(700, 220)
 s = Heroi_test_1(["../Img/Test1.png", "../Img/Test2.png", "../Img/Test3.png", "../Img/Test4.png"], vi)
 
 run(globals())
