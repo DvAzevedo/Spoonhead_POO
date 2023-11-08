@@ -56,16 +56,16 @@ class Ha(Image):
 #Hilda Build
 class HildaBergNormal(Image):
     MAX_CONTADOR_UPDATES = 21
-    MAX_CONTADOR_UPDATES_LOUGH = 13
+    MAX_CONTADOR_UPDATES_laugh = 13
     MAX_CONTADOR_INTRO_UPDATES = 43
     MAX_CONTADOR_UPDATES_T = 48
     def __init__(self, x, y):
         self.file = hildaIntro[0]
-        self.estados = ["intro", "normal", "lough", "transition"]
+        self.estados = ["intro", "normal", "laugh", "transition"]
         self.estado = self.estados[0]
         self.animateIntro = Animate(HildaBergNormal.MAX_CONTADOR_INTRO_UPDATES, hildaIntro)
         self.animateNormal = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES, hildaNormal)
-        self.animateLough = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES_LOUGH, hildaLaugh)
+        self.animateLaugh = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES_laugh, hildaLaugh)
         self.animateTransition = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES_T, hildaTransition)
         self.x = x
         self.y = y
@@ -86,10 +86,10 @@ class HildaBergNormal(Image):
                 self.estado = "normal"
                 self.count = 0
 
-        elif self.estado == "lough":
-            self.animateLough.animate()
-            self.file = self.animateLough.file
-            if self.count == HildaBergNormal.MAX_CONTADOR_UPDATES_LOUGH:
+        elif self.estado == "laugh":
+            self.animateLaugh.animate()
+            self.file = self.animateLaugh.file
+            if self.count == HildaBergNormal.MAX_CONTADOR_UPDATES_laugh:
                 self.estado = "normal"
                 self.count = 0
 
@@ -106,8 +106,8 @@ class HildaBergNormal(Image):
                 self.destroy()
 
     def risada(self):
-        if keyboard.is_key_just_down('h'):
-            self.estado = "lough" 
+        if keyboard.is_key_just_down('r'):
+            self.estado = "laugh" 
             self.count = 0 
             Ha(self.x, self.y)
 
