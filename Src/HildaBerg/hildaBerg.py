@@ -155,5 +155,3 @@ class HildaBergMoon(Image):
         self.count +=1
         if self.count == 500:
             self.destroy()
-
-        

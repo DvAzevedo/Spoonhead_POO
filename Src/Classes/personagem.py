@@ -32,13 +32,13 @@ class Heroi_test_1(Personagem):
             self._contador_de_imagens.incrementa()
         
     def change_direction(self):
-        if keyboard.is_key_just_down('Left'):
+        if keyboard.is_key_down('Left') and self.x >= 20:
             self.x -= self.k
-        if keyboard.is_key_just_down('Right'):
+        if keyboard.is_key_down('Right') and self.x <= 780:
             self.x += self.k
-        if keyboard.is_key_just_down('Up'):
+        if keyboard.is_key_down('Up') and self.y >= 20:
             self.y -= self.k
-        if keyboard.is_key_just_down('Down'):
+        if keyboard.is_key_down('Down') and self.y <= 480:
             self.y += self.k
 
     def common_attack(self):
