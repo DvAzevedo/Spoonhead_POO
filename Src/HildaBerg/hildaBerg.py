@@ -120,12 +120,17 @@ class HildaBergNormalT(Image):
         self._contador = Contador(HildaBergNormalT.MAX_CONTADOR_UPDATES)
         self._contador_de_imagens = Contador(48)
         self.count = 0
+        self.xh = (700 - self.x) / 11
+        self.yh = (220 - self.y) / 11
 
     def update(self):
         self.count += 1
         self._contador.incrementa()
         self._file = self.imgs[self._contador_de_imagens._contador]
         self._contador_de_imagens.incrementa()
+        if self.count > 38:
+            self.x += self.xh
+            self.y += self.yh
         if self.count == 48:
             self._hide()
             HildaBergMoon(700, 220)
@@ -148,7 +153,7 @@ class HildaBergMoon(Image):
         self._file = self.imgs[self._contador_de_imagens._contador]
         self._contador_de_imagens.incrementa()
         self.count +=1
-        if self.count == 50:
+        if self.count == 500:
             self.destroy()
 
         

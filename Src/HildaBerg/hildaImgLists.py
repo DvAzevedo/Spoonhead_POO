@@ -14,10 +14,12 @@ for i in range(1, 20):
 hildaTransition = []
 for i in range(1, 8):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/BoilA/blimp_morph_{i:04d}.png")
+
 for i in range(8, 10):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/Middle/blimp_morph_{i:04d}.png")
 for i in range(10, 14):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/BoilB/blimp_morph_{i:04d}.png")
+
 for i in range(14, 49):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/End/blimp_morph_{i:04d}.png")
 
