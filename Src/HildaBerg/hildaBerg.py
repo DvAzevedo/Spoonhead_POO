@@ -100,10 +100,10 @@ class HildaBergNormal(Image):
 
     def update(self):
         self.count +=1
-        if self.estado == "normal":
-            self.updatePosition()
-            self.risada()
+        self.risada()
         self.animate()
+        if self.estado == "normal":
+            self.updatePosition()   
         if self.count == 100:
             self._hide()
             HildaBergNormalT(self.x, self.y)
