@@ -6,10 +6,6 @@ from pygame.locals import *
 from Classes.cenario import *
 from HildaBerg.hildaBerg import *
 
-# hildaNormalIdle = ["../../Img/HildaNormal/Idle/blimp_idle_0001.png"]
-# for i in range(2, 22):
-#     hildaNormalIdle.append(f"../../Img/HildaNormal/Idle/blimp_idle_{i:04d}.png")
-
 pygame.init()
 
 e = Ceu(500, 280, 4)
