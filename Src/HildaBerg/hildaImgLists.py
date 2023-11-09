@@ -11,8 +11,8 @@ hildaLaugh = []
 for i in range(1, 20):
     hildaLaugh.append(f"../../Img/HildaNormal/Laugh/blimp_shoot_{i:04d}.png")
 
-hildaTransition = []
-for i in range(1, 8):
+hildaTransition = ["../../Img/HildaNormal/TransitionToMoon/StartT/blimp_morph_0001.png"]
+for i in range(2, 8):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/BoilA/blimp_morph_{i:04d}.png")
 
 for i in range(8, 10):

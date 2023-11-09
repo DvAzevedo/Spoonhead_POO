@@ -3,30 +3,37 @@ import math
 from Classes.animacao import Contador
 from HildaBerg.hildaImgLists import *
 a = 100
-yo = 220
-xo = 700
+Y_POSITION_ORIGIN = 240
+X_POSITION_ORIGIN = 700
 
 class Animate:
-    def __init__(self, maxUpdates, imgs):
-        self._contador = Contador(maxUpdates)
-        self._contador_de_imagens = Contador(maxUpdates)
+    def __init__(self, qtd_imgs, imgs, delay):
+        self._delayCount = Contador(delay)
+        self._imgsCount = Contador(qtd_imgs)
         self.file = imgs[0]
         self.imgs = imgs
+        self.lastImg = imgs[qtd_imgs-1]
+        self.isLastImg = False
+
+    def getImgCount(self):
+        return self._imgsCount._contador
+    
     def animate(self):
-        self._contador.incrementa()
-        self.file = self.imgs[self._contador_de_imagens._contador]
-        self._contador_de_imagens.incrementa()
+        self._delayCount.incrementa()
+        if(self._delayCount.esta_zerado()):
+            if self.file == self.lastImg:
+                self.isLastImg = True
+            self.file = self.imgs[self._imgsCount._contador]
+            self._imgsCount.incrementa()
+
 
 #Attaks
-
-#         self.helper += 0.1
-#         self.x -= 10
-#         self.y = ((math.sin(self.helperSeno)*75)+self.aux_y)
 class Ha(Image):
     MAX_CONTADOR_UPDATES = 13
+    ANIME_DELAY = 1
     def __init__(self, x, y):
         self.file = imgListHa[0]
-        self.animateHa = Animate(Ha.MAX_CONTADOR_UPDATES, imgListHa)
+        self.animateHa = Animate(Ha.MAX_CONTADOR_UPDATES, imgListHa, Ha.ANIME_DELAY)
         self.x = x
         self.y = y
         self.yo = y
@@ -35,7 +42,7 @@ class Ha(Image):
     def trajetoria(self):
         self.sin += 1
         self.x -= 60
-        self.y = ((math.sin(self.sin)*30)+self.yo)
+        self.y = ((math.sin(self.sin)*30)+Y_POSITION_ORIGIN)
 
     def animate(self):
         self.animateHa.animate()
@@ -51,96 +58,105 @@ class Ha(Image):
         self.destruir()
 
 
-
-
 #Hilda Build
-class HildaBergNormal(Image):
-    MAX_CONTADOR_UPDATES = 21
-    MAX_CONTADOR_UPDATES_laugh = 13
-    MAX_CONTADOR_INTRO_UPDATES = 43
-    MAX_CONTADOR_UPDATES_T = 48
+class HildaBerg(Image):
+    STATE_LIST = ["intro", "normal", "laugh", "transition"]
+    QTD_IMGS_STATE_NORMAL = 21
+    QTD_IMGS_STATE_LAUGH = 19
+    QTD_IMGS_STATE_INTRO = 43
+    QTD_IMGS_STATE_TRANSITION = 48
+    ANIME_DELAY = 2
     def __init__(self, x, y):
         self.file = hildaIntro[0]
-        self.estados = ["intro", "normal", "laugh", "transition"]
-        self.estado = self.estados[0]
-        self.animateIntro = Animate(HildaBergNormal.MAX_CONTADOR_INTRO_UPDATES, hildaIntro)
-        self.animateNormal = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES, hildaNormal)
-        self.animateLaugh = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES_laugh, hildaLaugh)
-        self.animateTransition = Animate(HildaBergNormal.MAX_CONTADOR_UPDATES_T, hildaTransition)
         self.x = x
         self.y = y
+        self.state = HildaBerg.STATE_LIST[0]
+        self.introAnime = Animate(HildaBerg.QTD_IMGS_STATE_INTRO, hildaIntro, HildaBerg.ANIME_DELAY)
+        self.normalAnime = Animate(HildaBerg.QTD_IMGS_STATE_NORMAL, hildaNormal, HildaBerg.ANIME_DELAY)
+        self.laughAnime = Animate(HildaBerg.QTD_IMGS_STATE_LAUGH, hildaLaugh, 1)
+        self.transitionAnime = Animate(HildaBerg.QTD_IMGS_STATE_TRANSITION, hildaTransition, HildaBerg.ANIME_DELAY)
+        self.animeList = [self.introAnime, self.normalAnime, self.laughAnime, self.transitionAnime]
+        self.delayCount = Contador(HildaBerg.ANIME_DELAY)
         self.count = 0
         self.life = 1000
         self.i = 1.5
-        
-    def updatePosition(self):
+
+    # Positions Update    
+    def normalUpdatePosition(self):
         self.i += 0.1
-        self.x = (a * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) +700
-        self.y = (-a * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + 200
+        self.x = (a * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN
+        self.y = (-a * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN
+    
+    def transitionUpdatePosition(self):
+        if self.transitionAnime.getImgCount() > 37 and self.transitionAnime.getImgCount() < HildaBerg.QTD_IMGS_STATE_TRANSITION:
+            self.x += (X_POSITION_ORIGIN - self.x) / (HildaBerg.QTD_IMGS_STATE_TRANSITION - self.transitionAnime.getImgCount())
+            self.y += (Y_POSITION_ORIGIN - self.y) / (HildaBerg.QTD_IMGS_STATE_TRANSITION - self.transitionAnime.getImgCount())
+    
+    def updatePosition(self):
+        if self.state == "normal":
+            self.normalUpdatePosition()   
+        if self.state == "transition":
+            self.transitionUpdatePosition()
 
-    def animate(self):
-        if self.estado == "intro":
-            self.animateIntro.animate()
-            self.file = self.animateIntro.file
-            if self.count == HildaBergNormal.MAX_CONTADOR_INTRO_UPDATES:
-                self.estado = "normal"
-                self.count = 0
-
-        elif self.estado == "laugh":
-            self.animateLaugh.animate()
-            self.file = self.animateLaugh.file
-            if self.count == HildaBergNormal.MAX_CONTADOR_UPDATES_laugh:
-                self.estado = "normal"
-                self.count = 0
-
-        elif self.estado == "normal":
-            self.animateNormal.animate()
-            self.file = self.animateNormal.file
+    # Animations
+    def isAnimeFinish(self, lastImg):
+        if self.file == lastImg:
+            return True
         
-        elif self.estado == "transition":
-            self.animateTransition.animate()
-            self.file = self.animateTransition.file
-            if self.count == HildaBergNormal.MAX_CONTADOR_UPDATES_T:
-                self._hide()
-                HildaBergMoon(700, 220)
-                self.destroy()
+    def backToNormal(self, lastImg):
+        if self.file == lastImg:
+            self.state = "normal"
 
+    def animate(self, indice):
+        self.animeList[indice].animate()
+        self.file = self.animeList[indice].file
+        
+    def animateCase(self):# Mudar para switch case
+        if self.state == "intro":
+            self.animate(0)
+            self.backToNormal(self.introAnime.lastImg)
+
+        elif self.state == "laugh":
+            self.animate(2)
+            self.backToNormal(self.laughAnime.lastImg)
+
+        elif self.state == "normal":
+            self.animate(1)
+        
+        elif self.state == "transition":
+            self.animate(3)
+            if self.isAnimeFinish(self.transitionAnime.lastImg):
+                self._hide()
+                HildaBergMoon(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
+                self.destroy()
+    # Attaks
     def risada(self):
         if keyboard.is_key_just_down('r'):
-            self.estado = "laugh" 
-            self.count = 0 
+            self.state = "laugh" 
             Ha(self.x, self.y)
 
     def update(self):
         self.count +=1
         self.risada()
-        self.animate()
-        if self.estado == "normal":
-            self.updatePosition()   
-        if self.count == 100:
-            self.estado = "transition"
-            self.count = 0
-        if self.estado == "transition" and self.count > 37 and self.count < HildaBergNormal.MAX_CONTADOR_UPDATES_T:
-            self.x += (xo - self.x) / (HildaBergNormal.MAX_CONTADOR_UPDATES_T - self.count)
-            self.y += (yo - self.y) / (HildaBergNormal.MAX_CONTADOR_UPDATES_T - self.count)
-
+        self.animateCase()
+        self.updatePosition()
+        if self.count == 300: # Isso vai ser definido de acordo com a vida
+            self.state = "transition"
+            
+        
 
 class HildaBergMoon(Image):
-    MAX_CONTADOR_UPDATES = 16
+    QTD_IMG_STATE_NORMAL = 16
+    ANIME_DELAY = 2
     STATE = 0
     def __init__(self, x, y):
         self.file = hildaMoon[0]
         self.imgs = hildaMoon
         self.x = x
         self.y = y
-        self._contador = Contador(HildaBergMoon.MAX_CONTADOR_UPDATES)
-        self._contador_de_imagens = Contador(16)
+        self.normalAnime = Animate(HildaBergMoon.QTD_IMG_STATE_NORMAL, hildaMoon, HildaBergMoon.ANIME_DELAY)
         self.count = 0
 
     def update(self):
-        self._contador.incrementa()
-        self._file = self.imgs[self._contador_de_imagens._contador]
-        self._contador_de_imagens.incrementa()
-        self.count +=1
-        if self.count == 500:
-            self.destroy()
+        self.normalAnime.animate()
+        self.file = self.normalAnime.file

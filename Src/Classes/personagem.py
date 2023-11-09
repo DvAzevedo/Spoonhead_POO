@@ -11,7 +11,7 @@ class Personagem(Image):
         self.armas = armas
 
 class Heroi_test_1(Personagem):
-    MAX_CONTADOR_UPDATES = 5
+    MAX_CONTADOR_UPDATES = 3
     def __init__(self, image, vilao, armas = None, life = 3, x=240, y=240):
         super().__init__(x, y, image, life, armas)
         self.k = 30
