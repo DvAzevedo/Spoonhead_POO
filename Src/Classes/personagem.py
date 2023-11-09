@@ -21,6 +21,7 @@ class Heroi_test_1(Personagem):
         self.vilao = vilao
         self._contador = Contador(Heroi_test_1.MAX_CONTADOR_UPDATES)
         self._contador_de_imagens = Contador(3)
+        self.atacando = False
 
     def update(self) -> None:
         self.change_direction()
@@ -42,7 +43,12 @@ class Heroi_test_1(Personagem):
             self.y += self.k
 
     def common_attack(self):
-        if keyboard.is_key_down('space'):
+        if keyboard.is_key_just_down('space'):
+            if self.atacando == False:
+                self.atacando = True
+            else:
+                self.atacando = False
+        if self.atacando == True:
             if self.atk_c % 2 == 0:
                 b = Bullet(self.x,self.y + 8, self.vilao)
             else:
@@ -71,6 +77,7 @@ class Bullet(Image):
             self.destroy()
         if self._collides_with(self.vilao):
             self.destroy()
+            #pass
 
 class Vilao_test_1(Personagem):
     def __init__(self, x, y, image, life, armas):

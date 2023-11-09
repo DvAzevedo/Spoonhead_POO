@@ -29,8 +29,8 @@ class Animate:
 
 #Attaks
 class Ha(Image):
-    MAX_CONTADOR_UPDATES = 13
-    ANIME_DELAY = 1
+    MAX_CONTADOR_UPDATES = 46
+    ANIME_DELAY = 2
     def __init__(self, x, y):
         self.file = imgListHa[0]
         self.animateHa = Animate(Ha.MAX_CONTADOR_UPDATES, imgListHa, Ha.ANIME_DELAY)
@@ -41,8 +41,8 @@ class Ha(Image):
 
     def trajetoria(self):
         self.sin += 1
-        self.x -= 60
-        self.y = ((math.sin(self.sin)*30)+Y_POSITION_ORIGIN)
+        self.x -= 20
+        self.y = ((math.sin(self.sin)*5)+Y_POSITION_ORIGIN)
 
     def animate(self):
         self.animateHa.animate()
@@ -93,7 +93,7 @@ class HildaBerg(Image):
             self.y += (Y_POSITION_ORIGIN - self.y) / (HildaBerg.QTD_IMGS_STATE_TRANSITION - self.transitionAnime.getImgCount())
     
     def updatePosition(self):
-        if self.state == "normal":
+        if self.state == "normal" or self.state == "laugh":
             self.normalUpdatePosition()   
         if self.state == "transition":
             self.transitionUpdatePosition()

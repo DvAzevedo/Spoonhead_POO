@@ -27,6 +27,19 @@ hildaMoon = []
 for i in range(1, 17):
     hildaMoon.append(f"../../Img/HildaMoon/Idle/blimp_moon_idle_{i:04d}.png")
 
-imgListHa = []
-for i in range(1, 14):
+imgListHa = [] # imagens: 2, 3, 4, 6 estão bugadas
+for i in range(1, 2):
     imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+for i in range(5, 6):
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+for i in range(7, 14):
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_{i:04d}.png")
+for i in range(46):
+    imgListHa.append(f"../../Img/HildaNormal/Attaks/Ha/blimp_ha_0013.png")
