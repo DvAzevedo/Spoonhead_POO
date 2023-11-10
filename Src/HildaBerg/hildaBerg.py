@@ -1,36 +1,15 @@
 from tupy import*
 import math
-from Classes.animacao import Contador
+from Classes.animacao import Contador, Animate
 from HildaBerg.hildaImgLists import *
 a = 100
 Y_POSITION_ORIGIN = 240
 X_POSITION_ORIGIN = 700
 
-class Animate:
-    def __init__(self, qtd_imgs, imgs, delay):
-        self._delayCount = Contador(delay)
-        self._imgsCount = Contador(qtd_imgs)
-        self.file = imgs[0]
-        self.imgs = imgs
-        self.lastImg = imgs[qtd_imgs-1]
-        self.isLastImg = False
-
-    def getImgCount(self):
-        return self._imgsCount._contador
-    
-    def animate(self):
-        self._delayCount.incrementa()
-        if(self._delayCount.esta_zerado()):
-            if self.file == self.lastImg:
-                self.isLastImg = True
-            self.file = self.imgs[self._imgsCount._contador]
-            self._imgsCount.incrementa()
-
-
 #Attaks
 class Ha(Image):
     MAX_CONTADOR_UPDATES = 46
-    ANIME_DELAY = 2
+    ANIME_DELAY = 1
     def __init__(self, x, y):
         self.file = imgListHa[0]
         self.animateHa = Animate(Ha.MAX_CONTADOR_UPDATES, imgListHa, Ha.ANIME_DELAY)
@@ -75,7 +54,7 @@ class HildaBerg(Image):
         self.normalAnime = Animate(HildaBerg.QTD_IMGS_STATE_NORMAL, hildaNormal, HildaBerg.ANIME_DELAY)
         self.laughAnime = Animate(HildaBerg.QTD_IMGS_STATE_LAUGH, hildaLaugh, 1)
         self.transitionAnime = Animate(HildaBerg.QTD_IMGS_STATE_TRANSITION, hildaTransition, HildaBerg.ANIME_DELAY)
-        self.animeList = [self.introAnime, self.normalAnime, self.laughAnime, self.transitionAnime]
+        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.transitionAnime]
         self.delayCount = Contador(HildaBerg.ANIME_DELAY)
         self.count = 0
         self.life = 1000
@@ -84,8 +63,8 @@ class HildaBerg(Image):
     # Positions Update    
     def normalUpdatePosition(self):
         self.i += 0.1
-        self.x = (a * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN
-        self.y = (-a * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN
+        self.x = ((a * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN) 
+        self.y = ((-a * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN)
     
     def transitionUpdatePosition(self):
         if self.transitionAnime.getImgCount() > 37 and self.transitionAnime.getImgCount() < HildaBerg.QTD_IMGS_STATE_TRANSITION:
@@ -108,8 +87,8 @@ class HildaBerg(Image):
             self.state = "normal"
 
     def animate(self, indice):
-        self.animeList[indice].animate()
-        self.file = self.animeList[indice].file
+        self.animeClassList[indice].animate()
+        self.file = self.animeClassList[indice].file
         
     def animateCase(self):# Mudar para switch case
         if self.state == "intro":
@@ -132,8 +111,10 @@ class HildaBerg(Image):
     # Attaks
     def risada(self):
         if keyboard.is_key_just_down('r'):
-            self.state = "laugh" 
-            Ha(self.x, self.y)
+            if self.state == "normal":
+                Ha(self.x, self.y)
+                self.state = "laugh" 
+            
 
     def update(self):
         self.count +=1

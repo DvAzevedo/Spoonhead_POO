@@ -13,6 +13,28 @@ class Contador:
     def esta_zerado(self):
         return self._contador == 0
 
+
+class Animate:
+    def __init__(self, qtd_imgs, imgs, delay):
+        self._delayCount = Contador(delay)
+        self._imgsCount = Contador(qtd_imgs)
+        self.file = imgs[0]
+        self.imgs = imgs
+        self.lastImg = imgs[qtd_imgs-1]
+        self.isLastImg = False
+
+    def getImgCount(self):
+        return self._imgsCount._contador
+    
+    def animate(self):
+        self._delayCount.incrementa()
+        if(self._delayCount.esta_zerado()):
+            if self.file == self.lastImg:
+                self.isLastImg = True
+            self.file = self.imgs[self._imgsCount._contador]
+            self._imgsCount.incrementa()
+
+
 class Animacao(BaseImage):
     def __init__(self, arquivos, intervalo):
         self._arquivos = arquivos
