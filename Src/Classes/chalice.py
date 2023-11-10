@@ -46,15 +46,14 @@ class Chalice(Personagem):
                 self.y += self.k
         if self.animacao_atual == self.animate_normal:
             if keyboard.is_key_down('e'):
+                self.atacando = False
                 self.animacao_atual = self.animate_trasition_special
         self.hitbox.atualiza_posicao(self.x, self.y)
 
     def common_attack(self) -> None:
         if keyboard.is_key_just_down('space'):
-            if self.atacando == False:
-                self.atacando = True
-            else:
-                self.atacando = False
+            if(self.animacao_atual == self.animate_normal):
+                self.atacando = not self.atacando
         if self.atacando == True:
             if self.atk_c % 2 == 0:
                 b = Bullet(self.x,self.y + 8, self.vilao)
