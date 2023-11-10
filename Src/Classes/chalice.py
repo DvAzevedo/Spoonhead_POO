@@ -16,10 +16,10 @@ class Chalice(Personagem):
         self.is_atk_possible = True
         self.c = 0
         self.vilao = vilao
-        self.animate_normal = Animate(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 3)
+        self.animate_normal = Animate(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self.atacando = False
         self.hitbox = HitBox(x, y, 30, 30)
-        self.animate_trasition_special = Animate(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 3)
+        self.animate_trasition_special = Animate(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self.animacao_special = Animate(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self.animacao_atual = self.animate_normal
 
