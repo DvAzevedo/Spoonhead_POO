@@ -142,6 +142,3 @@ class Trajetorias(Image):
         self.file = self.imgs[img]
         self.x -= xSpeed
         self.y -= ySpeed
-
-            
-        
