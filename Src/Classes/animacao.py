@@ -33,3 +33,7 @@ class Animate:
                 self.isLastImg = True
             self.file = self.imgs[self._imgsCount._contador]
             self._imgsCount.incrementa()
+            
+    def anima(self):
+        self.animate()
+        return self.file
