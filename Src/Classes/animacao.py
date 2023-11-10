@@ -12,7 +12,9 @@ class Contador:
     
     def esta_zerado(self):
         return self._contador == 0
-
+    
+    def zera_contador(self):
+        self._contador = 0
 
 class Animate:
     def __init__(self, qtd_imgs, imgs, delay):
@@ -36,4 +38,8 @@ class Animate:
             
     def anima(self):
         self.animate()
+        if self.file == self.lastImg:
+            aux = self.file
+            self.animate()
+            return aux
         return self.file

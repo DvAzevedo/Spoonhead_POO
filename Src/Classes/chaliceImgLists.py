@@ -10,3 +10,7 @@ for i in range(1, 19):
 ChaliceSpecial = []
 for i in range(1, 5):
     ChaliceSpecial.append(f"../Img/Chalice/Special/chalice_shmup_super_idle_straight_{i:04d}.png")
+
+ChaliceExplosion = []
+for i in range(1, 28):
+    ChaliceExplosion.append(f"../Img/Chalice/Special/Explosion/shmup_super_explode_{i:04d}.png")
