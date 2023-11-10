@@ -33,17 +33,3 @@ class Animate:
                 self.isLastImg = True
             self.file = self.imgs[self._imgsCount._contador]
             self._imgsCount.incrementa()
-
-
-class Animacao(BaseImage):
-    def __init__(self, arquivos, intervalo):
-        self._arquivos = arquivos
-        self._contador = Contador(intervalo)
-        self._indice = 0
-        self._file = arquivos[0]
-    
-    def update(self):
-        self._contador.incrementa()
-        if self._contador.esta_zerado():
-            self._indice = (self._indice + 1) % len(self._arquivos)
-            self._file = self._arquivos[self._indice]

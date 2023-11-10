@@ -1,8 +1,9 @@
 from tupy import*
 from Classes.animacao import Contador
+from Classes.Hitbox import HitBox
 
 class Personagem(Image):
-    def __init__(self, x, y, image, life, armas):
+    def __init__(self, x: int, y: int, image: list[str], life: int, armas: list[str]):
         self.file = image[0]
         self.imgs = image
         self.x = x
@@ -12,7 +13,7 @@ class Personagem(Image):
 
 class Heroi_test_1(Personagem):
     MAX_CONTADOR_UPDATES = 3
-    def __init__(self, image, vilao, armas = None, life = 3, x=240, y=240):
+    def __init__(self, image: list[str], vilao: 'Personagem', armas = None, life = 3, x=240, y=240):
         super().__init__(x, y, image, life, armas)
         self.k = 30
         self.atk_c = 0
@@ -22,6 +23,7 @@ class Heroi_test_1(Personagem):
         self._contador = Contador(Heroi_test_1.MAX_CONTADOR_UPDATES)
         self._contador_de_imagens = Contador(3)
         self.atacando = False
+        self.hitbox = HitBox(x, y, 30, 30)
 
     def update(self) -> None:
         self.change_direction()
@@ -32,7 +34,7 @@ class Heroi_test_1(Personagem):
             self._file = self.imgs[self._contador_de_imagens._contador]
             self._contador_de_imagens.incrementa()
         
-    def change_direction(self):
+    def change_direction(self) -> None:
         if keyboard.is_key_down('Left') and self.x >= 20:
             self.x -= self.k
         if keyboard.is_key_down('Right') and self.x <= 780:
@@ -41,8 +43,9 @@ class Heroi_test_1(Personagem):
             self.y -= self.k
         if keyboard.is_key_down('Down') and self.y <= 480:
             self.y += self.k
+        self.hitbox.atualiza_posicao(self.x, self.y)
 
-    def common_attack(self):
+    def common_attack(self) -> None:
         if keyboard.is_key_just_down('space'):
             if self.atacando == False:
                 self.atacando = True
@@ -55,7 +58,7 @@ class Heroi_test_1(Personagem):
                 b = Bullet(self.x,self.y - 8, self.vilao)
             self.atk_c += 1
 
-    def flee(self):
+    def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
             self.y -= 20
     # Break temporary your character attack
@@ -77,8 +80,8 @@ class Bullet(Image):
             self.destroy()
         if self._collides_with(self.vilao):
             self.destroy()
-            #pass
-
+ 
+            
 class Vilao_test_1(Personagem):
     def __init__(self, x, y, image, life, armas):
         super().__init__(x, y, image, life, armas)
