@@ -9,6 +9,9 @@ class Cena:
         return self.heroi.life
     def getVidaVilao(self, vilao):
         return vilao.life
+    def getHeroiPosition(self):
+        position = [self.heroi.x, self.heroi.y]
+        return position
     def heroiFoiAtingido(self):
         pass
     def heroiSofreDano(self):
