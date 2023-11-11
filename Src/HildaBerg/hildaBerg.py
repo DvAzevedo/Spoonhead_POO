@@ -87,8 +87,7 @@ class HildaBerg(Image):
             self.state = "normal"
 
     def animate(self, indice):
-        self.animeClassList[indice].animate()
-        self.file = self.animeClassList[indice].file
+        self.file = self.animeClassList[indice].anima()
         
     def animateCase(self):# Mudar para switch case
         if self.state == "intro":
