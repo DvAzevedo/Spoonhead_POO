@@ -15,6 +15,26 @@ hildaTornado = []
 for i in range(1, 39):
     hildaTornado.append(f"../../Img/HildaNormal/HildaTornado/blimp_tornado_{i:04d}.png")
 
+hildaDash = []
+for i in range(18, 25):
+    hildaDash.append(f"../../Img/HildaNormal/Dash/blimp_dash_{i:04d}.png")
+
+hildaDashIntro = []
+for i in range(1, 18):
+    hildaDashIntro.append(f"../../Img/HildaNormal/Dash/blimp_dash_{i:04d}.png")
+
+hildaSummon = []
+for i in range(1, 22):
+    hildaSummon.append(f"../../Img/HildaNormal/Summon/blimp_summon_{i:04d}.png")
+
+dashExplo = []
+for i in range(1, 16):
+    dashExplo.append(f"../../Img/HildaNormal/Attaks/DashExplo/blimp_dash_fx_explode_{i:04d}.png")
+    
+dashSmoke = []
+for i in range(1, 7):
+    dashSmoke.append(f"../../Img/HildaNormal/Attaks/DashSmoke/blimp_dash_fx_smoke_{i:04d}.png")
+
 hildaTransition = ["../../Img/HildaNormal/TransitionToMoon/StartT/blimp_morph_0001.png"]
 for i in range(2, 8):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/BoilA/blimp_morph_{i:04d}.png")

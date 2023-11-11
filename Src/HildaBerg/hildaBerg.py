@@ -12,10 +12,15 @@ QTD_IMGS_STATE_LAUGH = 19
 QTD_IMGS_STATE_INTRO = 43
 QTD_IMGS_STATE_TRANSITION = 48
 QTD_IMGS_STATE_TORNADO = 38
+QTD_IMGS_STATE_DASH_INTRO = 17
+QTD_IMGS_STATE_DASH = 7
+QTD_IMGS_STATE_SUMMON = 21
 
 QTD_IMGS_STATE_HA = 46
 QTD_IMGS_STATE_TORNADO_ATK = 16
 QTD_IMGS_STATE_TORNADO_INTRO_ATK = 12
+QTD_IMGS_STATE_DASH_EXPLO = 15
+QTD_IMGS_STATE_DASH_SMOKE = 6
 
 #Attaks
 class Ha(Image):
@@ -50,10 +55,10 @@ class Ha(Image):
     
 
 class Tornado(Image):
-    ANIME_DELAY = 2
+    ANIME_DELAY = 1
     def __init__(self, x, y):
         self.file = hildaTornadoAtkIntro[0]
-        self.introAnime = Animate(QTD_IMGS_STATE_TORNADO_INTRO_ATK, hildaTornadoAtkIntro, 3)
+        self.introAnime = Animate(QTD_IMGS_STATE_TORNADO_INTRO_ATK, hildaTornadoAtkIntro, 2)
         self.atkAnime = Animate(QTD_IMGS_STATE_TORNADO_ATK, hildaTornadoAtk, Tornado.ANIME_DELAY)
         self.currentAnime = self.introAnime
         self.x = x - 80
@@ -67,7 +72,7 @@ class Tornado(Image):
     def trajetoria(self):
         if self.currentAnime == self.atkAnime:
             if self.x > self.heroi_x:
-                self.x -= ((self.x - self.heroi_x )/ 30) + 5
+                self.x -= ((self.x - self.heroi_x )/ 30) + 10
                 self.y -= ((self.y - self.heroi_y )/ 30)
             else:
                 self.x -= 5
@@ -96,7 +101,7 @@ class Tornado(Image):
 
 #Hilda Build
 class HildaBerg(Image):
-    STATE_LIST = ["intro", "normal", "laugh", "tornado", "transition"]
+    STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "transition"]
     ANIME_DELAY = 2
     def __init__(self, x, y):
         self.file = hildaIntro[0]
@@ -108,7 +113,10 @@ class HildaBerg(Image):
         self.laughAnime = Animate(QTD_IMGS_STATE_LAUGH, hildaLaugh, 1)
         self.transitionAnime = Animate(QTD_IMGS_STATE_TRANSITION, hildaTransition, HildaBerg.ANIME_DELAY)
         self.tornadoAnime = Animate(QTD_IMGS_STATE_TORNADO, hildaTornado, 1)
-        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.transitionAnime]
+        self.dashIntroAnime = Animate(QTD_IMGS_STATE_DASH_INTRO, hildaDashIntro, 1)
+        self.dashAnime = Animate(QTD_IMGS_STATE_DASH, hildaDash, 2)
+        self.summonAnime = Animate(QTD_IMGS_STATE_SUMMON, hildaSummon, 2)
+        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.dashIntroAnime, self.dashAnime, self.summonAnime, self.transitionAnime]
         self.delayCount = Contador(HildaBerg.ANIME_DELAY)
         self.count = 0
         self.life = 1000
@@ -125,9 +133,19 @@ class HildaBerg(Image):
             self.x += (X_POSITION_ORIGIN - self.x) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.getImgCount())
             self.y += (Y_POSITION_ORIGIN - self.y) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.getImgCount())
     
+    def dashUpdatePosition(self):
+        self.x -= 60
+    
+    def summonUpdatePosition(self):
+        self.x += 20
+
     def updatePosition(self):
         if self.state == "normal" or self.state == "laugh":
             self.normalUpdatePosition()   
+        if self.state == "dash":
+            self.dashUpdatePosition()
+        if self.state == "summon":
+            self.summonUpdatePosition()
         if self.state == "transition":
             self.transitionUpdatePosition()
 
@@ -136,9 +154,9 @@ class HildaBerg(Image):
         if self.file == lastImg:
             return True
         
-    def backToNormal(self, lastImg):
+    def backToNormal(self, lastImg, state):
         if self.file == lastImg:
-            self.state = "normal"
+            self.state = state
 
     def animate(self, indice):
         self.animeClassList[indice].animate()
@@ -147,22 +165,33 @@ class HildaBerg(Image):
     def animateCase(self):# Mudar para switch case
         if self.state == "intro":
             self.animate(0)
-            self.backToNormal(self.introAnime.lastImg)
+            self.backToNormal(self.introAnime.lastImg, "normal")
 
         elif self.state == "normal":
             self.animate(1)
 
         elif self.state == "laugh":
             self.animate(2)
-            self.backToNormal(self.laughAnime.lastImg)
-
+            self.backToNormal(self.laughAnime.lastImg, "normal")
     
         elif self.state == "tornado":
             self.animate(3)
-            self.backToNormal(self.tornadoAnime.lastImg)
+            self.backToNormal(self.tornadoAnime.lastImg, "normal")
+
+        elif self.state == "dashIntro":
+            self.animate(4)
+            self.backToNormal(self.dashIntroAnime.lastImg, "dash")
+
+        elif self.state == "dash":
+            self.animate(5)
+            self.backToNormal(self.dashAnime.lastImg, "summon")
+        
+        elif self.state == "summon":
+            self.animate(6)
+            self.backToNormal(self.summonAnime.lastImg, "normal")
         
         elif self.state == "transition":
-            self.animate(4)
+            self.animate(7)
             if self.isAnimeFinish(self.transitionAnime.lastImg):
                 self._hide()
                 HildaBergMoon(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
@@ -180,11 +209,18 @@ class HildaBerg(Image):
                 Tornado(self.x, self.y)
                 self.state = "tornado" 
             
+    def dash(self):
+        if keyboard.is_key_just_down('d'):
+            if self.state == "normal":
+                #Tornado(self.x, self.y)
+                self.state = "dashIntro" 
+        
 
     def update(self):
         self.count +=1
         self.risada()
         self.tornado()
+        self.dash()
         self.animateCase()
         self.updatePosition()
         if self.count == 300: # Isso vai ser definido de acordo com a vida
