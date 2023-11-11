@@ -16,11 +16,11 @@ for i in range(1, 39):
     hildaTornado.append(f"../../Img/HildaNormal/HildaTornado/blimp_tornado_{i:04d}.png")
 
 hildaDash = []
-for i in range(18, 25):
+for i in range(19, 25):
     hildaDash.append(f"../../Img/HildaNormal/Dash/blimp_dash_{i:04d}.png")
 
 hildaDashIntro = []
-for i in range(1, 18):
+for i in range(1, 19):
     hildaDashIntro.append(f"../../Img/HildaNormal/Dash/blimp_dash_{i:04d}.png")
 
 hildaSummon = []

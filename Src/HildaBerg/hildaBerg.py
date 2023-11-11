@@ -12,8 +12,8 @@ QTD_IMGS_STATE_LAUGH = 19
 QTD_IMGS_STATE_INTRO = 43
 QTD_IMGS_STATE_TRANSITION = 48
 QTD_IMGS_STATE_TORNADO = 38
-QTD_IMGS_STATE_DASH_INTRO = 17
-QTD_IMGS_STATE_DASH = 7
+QTD_IMGS_STATE_DASH_INTRO = 18
+QTD_IMGS_STATE_DASH = 6
 QTD_IMGS_STATE_SUMMON = 21
 
 QTD_IMGS_STATE_HA = 46
@@ -98,6 +98,30 @@ class Tornado(Image):
         self.animate()
         self.destruir()
 
+class DashSmoke(Image):
+    ANIME_DELAY = 2
+    def __init__(self, x, y):
+        self.file = dashSmoke[0]
+        self.dashSmokeAnime = Animate(QTD_IMGS_STATE_DASH_SMOKE, dashSmoke, DashSmoke.ANIME_DELAY)
+        self.x = x + 190
+        self.y = y + 13
+
+    def trajetoria(self):
+        self.x -= 60
+
+    def animate(self):
+        self.dashSmokeAnime.anima()
+
+    def destruir(self):
+        if self.file == self.dashSmokeAnime.lastImg:
+            self.destroy()
+
+    def update(self):
+        self.trajetoria()
+        self.animate()
+        self.destruir()
+
+
 
 #Hilda Build
 class HildaBerg(Image):
@@ -137,7 +161,7 @@ class HildaBerg(Image):
         self.x -= 60
     
     def summonUpdatePosition(self):
-        self.x += 20
+        self.x += 16
 
     def updatePosition(self):
         if self.state == "normal" or self.state == "laugh":
@@ -181,6 +205,8 @@ class HildaBerg(Image):
         elif self.state == "dashIntro":
             self.animate(4)
             self.backToNormal(self.dashIntroAnime.lastImg, "dash")
+            if self.file == self.dashIntroAnime.lastImg:
+                DashSmoke(self.x, self.y)
 
         elif self.state == "dash":
             self.animate(5)
@@ -212,7 +238,6 @@ class HildaBerg(Image):
     def dash(self):
         if keyboard.is_key_just_down('d'):
             if self.state == "normal":
-                #Tornado(self.x, self.y)
                 self.state = "dashIntro" 
         
 
