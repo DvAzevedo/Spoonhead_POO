@@ -6,6 +6,8 @@ from Classes.cenario import *
 from Classes.cenario import criar_cenario
 from HildaBerg.hildaBerg import *
 from Classes.chalice import Chalice
+from Classes.cena import cena
+
 pygame.init()
 
 criar_cenario()
@@ -18,5 +20,9 @@ pygame.mixer.music.play(-1)
 
 vi = HildaBerg(700, 220)
 s = Chalice(vi)
+
+cena.heroi = s
+
+
 
 run(globals())

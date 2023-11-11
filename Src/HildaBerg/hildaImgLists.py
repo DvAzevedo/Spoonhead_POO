@@ -11,6 +11,10 @@ hildaLaugh = []
 for i in range(1, 20):
     hildaLaugh.append(f"../../Img/HildaNormal/Laugh/blimp_shoot_{i:04d}.png")
 
+hildaTornado = []
+for i in range(1, 39):
+    hildaTornado.append(f"../../Img/HildaNormal/HildaTornado/blimp_tornado_{i:04d}.png")
+
 hildaTransition = ["../../Img/HildaNormal/TransitionToMoon/StartT/blimp_morph_0001.png"]
 for i in range(2, 8):
     hildaTransition.append(f"../../Img/HildaNormal/TransitionToMoon/BoilA/blimp_morph_{i:04d}.png")
@@ -26,6 +30,14 @@ for i in range(14, 49):
 hildaMoon = []
 for i in range(1, 17):
     hildaMoon.append(f"../../Img/HildaMoon/Idle/blimp_moon_idle_{i:04d}.png")
+
+hildaTornadoAtkIntro = []
+for i in range(1, 13):
+    hildaTornadoAtkIntro.append(f"../../Img/HildaNormal/Attaks/TornadoIntro/tornado_intro_{i:04d}.png")
+
+hildaTornadoAtk = []
+for i in range(1, 17):
+    hildaTornadoAtk.append(f"../../Img/HildaNormal/Attaks/Tornado/tornado_attack_{i:04d}.png")
 
 imgListHa = [] # imagens: 2, 3, 4, 6 estão bugadas
 for i in range(1, 2):

@@ -1,9 +1,10 @@
+from tupy import *
 class Cena:
-    def __init__(self, viloes, heroi, viloes_attaks, heroi_attaks):
-        self.viloes = viloes
-        self.heroi = heroi
-        self.viloes_attaks = viloes_attaks
-        self.heroi_attaks = heroi_attaks
+    def __init__(self):#, viloes, heroi, viloes_attaks, heroi_attaks):
+        self.viloes = None #viloes
+        self.heroi = None #heroi
+        self.viloes_attaks = None #viloes_attaks
+        self.heroi_attaks = None #heroi_attaks
 
     def getVidaHeroi(self):
         return self.heroi.life
@@ -20,4 +21,5 @@ class Cena:
         pass
     def vilaoSofreDano(self, vilao):
         vilao.life -= 1
-    
+
+cena = Cena()
