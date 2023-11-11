@@ -11,7 +11,7 @@ pygame.init()
 criar_cenario()
 
 #comentar/descomentar as duas linhas abaixo para retirar/colocar a música
-musica_de_fundo = pygame.mixer.music.load('music/this-time.mp3')
+musica_de_fundo = pygame.mixer.music.load('../music/this-time.mp3')
 pygame.mixer.music.play(-1)
 
 pedra = Arma(1, PedraSeno)
