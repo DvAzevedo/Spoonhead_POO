@@ -3,6 +3,7 @@ from Classes.armas import Arma, PedraSeno, FogoReto, PedraY3, PedraY5
 import pygame
 from pygame.locals import * 
 from Classes.cenario import *
+from Classes.cenario import criar_cenario
 from HildaBerg.hildaBerg import *
 from Classes.chalice import Chalice
 pygame.init()
@@ -13,8 +14,8 @@ f = Ceu(1500, 280, 4)
 c = Chao(860, 500, 10)
 ch = Chao(-180, 500, 10)
 
-#musica_de_fundo = pygame.mixer.music.load('../music/music.mpeg')
-#pygame.mixer.music.play(-1)
+musica_de_fundo = pygame.mixer.music.load('../music/musica1.mp3')
+pygame.mixer.music.play(-1)
 
 pedra = Arma(1, PedraSeno)
 fogo = Arma(1, FogoReto)
