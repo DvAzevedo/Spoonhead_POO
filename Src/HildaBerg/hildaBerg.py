@@ -110,7 +110,7 @@ class DashSmoke(Image):
         self.x -= 60
 
     def animate(self):
-        self.dashSmokeAnime.anima()
+        self.file = self.dashSmokeAnime.anima()
 
     def destruir(self):
         if self.file == self.dashSmokeAnime.lastImg:
@@ -118,6 +118,25 @@ class DashSmoke(Image):
 
     def update(self):
         self.trajetoria()
+        self.animate()
+        self.destruir()
+
+class DashExplo(Image):
+    ANIME_DELAY = 2
+    def __init__(self, x, y):
+        self.file = dashExplo[0]
+        self.dashExploAnime = Animate(QTD_IMGS_STATE_DASH_EXPLO, dashExplo, DashExplo.ANIME_DELAY)
+        self.x = x 
+        self.y = y 
+
+    def animate(self):
+        self.file = self.dashExploAnime.anima()
+
+    def destruir(self):
+        if self.file == self.dashExploAnime.lastImg:
+            self.destroy()
+
+    def update(self):
         self.animate()
         self.destruir()
 
@@ -214,7 +233,10 @@ class HildaBerg(Image):
         
         elif self.state == "summon":
             self.animate(6)
+            if self.file == self.summonAnime.lastImg:
+                DashExplo(self.x, self.y)
             self.backToNormal(self.summonAnime.lastImg, "normal")
+            
         
         elif self.state == "transition":
             self.animate(7)
