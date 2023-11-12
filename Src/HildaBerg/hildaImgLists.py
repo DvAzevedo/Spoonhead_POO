@@ -82,8 +82,8 @@ for i in range(1, 17):
 
 touroAtkImgList = []
 for i in range(1, 22):
-    touroAtkImgList.append(f"../../Img/Constelacoes/Touro/taurus_idle_{i:04d}.png")
+    touroAtkImgList.append(f"../../Img/Constelacoes/TouroAtk/taurus_attack_{i:04d}.png")
 
 touroStarImgList = []
 for i in range(1, 4):
-    touroStarImgList.append(f"../../Img/Constelacoes/Touro/taurus_idle_{i:04d}.png")
+    touroStarImgList.append(f"../../Img/Constelacoes/TouroStar/taurus_stars_{i:04d}.png")
