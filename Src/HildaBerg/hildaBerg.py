@@ -248,7 +248,7 @@ class HildaBerg(Image):
         
         elif self.state == "summon":
             self.animate(6)
-            if self.file == self.summonAnime.lastImg or self.file == hildaSummon[17] or self.file == hildaSummon[15]:
+            if self.file == hildaSummon[18] or self.file == hildaSummon[14]:
                 DashExplo(self.x, self.y)
             self.backToNormal(self.summonAnime.lastImg, "touro")
         
@@ -289,7 +289,7 @@ class HildaBerg(Image):
         self.dash()
         self.animateCase()
         self.updatePosition()
-        if self.count == 300: # Isso vai ser definido de acordo com a vida
+        if self.count == 800: # Isso vai ser definido de acordo com a vida
             self.state = "transition"
             
         
