@@ -22,6 +22,7 @@ class Chalice(Personagem):
         self.animate_trasition_special = Animate(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self.animacao_special = Animate(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self.animacao_atual = self.animate_normal
+        self.count = 0
 
     def update(self) -> None:
         self.change_direction()
@@ -55,11 +56,13 @@ class Chalice(Personagem):
             if(self.animacao_atual == self.animate_normal):
                 self.atacando = not self.atacando
         if self.atacando == True:
-            if self.atk_c % 2 == 0:
-                b = Bullet(self.x,self.y + 8, self.vilao)
-            else:
-                b = Bullet(self.x,self.y - 8, self.vilao)
-            self.atk_c += 1
+            if self.count % 3 == 0:
+                if self.atk_c % 2 == 0:
+                    b = Bullet(self.x,self.y + 8, self.vilao)
+                else:
+                    b = Bullet(self.x,self.y - 8, self.vilao)
+                self.atk_c += 1
+            self.count+=1
 
     def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
