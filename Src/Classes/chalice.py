@@ -5,7 +5,7 @@ from Classes.Hitbox import HitBox
 from Classes.chaliceImgLists import *
 
 class Chalice(Personagem):
-    QTD_IMAGENS_NORMAL = 3
+    QTD_IMAGENS_NORMAL = 6
     QTD_IMAGENS_TRANSICAO_ESPECIAL = 18
     QTD_IMAGENS_ESPECIAL = 4
 

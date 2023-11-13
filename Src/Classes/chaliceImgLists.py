@@ -1,6 +1,6 @@
 
 ChaliceNormal = []
-for i in range(1, 5):
+for i in range(1, 7):
     ChaliceNormal.append(f"../Img/Chalice/Test{i:0d}.png")
     
 ChaliceTransitionToSpecial = []
