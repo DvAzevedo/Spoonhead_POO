@@ -18,6 +18,8 @@ QTD_IMGS_STATE_DASH = 6
 QTD_IMGS_STATE_SUMMON = 21
 
 QTD_IMGS_STATE_TOURO = 16
+QTD_IMGS_STAR_TOURO = 3
+QTD_IMGS_ATK_TOURO = 21
 
 QTD_IMGS_ATK_HA = 46
 QTD_IMGS_ATK_TORNADO = 16
@@ -154,11 +156,33 @@ class DashExplo(Image):
         self.animate()
         self.destruir()
 
+class TouroStar(Image):
+    ANIME_DELAY = 1
+    def __init__(self, x, y):
+        self.file = touroStarImgList[0]
+        self.touroStarAnime = Animate(QTD_IMGS_STAR_TOURO, touroStarImgList, TouroStar.ANIME_DELAY)
+        self.x = x - 30
+        self.y = y
+        self.count = 0
+
+    def animate(self):
+        self.file = self.touroStarAnime.anima()
+
+    def destruir(self):
+        if self.count == 16:
+            self.destroy()
+
+    def update(self):
+        self.animate()
+        self.count += 1
+        self.destruir()
+
+
 
 
 #Hilda Build
 class HildaBerg(Image):
-    STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "touro","transition"]
+    STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "touro", "touroAtk", "transition"]
     ANIME_DELAY = 2
     def __init__(self, x, y):
         self.file = hildaIntro[0]
@@ -171,14 +195,16 @@ class HildaBerg(Image):
         self.transitionAnime = Animate(QTD_IMGS_STATE_TRANSITION, hildaTransition, HildaBerg.ANIME_DELAY)
         self.tornadoAnime = Animate(QTD_IMGS_STATE_TORNADO, hildaTornado, 1)
         self.dashIntroAnime = Animate(QTD_IMGS_STATE_DASH_INTRO, hildaDashIntro, 1)
-        self.dashAnime = Animate(QTD_IMGS_STATE_DASH, hildaDash, 2)
-        self.summonAnime = Animate(QTD_IMGS_STATE_SUMMON, hildaSummon, 2)
+        self.dashAnime = Animate(QTD_IMGS_STATE_DASH, hildaDash, HildaBerg.ANIME_DELAY)
+        self.summonAnime = Animate(QTD_IMGS_STATE_SUMMON, hildaSummon, HildaBerg.ANIME_DELAY)
         self.touroAnime = Animate(QTD_IMGS_STATE_TOURO, touroImgList, HildaBerg.ANIME_DELAY)
-        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.dashIntroAnime, self.dashAnime, self.summonAnime, self.touroAnime, self.transitionAnime]
+        self.touroAtkAnime = Animate(QTD_IMGS_ATK_TOURO, touroAtkImgList, 1)
+        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.dashIntroAnime, self.dashAnime, self.summonAnime, self.touroAnime,  self.touroAtkAnime, self.transitionAnime]
         self.delayCount = Contador(HildaBerg.ANIME_DELAY)
         self.count = 0
         self.life = 1000
         self.i = 1.5
+        self.estrelaFoiInstaciada = False
 
     # Positions Update    
     def normalUpdatePosition(self):
@@ -194,6 +220,13 @@ class HildaBerg(Image):
     def dashUpdatePosition(self):
         self.x -= 60
     
+    def touroAtkUpdatePosition(self):
+        result = any(self.file == touroAtkImgList[i] for i in range(10, 21))
+        if result:
+            self.x -= 50
+        else:
+            self.x +=3
+    
     def summonUpdatePosition(self):
         self.x += 16
 
@@ -202,6 +235,8 @@ class HildaBerg(Image):
             self.normalUpdatePosition()   
         if self.state == "dash":
             self.dashUpdatePosition()
+        if self.state == "touroAtk":
+            self.touroAtkUpdatePosition()
         if self.state == "summon":
             self.summonUpdatePosition()
         if self.state == "transition":
@@ -244,21 +279,31 @@ class HildaBerg(Image):
 
         elif self.state == "dash":
             self.animate(5)
+            if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
+                TouroStar(self.x, self.y)
+                self.estrelaFoiInstaciada = True
             self.backToNormal(self.dashAnime.lastImg, "summon")
         
         elif self.state == "summon":
             self.animate(6)
-            if self.file == hildaSummon[18] or self.file == hildaSummon[14]:
+            if self.file == hildaSummon[19] or self.file == hildaSummon[16]:
                 DashExplo(self.x, self.y)
             self.backToNormal(self.summonAnime.lastImg, "touro")
         
         elif self.state == "touro":
             self.animate(7)
-            self.backToNormal(self.summonAnime.lastImg, "normal")
+            #self.backToNormal(self.touroAnime.lastImg, "normal")
             
+        elif self.state == "touroAtk":
+            self.animate(8)
+            if self.file == self.touroAtkAnime.lastImg: # Gambiarra para touro chegar pra trás
+                self.x += 30
+                self.estrelaFoiInstaciada = False
+            if self.estrelaFoiInstaciada == False:
+                self.backToNormal(self.touroAtkAnime.lastImg, "touro")
         
         elif self.state == "transition":
-            self.animate(8)
+            self.animate(9)
             if self.isAnimeFinish(self.transitionAnime.lastImg):
                 self._hide()
                 HildaBergMoon(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
@@ -281,12 +326,20 @@ class HildaBerg(Image):
         if keyboard.is_key_just_down('d'):
             if self.state == "normal":
                 self.state = "dashIntro" 
-        
-    def update(self):
-        self.count +=1
+
+    def touroAtk(self):
+        if keyboard.is_key_just_down('c'):
+            if self.state == "touro":
+                self.state = "touroAtk" 
+    def attaks(self):
         self.risada()
         self.tornado()
         self.dash()
+        self.touroAtk()
+
+    def update(self):
+        self.count +=1
+        self.attaks()
         self.animateCase()
         self.updatePosition()
         if self.count == 800: # Isso vai ser definido de acordo com a vida
