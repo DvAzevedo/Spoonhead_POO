@@ -127,6 +127,7 @@ class Bullet(Image):
         self.vilao = vilao
         self.animate_normal = Animate(Bullet.QTD_IMAGENS_BULLET, BulletDict[self.animation_index], 1)  
         self.animacao_atual = self.animate_normal
+        self.colisao_com_vilao = False
 
     def update(self) -> None:
         self.file = self.animacao_atual.anima()
@@ -137,7 +138,9 @@ class Bullet(Image):
         if self.x > 840 or (self.y < 0 or self.y > 800):
             self.destroy()
         if self._collides_with(self.vilao):
-            self.destroy()
+            # self.destroy()
+            self.colisao_com_vilao = True
+            self._hide()
         self.x += self.v
         self.y -= self.vy
 
@@ -168,7 +171,9 @@ class Mini_Bomb(Image):
         if self.x > 840 or (self.y < 0 or self.y > 800):
             self.destroy()
         if self._collides_with(self.vilao):
-            self.destroy()
+            # self.destroy()
+            self.colisao_com_vilao = True
+            self._hide()
         self.x += 0.7*self.v
         self.vy -= 2
         self.y -= self.vy
