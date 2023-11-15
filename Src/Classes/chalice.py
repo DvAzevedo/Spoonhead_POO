@@ -182,10 +182,10 @@ class Mini_Bomb(Image):
             self.destroy()
         if self._collides_with(self.vilao):
             # self.destroy()
-            self.colisao_com_vilao = True
-            self._hide()
             if self.colisao_com_vilao is False:
                 self.causa_dano(5)
+            self.colisao_com_vilao = True
+            self._hide()
         self.x += 0.7*self.v
         self.vy -= 2
         self.y -= self.vy
