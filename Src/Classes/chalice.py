@@ -3,6 +3,8 @@ from Classes.personagem import Personagem
 from Classes.animacao import Contador, Animate
 from Classes.Hitbox import HitBox
 from Classes.chaliceImgLists import *
+from Classes.bars_indicators import *
+
 import math
 import random
 
@@ -41,7 +43,8 @@ class Chalice(Personagem):
         if(self.animacao_atual == self.animacao_special and self._collides_with(self.vilao)):
             Explosao(self.x, self.y)
             self.animacao_atual = self.animate_normal
-        
+              
+
     def change_direction(self) -> None:
         if self.animacao_atual == self.animate_normal or self.animacao_atual == self.animacao_special:
             if keyboard.is_key_down('Left') and self.x >= 20:
@@ -139,10 +142,16 @@ class Bullet(Image):
             self.destroy()
         if self._collides_with(self.vilao):
             # self.destroy()
+            if self.colisao_com_vilao is False:
+                self.causa_dano(2)
             self.colisao_com_vilao = True
             self._hide()
         self.x += self.v
         self.y -= self.vy
+
+    def causa_dano(self,dano:int):
+        if self.vilao.life > 0:
+            self.vilao.life -= dano
 
 class Mini_Bomb(Image):
     QTD_IMAGENS_MINI_BOMB = 8
@@ -161,6 +170,7 @@ class Mini_Bomb(Image):
         # self.animation_string = f"BulletMove_type{self.type_animation}"
         self.animate_normal = Animate(Mini_Bomb.QTD_IMAGENS_MINI_BOMB, MiniBombMove, 2)  
         self.animacao_atual = self.animate_normal
+        self.colisao_com_vilao = False
 
     def update(self) -> None:
         self.file = self.animacao_atual.anima()
@@ -174,10 +184,15 @@ class Mini_Bomb(Image):
             # self.destroy()
             self.colisao_com_vilao = True
             self._hide()
+            if self.colisao_com_vilao is False:
+                self.causa_dano(5)
         self.x += 0.7*self.v
         self.vy -= 2
         self.y -= self.vy
 
+    def causa_dano(self,dano:int):
+        if self.vilao.life > 0:
+            self.vilao.life -= dano
  
 class Explosao(Image):
     QTD_IMAGENS_EXPLOSAO = 27

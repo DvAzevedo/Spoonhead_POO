@@ -4,6 +4,7 @@ from Classes.animacao import Contador, Animate
 from HildaBerg.hildaImgLists import *
 from HildaBerg.trajetorias import *
 from Classes.cena import cena
+from Classes.bars_indicators import *
 
 Y_POSITION_ORIGIN = 240
 X_POSITION_ORIGIN = 700
@@ -205,12 +206,17 @@ class HildaBerg(Image):
         self.life = 1000
         self.i = 1.5
         self.estrelaFoiInstaciada = False
+        # DEFINICAO DA VIDA DE HILDA E IMAGEM
+        self.life = 1000
+        self.test_life_bar = Life_vilao(self,self.life,self.x,self.y)
 
     # Positions Update    
     def normalUpdatePosition(self):
         self.i += 0.1
         self.x = ((100 * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN) 
         self.y = ((-100 * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN)
+        self.test_life_bar._x = self.x + self.test_life_bar.x0
+        self.test_life_bar._y = self.y + self.test_life_bar.y0
     
     def transitionUpdatePosition(self):
         if self.transitionAnime.getImgCount() > 37 and self.transitionAnime.getImgCount() < QTD_IMGS_STATE_TRANSITION:
@@ -337,13 +343,22 @@ class HildaBerg(Image):
         self.dash()
         self.touroAtk()
 
+    def atualiza_label_life(self):
+        if self.life != self.test_life_bar.life:
+            self.test_life_bar.label.text = str(self.life)
+            self.test_life_bar._rectangle._width = self.test_life_bar.label._width
+            self.test_life_bar._rectangle._height = self.test_life_bar.label._height
+
     def update(self):
         self.count +=1
         self.attaks()
         self.animateCase()
         self.updatePosition()
+        self.atualiza_label_life()
         if self.count == 800: # Isso vai ser definido de acordo com a vida
             self.state = "transition"
+        if keyboard.is_key_just_down('l'):
+            new_life_bar = Life_vilao(self,self.life,self.x,self.y)
             
         
 
