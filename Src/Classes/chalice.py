@@ -31,6 +31,7 @@ class Chalice(Personagem):
         self.contador_aux = Contador(2)
         self.attack_mode = 0
         self.especial_mode = False
+        self.life = Chalice_Life_bar(life)
 
     def update(self) -> None:
         self.change_direction()
@@ -43,7 +44,8 @@ class Chalice(Personagem):
         if(self.animacao_atual == self.animacao_special and self._collides_with(self.vilao)):
             Explosao(self.x, self.y)
             self.animacao_atual = self.animate_normal
-              
+        if keyboard.is_key_just_down('k'):
+                self.life.decrease_hp()
 
     def change_direction(self) -> None:
         if self.animacao_atual == self.animate_normal or self.animacao_atual == self.animacao_special:
