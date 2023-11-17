@@ -1,40 +1,40 @@
-from tupy import BaseImage
-
-class Contador:
-    def __init__(self, maximo):
-        self._maximo = maximo
-        self._contador = 0
-
-    def incrementa(self):
-        self._contador += 1
-        if self._contador == self._maximo:
-            self._contador = 0
-    
-    def esta_zerado(self):
-        return self._contador == 0
-    
-    def zera_contador(self):
-        self._contador = 0
-
-class Animate:
-    def __init__(self, qtd_imgs, imgs, delay):
+from Contador import Contador
+class Animacao:
+    def __init__(self, qtd_imgs, imgs, delay) -> None:
         self._delayCount = Contador(delay)
         self._imgsCount = Contador(qtd_imgs)
-        self.file = imgs[0]
         self.imgs = imgs
+        self.file = imgs[0]
         self.lastImg = imgs[qtd_imgs-1]
         self.isLastImg = False
+        pass
 
-    def getImgCount(self):
-        return self._imgsCount._contador
+    @property
+    def delayCount(self) -> Contador:
+        return self._delayCount
     
-    def animate(self):
-        self._delayCount.incrementa()
-        if(self._delayCount.esta_zerado()):
+    @delayCount.setter
+    def delayCount(self, delayCount) -> None:
+        self._delayCount = delayCount
+        pass
+    
+    @property
+    def imgsCount(self) -> Contador:
+        return self._imgsCount
+    
+    @imgsCount.setter
+    def imgsCount(self, imgsCount) -> None:
+        self._imgsCount = imgsCount
+        pass
+    
+    def animate(self) -> None:
+        self.delayCount.incrementa()
+        if self.delayCount.esta_zerado():
             if self.file == self.lastImg:
                 self.isLastImg = True
-            self.file = self.imgs[self._imgsCount._contador]
-            self._imgsCount.incrementa()
+            self.file = self.imgs[self.imgsCount.contador]
+            self.imgsCount.incrementa()
+        pass
             
     def anima(self):
         self.animate()
