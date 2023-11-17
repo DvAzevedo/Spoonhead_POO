@@ -35,6 +35,8 @@ class Chalice(Personagem):
         self.attack_mode = 0
         self.especial_mode = False
         self.life = Chalice_Life_bar(life)
+        self.last_attack_object = []
+        self.changed = False
 
     def update(self) -> None:
         self.change_attack_mode()
@@ -48,6 +50,7 @@ class Chalice(Personagem):
             self.animacao_atual = self.animate_normal
         if keyboard.is_key_just_down('k'):
                 self.life.decrease_hp()
+        self.corrige_attack_em_relacao_posicao()
 
     def change_direction(self) -> None:
         if self.animacao_atual == self.animate_normal or self.animacao_atual == self.animacao_special:
@@ -95,9 +98,11 @@ class Chalice(Personagem):
         # if self.contador_aux.esta_zerado():
         if self.contador_test.esta_zerado():
             if self.contador_simple_shoot._contador < 2:
-                b1 = Bullet(self.x,self.y+10 , self.vilao, 0,2,0,50)
+                b1 = Bullet(self.x,self.y, self.vilao, 0,2,0,50,10)
+                self.last_attack_object.insert(0,b1)  
             else:
-                b1 = Bullet(self.x,self.y-15 , self.vilao, 0,2,0,50)
+                b1 = Bullet(self.x,self.y, self.vilao, 0,2,0,50,-15)
+                self.last_attack_object.insert(0,b1)  
             self.contador_simple_shoot.incrementa()
         self.contador_test.incrementa()
         # self.contador_aux.incrementa()
@@ -120,6 +125,17 @@ class Chalice(Personagem):
             self.contador_aux.incrementa()
         self.contador_bomb.incrementa()
 
+    def corrige_attack_em_relacao_posicao(self):
+        if len(self.last_attack_object) >0:
+            if self.last_attack_object[0].changed is False:
+                if self.x != (self.last_attack_object[0].x + self.last_attack_object[0].desloc_x):
+                    self.last_attack_object[0].x = self.x
+                    self.last_attack_object[0].changed = True
+                if self.y != ((self.last_attack_object[0].y + 10) or (self.last_attack_object[0].y - 15)):
+                    self.last_attack_object[0].y = (self.y + self.last_attack_object[0].desloc_y)
+                    self.last_attack_object[0].changed = True
+                self.last_attack_object.clear()
+
 
     def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
@@ -135,9 +151,11 @@ class Chalice(Personagem):
 class Bullet(Image):
     QTD_IMAGENS_BULLET = 4
 
-    def __init__(self,x,y, vilao,angulo, type_animation_number=0,deslocamento_ini=0,vel_set= 35):
-        self.x = x + deslocamento_ini
-        self.y = y
+    def __init__(self,x,y, vilao,angulo, type_animation_number=0,desloc_x=0,vel_set= 35,desloc_y=0):
+        self.desloc_x = desloc_x
+        self.desloc_y = desloc_y
+        self.x = x + desloc_x
+        self.y = y + desloc_y
         self.v = vel_set
         self.animation_index= type_animation_number
         self.angle2 = angulo
@@ -147,6 +165,7 @@ class Bullet(Image):
         self.animate_normal = Animate(Bullet.QTD_IMAGENS_BULLET, BulletDict[self.animation_index], 1)  
         self.animacao_atual = self.animate_normal
         self.colisao_com_vilao = False
+        self.changed = False
 
     def update(self) -> None:
         self.file = self.animacao_atual.anima()
