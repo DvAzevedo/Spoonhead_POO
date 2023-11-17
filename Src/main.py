@@ -1,16 +1,15 @@
 from tupy import*
-from Classes.armas import Arma, PedraSeno, FogoReto, PedraY3, PedraY5
 import pygame
-from pygame.locals import * 
+from pygame.locals import *
+from Classes.armas import Arma, PedraSeno, FogoReto, PedraY3, PedraY5 
 from Classes.cenario import *
-from Classes.cenario import criar_cenario
-from HildaBerg.hildaBerg import *
 from Classes.chalice import Chalice
 from Classes.cena import cena
+from HildaBerg.hildaBerg import *
 
 pygame.init()
 
-criar_cenario()
+Cenario.criar_cenario()
 
 #comentar/descomentar as duas linhas abaixo para retirar/colocar a música
 musica_de_fundo = pygame.mixer.music.load('music/this-time.mp3')
