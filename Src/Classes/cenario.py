@@ -38,7 +38,7 @@ class Cenario(Image):
         pass
     
     @property
-    def file(self) -> int:
+    def file(self) -> str:
         return self._file
     
     @file.setter
@@ -96,11 +96,11 @@ class Cenario(Image):
         pass
     
     def update(self) -> None:
-        if (self.x - self.velocidade) < self.reinicia:
-            self.x = self.pidse
+        if (self.posX - self.velocidade) < self.reinicia:
+            self.posX = self.pidse
             pass
         else:
-            self.x -= self.velocidade
+            self.posX -= self.velocidade
             pass
 
 # Cada "pedaço" de cenário representa um objeto onde todos os cenários possuem a parte da esquerda e a parte da direita".
