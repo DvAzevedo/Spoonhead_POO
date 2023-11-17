@@ -15,7 +15,7 @@ class Chalice(Personagem):
 
     def __init__(self, vilao, life = 3, x=240, y=240):
         super().__init__(x, y, life)
-        self.k = 30
+        self.k = 20
         self.atk_c = 0
         self.is_atk_possible = True
         self.c = 0
@@ -28,16 +28,18 @@ class Chalice(Personagem):
         self.animacao_atual = self.animate_normal
         self.contador_tiro = Contador(7)
         self.contador_bomb = Contador(4)
+        self.contador_test = Contador(3)
         self.contador_aux = Contador(2)
+        self.contador_simple_shoot = Contador (4)
+        self.aux_alternate = False
         self.attack_mode = 0
         self.especial_mode = False
         self.life = Chalice_Life_bar(life)
 
     def update(self) -> None:
-        self.change_direction()
         self.change_attack_mode()
         self.common_attack_bullet()
-        self.flee()
+        self.change_direction()
         self.file = self.animacao_atual.anima()
         if(self.file == self.animate_trasition_special.lastImg):
             self.animacao_atual = self.animacao_special
@@ -66,9 +68,13 @@ class Chalice(Personagem):
         self.hitbox.atualiza_posicao(self.x, self.y)
     
     def change_attack_mode(self):
-        if keyboard.is_key_down('z'):
+        if keyboard.is_key_just_down('z'):
+            if not self.contador_aux.esta_zerado():
+                self.contador_aux.zera_contador()
             if self.attack_mode == 0:
                 self.attack_mode = 1
+            elif self.attack_mode == 1:
+                self.attack_mode = 2
             else:
                 self.attack_mode = 0
 
@@ -77,34 +83,42 @@ class Chalice(Personagem):
             if(self.animacao_atual == self.animate_normal):
                 self.atacando = not self.atacando
         if self.atacando == True:
-            if self.contador_tiro.esta_zerado():
-                if self.attack_mode == 0:
-                    self.triple_shoot_attack()
-            if self.contador_bomb.esta_zerado():
-                if self.attack_mode == 1:
-                    self.contador_aux.incrementa()
-                    self.mini_bomb_attack()
-            self.contador_tiro.incrementa()
-            self.contador_bomb.incrementa()
-    
+            if self.attack_mode == 0:
+                self.simple_shoot()
+            if self.attack_mode == 1:
+                self.triple_shoot_attack()
+            if self.attack_mode == 2:
+                self.mini_bomb_attack()
+                self.contador_aux.zera_contador()
+
+    def simple_shoot(self):
+        # if self.contador_aux.esta_zerado():
+        if self.contador_test.esta_zerado():
+            if self.contador_simple_shoot._contador < 2:
+                b1 = Bullet(self.x,self.y+10 , self.vilao, 0,2,0,50)
+            else:
+                b1 = Bullet(self.x,self.y-15 , self.vilao, 0,2,0,50)
+            self.contador_simple_shoot.incrementa()
+        self.contador_test.incrementa()
+        # self.contador_aux.incrementa()
+
     def triple_shoot_attack(self):
-        # if self.atk_c % 2 == 0:
-                    #     b = Bullet(self.x,self.y + 20, self.vilao)
-                    # else:
-                    #     b = Bullet(self.x,self.y - 4, self.vilao)
-                    # self.atk_c += 1       
-        # angulo de dispersao dos projeteis -> a_disp
-        a_disp = 8
-        b1 = Bullet(self.x,self.y , self.vilao,0,random.randrange(0,2,1),20)
-        b2 = Bullet(self.x,self.y , self.vilao,a_disp,random.randrange(0,2,1))
-        b3 = Bullet(self.x,self.y , self.vilao,(-1)*a_disp,random.randrange(0,2,1))
+        if self.contador_tiro.esta_zerado():
+            a_disp = 8
+            # b1 = Bullet(self.x,self.y , self.vilao,0,random.randrange(0,2,1),20)
+            b1 = Bullet(self.x,self.y , self.vilao,0,2,20)
+            b2 = Bullet(self.x,self.y , self.vilao,a_disp,0)
+            b3 = Bullet(self.x,self.y , self.vilao,(-1)*a_disp,1)
+        self.contador_tiro.incrementa()
 
     def mini_bomb_attack(self):
-        if self.contador_aux._contador % 2 == 0:
-            
-            bomb1 = Mini_Bomb(self.x,self.y, self.vilao, random.randrange(-20,1,5),"A",random.randrange(25,35,5))
-        else:
-            bomb2 = Mini_Bomb(self.x,self.y,self.vilao, random.randrange(0,21,5),"A",random.randrange(25,45,5))
+        if self.contador_bomb.esta_zerado():
+            if self.contador_aux._contador % 2 == 0:
+                bomb1 = Mini_Bomb(self.x,self.y, self.vilao, random.randrange(-20,1,5),"A",random.randrange(25,35,5))
+            else:
+                bomb2 = Mini_Bomb(self.x,self.y,self.vilao, random.randrange(0,21,5),"A",random.randrange(25,45,5))
+            self.contador_aux.incrementa()
+        self.contador_bomb.incrementa()
 
 
     def flee(self) -> None:
@@ -121,13 +135,13 @@ class Chalice(Personagem):
 class Bullet(Image):
     QTD_IMAGENS_BULLET = 4
 
-    def __init__(self,x,y, vilao,angulo, type_animation_number=0,deslocamento_ini=0):
+    def __init__(self,x,y, vilao,angulo, type_animation_number=0,deslocamento_ini=0,vel_set= 35):
         self.x = x + deslocamento_ini
         self.y = y
-        self.v = 35
+        self.v = vel_set
         self.animation_index= type_animation_number
-        self.angle = angulo
-        self.angle_rad = self.angle*(math.pi)/180
+        self.angle2 = angulo
+        self.angle_rad = self.angle2*(math.pi)/180
         self.vy = self.v * (math.sin(self.angle_rad))
         self.vilao = vilao
         self.animate_normal = Animate(Bullet.QTD_IMAGENS_BULLET, BulletDict[self.animation_index], 1)  

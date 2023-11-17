@@ -36,3 +36,11 @@ BulletDict = [BulletMove_typeA,BulletMove_typeB,BulletMove_typeC]
 MiniBombMove = []
 for i in range(1,9):
     MiniBombMove.append(f"../Img/Chalice/Mini_Bomb/TypeA/weapon_minibomb_bullets_a_{i:04d}.png")
+
+HP_bar = []
+for i in range(1,5):
+    HP_bar.append(f"../Img/Chalice/Life/hp_{i:02d}.png")
+    if i == 1:
+        alter = ["critical","lowlevel","dead"]
+        for word in alter:
+            HP_bar.append(f"../Img/Chalice/Life/hp_{i:02d}_{word}.png")
