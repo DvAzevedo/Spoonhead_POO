@@ -3,7 +3,7 @@ import math
 from Classes.Animacao import Animacao
 from Classes.Contador import Contador
 from Classes.Personagem import Personagem
-from Classes.HildaBerg.HildaBergMoon import HildaBergMoon
+from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
 from Classes.cena import cena
@@ -315,7 +315,7 @@ class HildaBerg(Personagem):
             self.animate(9)
             if self.isAnimeFinish(self.transitionAnime.ultimaImg):
                 self._hide()
-                HildaBergMoon(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
+                HildaBergLua(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
                 self.destroy()
 
     # Attaks

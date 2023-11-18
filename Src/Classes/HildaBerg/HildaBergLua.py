@@ -5,7 +5,7 @@ from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
 from Classes.bars_indicators import *
 
-class HildaBergMoon(Personagem):
+class HildaBergLua(Personagem):
     QTD_IMG_STATE_NORMAL = 16
     ANIME_DELAY = 2
     STATE = 0
@@ -14,7 +14,7 @@ class HildaBergMoon(Personagem):
         self.imgs = hildaMoon
         self.x = x
         self.y = y
-        self.normalAnime = Animacao(HildaBergMoon.QTD_IMG_STATE_NORMAL, hildaMoon, HildaBergMoon.ANIME_DELAY)
+        self.normalAnime = Animacao(HildaBergLua.QTD_IMG_STATE_NORMAL, hildaMoon, HildaBergLua.ANIME_DELAY)
         self.count = 0
 
     def update(self):

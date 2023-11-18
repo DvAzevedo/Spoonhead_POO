@@ -21,15 +21,15 @@ class Contador:
     def contador(self, contador) -> None:
         self._contador = contador
         pass
-
+    
+    def esta_zerado(self) -> bool:
+        return self.contador == 0
+    
     def incrementa(self) -> None:
         self.contador += 1
         if self.contador == self.maximo:
             self.zera_contador()
         pass
-    
-    def esta_zerado(self) -> bool:
-        return self.contador == 0
     
     def zera_contador(self) -> None:
         self.contador = 0

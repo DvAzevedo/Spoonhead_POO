@@ -12,8 +12,8 @@ class Chalice(Personagem):
     QTD_IMAGENS_TRANSICAO_ESPECIAL = 18
     QTD_IMAGENS_ESPECIAL = 4
 
-    def __init__(self, vilao, life = 3, x=240, y=240):
-        super().__init__(x, y, life)
+    def __init__(self, vilao, vida = 3, x=240, y=240):
+        super().__init__(x, y, vida)
         self.k = 20
         self.atk_c = 0
         self.is_atk_possible = True
@@ -21,7 +21,7 @@ class Chalice(Personagem):
         self.vilao = vilao
         self.animate_normal = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self.atacando = False
-        self.hitbox = HitBox(x, y, 30, 30)
+        #self.hitbox = HitBox(x, y, 30, 30)
         self.animate_trasition_special = Animacao(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self.animacao_special = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self.animacao_atual = self.animate_normal
@@ -33,7 +33,7 @@ class Chalice(Personagem):
         self.aux_alternate = False
         self.attack_mode = 0
         self.especial_mode = False
-        self.life = Chalice_Life_bar(life)
+        self.life = Chalice_Life_bar(vida)
         self.last_attack_object = []
         self.changed = False
 
@@ -179,11 +179,11 @@ class Bullet(Image):
             if self.colisao_com_vilao is False:
                 self.causa_dano(2)
             self.colisao_com_vilao = True
-            self._hide()
+            self.destroy()
         self.x += self.v
         self.y -= self.vy
 
-    def causa_dano(self,dano:int):
+    def causa_dano(self, dano: int):
         if self.vilao.life > 0:
             self.vilao.life -= dano
 
@@ -219,7 +219,7 @@ class Mini_Bomb(Image):
             if self.colisao_com_vilao is False:
                 self.causa_dano(5)
             self.colisao_com_vilao = True
-            self._hide()
+            self.destroy()
         self.x += 0.7*self.v
         self.vy -= 2
         self.y -= self.vy

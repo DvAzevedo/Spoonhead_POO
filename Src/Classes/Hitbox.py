@@ -1,9 +1,30 @@
 from tupy import Rectangle
 
 class HitBox(Rectangle):
-    def __init__(self, x: int, y: int, widht: int, height: int):
-        self.Hit_box = Rectangle(x, y, height, widht, outline = 'black')
+    def __init__(self, x: int, y: int, altura: int, largura: int) -> None:
+        super().__init__(x, y, altura, largura, outline = 'black')
+        pass
+        #self.Hit_box = Rectangle(x, y, altura, largura, outline = 'black')
         #para deixar a hitbox transparente faça outline = '', inicialmente as linhas são boas para ter uma noção do tamanho
-    def atualiza_posicao(self, x, y):
-        self.Hit_box.x = x
-        self.Hit_box.y = y
+    
+    @property
+    def posX(self) -> int:
+        return self._x
+    
+    @posX.setter
+    def posX(self, x) -> None:
+        self._x = x
+    
+    @property
+    def posY(self) -> int:
+        return self._y
+    
+    @posY.setter
+    def posY(self, y) -> None:
+        self._y = y
+    
+    def atualiza_posicao(self, x, y) -> None:
+        self.posX = x
+        self.posY = y
+        pass
+    

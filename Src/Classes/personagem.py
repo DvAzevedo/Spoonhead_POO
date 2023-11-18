@@ -1,11 +1,13 @@
 from tupy import *
 from abc import ABC, abstractmethod
+from Classes.Hitbox import HitBox
 
 class Personagem(Image, ABC):
     def __init__(self, x: int, y: int, vida: int) -> None:
         self._x = x
         self._y = y
         self._vida = vida
+        self._hitbox = HitBox(x, y, 30, 30)
         pass
     
     @property
@@ -35,6 +37,20 @@ class Personagem(Image, ABC):
         self._vida = vida
         pass
     
-    def decrementa_vida(self, dano) -> None:
+    @property
+    def hitbox(self) -> HitBox:
+        return self._hitbox
+    
+    @hitbox.setter
+    def hitbox(self, hitbox: HitBox) -> None:
+        self._hitbox = hitbox
+        pass
+    
+    def decrementa_vida(self) -> None:
+        self.vida -= 1
+        pass
+    
+    def sofre_dano(self, dano) -> None:
         self.vida -= dano
         pass
+    
