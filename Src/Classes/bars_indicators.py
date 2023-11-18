@@ -1,6 +1,6 @@
 from tupy import *
-from Classes.animacao import Contador
-from Classes.chaliceImgLists import*
+from Classes.Contador import Contador
+from Classes.Chalice.listasDeImagens import *
 
 class Life_vilao(BaseGroup):
 

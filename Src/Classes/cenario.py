@@ -1,13 +1,13 @@
 from tupy import *
 
 class Cenario(Image):
-    def __init__(self, x, y, v, f, r = -630, p = 1900) -> None:
+    def __init__(self, x: int, y: int, v: int, f: str, r = -630, p = 1900) -> None:
         self._x = x 
         self._y = y 
         self._velocidade = v
         self._file = f
         self._reinicia = r
-        self._pidse = p      #pidse = posição inicial "x" do segundo elemento
+        self._pidse = p         #pidse = posição inicial "x" do segundo elemento
         pass
     
     @property

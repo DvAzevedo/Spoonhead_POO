@@ -1,12 +1,11 @@
 from tupy import Image, keyboard
-from Classes.personagem import Personagem
-from Classes.animacao import Contador, Animate
-from Classes.Hitbox import HitBox
-from Classes.chaliceImgLists import *
+import math, random
+from Classes.Animacao import Animacao
 from Classes.bars_indicators import *
-
-import math
-import random
+from Classes.Chalice.listasDeImagens import *
+from Classes.Contador import Contador
+from Classes.Hitbox import HitBox
+from Classes.Personagem import Personagem
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -20,17 +19,17 @@ class Chalice(Personagem):
         self.is_atk_possible = True
         self.c = 0
         self.vilao = vilao
-        self.animate_normal = Animate(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
+        self.animate_normal = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self.atacando = False
         self.hitbox = HitBox(x, y, 30, 30)
-        self.animate_trasition_special = Animate(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
-        self.animacao_special = Animate(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
+        self.animate_trasition_special = Animacao(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
+        self.animacao_special = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self.animacao_atual = self.animate_normal
         self.contador_tiro = Contador(7)
         self.contador_bomb = Contador(4)
         self.contador_test = Contador(3)
         self.contador_aux = Contador(2)
-        self.contador_simple_shoot = Contador (4)
+        self.contador_simple_shoot = Contador(4)
         self.aux_alternate = False
         self.attack_mode = 0
         self.especial_mode = False
@@ -43,9 +42,9 @@ class Chalice(Personagem):
         self.common_attack_bullet()
         self.change_direction()
         self.file = self.animacao_atual.anima()
-        if(self.file == self.animate_trasition_special.lastImg):
+        if self.file == self.animate_trasition_special.ultimaImg:
             self.animacao_atual = self.animacao_special
-        if(self.animacao_atual == self.animacao_special and self._collides_with(self.vilao)):
+        if self.animacao_atual == self.animacao_special and self._collides_with(self.vilao):
             Explosao(self.x, self.y)
             self.animacao_atual = self.animate_normal
         if keyboard.is_key_just_down('k'):
@@ -83,7 +82,7 @@ class Chalice(Personagem):
 
     def common_attack_bullet(self) -> None:
         if keyboard.is_key_just_down('space'):
-            if(self.animacao_atual == self.animate_normal):
+            if self.animacao_atual == self.animate_normal:
                 self.atacando = not self.atacando
         if self.atacando == True:
             if self.attack_mode == 0:
@@ -97,11 +96,11 @@ class Chalice(Personagem):
     def simple_shoot(self):
         # if self.contador_aux.esta_zerado():
         if self.contador_test.esta_zerado():
-            if self.contador_simple_shoot._contador < 2:
-                b1 = Bullet(self.x,self.y, self.vilao, 0,2,0,50,10)
+            if self.contador_simple_shoot.contador < 2:
+                b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, 10)
                 self.last_attack_object.insert(0,b1)  
             else:
-                b1 = Bullet(self.x,self.y, self.vilao, 0,2,0,50,-15)
+                b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, -15)
                 self.last_attack_object.insert(0,b1)  
             self.contador_simple_shoot.incrementa()
         self.contador_test.incrementa()
@@ -111,22 +110,22 @@ class Chalice(Personagem):
         if self.contador_tiro.esta_zerado():
             a_disp = 8
             # b1 = Bullet(self.x,self.y , self.vilao,0,random.randrange(0,2,1),20)
-            b1 = Bullet(self.x,self.y , self.vilao,0,2,20)
-            b2 = Bullet(self.x,self.y , self.vilao,a_disp,0)
-            b3 = Bullet(self.x,self.y , self.vilao,(-1)*a_disp,1)
+            b1 = Bullet(self.x, self.y , self.vilao, 0, 2, 20)
+            b2 = Bullet(self.x, self.y , self.vilao, a_disp, 0)
+            b3 = Bullet(self.x, self.y , self.vilao, (-1)*a_disp, 1)
         self.contador_tiro.incrementa()
 
     def mini_bomb_attack(self):
         if self.contador_bomb.esta_zerado():
-            if self.contador_aux._contador % 2 == 0:
-                bomb1 = Mini_Bomb(self.x,self.y, self.vilao, random.randrange(-20,1,5),"A",random.randrange(25,35,5))
+            if self.contador_aux.contador % 2 == 0:
+                bomb1 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(-20,1,5), "A", random.randrange(25,35,5))
             else:
-                bomb2 = Mini_Bomb(self.x,self.y,self.vilao, random.randrange(0,21,5),"A",random.randrange(25,45,5))
+                bomb2 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(0,21,5), "A", random.randrange(25,45,5))
             self.contador_aux.incrementa()
         self.contador_bomb.incrementa()
 
     def corrige_attack_em_relacao_posicao(self):
-        if len(self.last_attack_object) >0:
+        if len(self.last_attack_object) > 0:
             if self.last_attack_object[0].changed is False:
                 if self.x != (self.last_attack_object[0].x + self.last_attack_object[0].desloc_x):
                     self.last_attack_object[0].x = self.x
@@ -151,7 +150,7 @@ class Chalice(Personagem):
 class Bullet(Image):
     QTD_IMAGENS_BULLET = 4
 
-    def __init__(self,x,y, vilao,angulo, type_animation_number=0,desloc_x=0,vel_set= 35,desloc_y=0):
+    def __init__(self, x, y, vilao, angulo, type_animation_number=0, desloc_x=0, vel_set= 35, desloc_y=0):
         self.desloc_x = desloc_x
         self.desloc_y = desloc_y
         self.x = x + desloc_x
@@ -162,7 +161,7 @@ class Bullet(Image):
         self.angle_rad = self.angle2*(math.pi)/180
         self.vy = self.v * (math.sin(self.angle_rad))
         self.vilao = vilao
-        self.animate_normal = Animate(Bullet.QTD_IMAGENS_BULLET, BulletDict[self.animation_index], 1)  
+        self.animate_normal = Animacao(Bullet.QTD_IMAGENS_BULLET, BulletDict[self.animation_index], 1)  
         self.animacao_atual = self.animate_normal
         self.colisao_com_vilao = False
         self.changed = False
@@ -203,7 +202,7 @@ class Mini_Bomb(Image):
         self.vilao = vilao
         self.type_animation = type_animation
         # self.animation_string = f"BulletMove_type{self.type_animation}"
-        self.animate_normal = Animate(Mini_Bomb.QTD_IMAGENS_MINI_BOMB, MiniBombMove, 2)  
+        self.animate_normal = Animacao(Mini_Bomb.QTD_IMAGENS_MINI_BOMB, MiniBombMove, 2)  
         self.animacao_atual = self.animate_normal
         self.colisao_com_vilao = False
 
@@ -231,11 +230,11 @@ class Mini_Bomb(Image):
  
 class Explosao(Image):
     QTD_IMAGENS_EXPLOSAO = 27
-    def __init__(self,x,y):
+    def __init__(self, x,y):
         self.x = x
         self.y = y
-        self.animacao_explosion = Animate(Explosao.QTD_IMAGENS_EXPLOSAO, ChaliceExplosion, 1)
+        self.animacao_explosion = Animacao(Explosao.QTD_IMAGENS_EXPLOSAO, ChaliceExplosion, 1)
     def update(self):
         self.file = self.animacao_explosion.anima()
-        if self.animacao_explosion.isLastImg:
+        if self.animacao_explosion.fim:
             self.destroy()
