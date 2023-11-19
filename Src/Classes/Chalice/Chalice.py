@@ -1,8 +1,9 @@
 from tupy import keyboard
 from Classes.Animacao import *
 from Classes.bars_indicators import *
-from Classes.Chalice.Ataques.Tiro import Tiro
+from Classes.Chalice.Ataques.Explosao import Explosao
 from Classes.Chalice.Ataques.MiniBomba import MiniBomba
+from Classes.Chalice.Ataques.Tiro import Tiro
 from Classes.Chalice.listasDeImagens import *
 from Classes.Personagem import *
 
@@ -185,14 +186,18 @@ class Chalice(Personagem):
         if self.file == self.animacaoDeTransicao.ultimaImg:
             self.animacaoAtual = self.animacaoEspecial
         if self.animacaoAtual == self.animacaoEspecial and self._collides_with(self.oponente):
-            Explosao(self.x, self.y)
+            self._hide()
+            explosao = Explosao(self.posX, self.posY, self.oponente, 100)
+            explosao.causa_dano()
             self.animacaoAtual = self.animacao
+            self.posX -= 10
+            self._show()
         if keyboard.is_key_just_down('k'):
                 self.barraDeVida.decrease_hp()
         Tiro.corrige_origem(self.posX, self.posY)
         pass
     
-    '''
+'''
     def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
             self.y -= 20
@@ -202,14 +207,4 @@ class Chalice(Personagem):
 
     def especial_movement(self) -> None:
         self.x += self.especial_vel
-    '''
-class Explosao(Image):
-    QTD_IMAGENS_EXPLOSAO = 27
-    def __init__(self, x,y):
-        self.x = x
-        self.y = y
-        self.animacao_explosion = Animacao(Explosao.QTD_IMAGENS_EXPLOSAO, ChaliceExplosion, 1)
-    def update(self):
-        self.file = self.animacao_explosion.anima()
-        if self.animacao_explosion.fim:
-            self.destroy()
+'''
