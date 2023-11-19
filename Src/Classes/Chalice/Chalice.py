@@ -4,8 +4,8 @@ from Classes.Animacao import Animacao
 from Classes.bars_indicators import *
 from Classes.Chalice.listasDeImagens import *
 from Classes.Contador import Contador
-from Classes.Hitbox import HitBox
 from Classes.Personagem import Personagem
+from Classes.Chalice.Ataques.Tiro import Tiro
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -97,11 +97,13 @@ class Chalice(Personagem):
         # if self.contador_aux.esta_zerado():
         if self.contador_test.esta_zerado():
             if self.contador_simple_shoot.contador < 2:
-                b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, 10)
-                self.last_attack_object.insert(0,b1)  
+                #b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, 10)
+                b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 0, 10, 50)
+                self.last_attack_object.insert(0, b1)  
             else:
-                b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, -15)
-                self.last_attack_object.insert(0,b1)  
+                #b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, -15)
+                b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 0, -15, 50)
+                self.last_attack_object.insert(0, b1)  
             self.contador_simple_shoot.incrementa()
         self.contador_test.incrementa()
         # self.contador_aux.incrementa()
@@ -110,9 +112,14 @@ class Chalice(Personagem):
         if self.contador_tiro.esta_zerado():
             a_disp = 8
             # b1 = Bullet(self.x,self.y , self.vilao,0,random.randrange(0,2,1),20)
-            b1 = Bullet(self.x, self.y , self.vilao, 0, 2, 20)
-            b2 = Bullet(self.x, self.y , self.vilao, a_disp, 0)
-            b3 = Bullet(self.x, self.y , self.vilao, (-1)*a_disp, 1)
+            '''
+            b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 20)
+            b2 = Bullet(self.x, self.y, self.vilao, a_disp, 0)
+            b3 = Bullet(self.x, self.y, self.vilao, (-1)*a_disp, 1)
+            '''
+            b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 20)
+            b2 = Tiro(self.x, self.y, self.vilao, a_disp, 0)
+            b3 = Tiro(self.x, self.y, self.vilao, (-1)*a_disp, 1)
         self.contador_tiro.incrementa()
 
     def mini_bomb_attack(self):
@@ -124,6 +131,7 @@ class Chalice(Personagem):
             self.contador_aux.incrementa()
         self.contador_bomb.incrementa()
 
+    '''
     def corrige_attack_em_relacao_posicao(self):
         if len(self.last_attack_object) > 0:
             if self.last_attack_object[0].changed is False:
@@ -134,8 +142,19 @@ class Chalice(Personagem):
                     self.last_attack_object[0].y = (self.y + self.last_attack_object[0].desloc_y)
                     self.last_attack_object[0].changed = True
                 self.last_attack_object.clear()
+    '''
 
-
+    def corrige_attack_em_relacao_posicao(self):
+        if len(self.last_attack_object) > 0:
+            if self.last_attack_object[0].mudou is False:
+                if self.x != (self.last_attack_object[0].posX + self.last_attack_object[0].deslocamentoX):
+                    self.last_attack_object[0].posX = self.x
+                    self.last_attack_object[0].mudou = True
+                if self.y != ((self.last_attack_object[0].posY + 10) or (self.last_attack_object[0].posY - 15)):
+                    self.last_attack_object[0].posY = (self.y + self.last_attack_object[0].deslocamentoY)
+                    self.last_attack_object[0].mudou = True
+                self.last_attack_object.clear()
+    
     def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
             self.y -= 20
@@ -150,13 +169,13 @@ class Chalice(Personagem):
 class Bullet(Image):
     QTD_IMAGENS_BULLET = 4
 
-    def __init__(self, x, y, vilao, angulo, type_animation_number=0, desloc_x=0, vel_set= 35, desloc_y=0):
+    def __init__(self, x, y, vilao, angulo, type_animation_number=0, desloc_x=0, vel_set=35, desloc_y=0):
         self.desloc_x = desloc_x
         self.desloc_y = desloc_y
         self.x = x + desloc_x
         self.y = y + desloc_y
         self.v = vel_set
-        self.animation_index= type_animation_number
+        self.animation_index = type_animation_number
         self.angle2 = angulo
         self.angle_rad = self.angle2*(math.pi)/180
         self.vy = self.v * (math.sin(self.angle_rad))
@@ -190,7 +209,7 @@ class Bullet(Image):
 class Mini_Bomb(Image):
     QTD_IMAGENS_MINI_BOMB = 8
 
-    def __init__(self,x,y, vilao,angulo,type_animation: str,vel_ini_y = 25):
+    def __init__(self, x, y, vilao, angulo, type_animation: str, vel_ini_y = 25):
         self.x = x
         self.y = y
         # defina velocidade padrao = 25
