@@ -9,12 +9,12 @@ class Tiro(Ataque):
     TIROS_DISPARADOS = []
     
     def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, indiceDaAnimacao=0, deslocamentoX=0, deslocamentoY=0, velocidade=35) -> None:
-        super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 2)
         self._angulo = angulo*(math.pi)/180
         self._indiceDaAnimacao = indiceDaAnimacao
         self._deslocamentoX = deslocamentoX
         self._deslocamentoY = deslocamentoY
         self._velocidadeX = velocidade
+        super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 2)
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
         self.mudou = False
