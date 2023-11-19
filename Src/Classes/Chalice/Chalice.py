@@ -1,11 +1,11 @@
-from tupy import Image, keyboard
+from tupy import keyboard
 import math, random
-from Classes.Animacao import Animacao
+from Classes.Animacao import *
 from Classes.bars_indicators import *
-from Classes.Chalice.listasDeImagens import *
-from Classes.Contador import Contador
-from Classes.Personagem import Personagem
 from Classes.Chalice.Ataques.Tiro import Tiro
+from Classes.Chalice.Ataques.MiniBomba import MiniBomba
+from Classes.Chalice.listasDeImagens import *
+from Classes.Personagem import *
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -13,7 +13,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_ESPECIAL = 4
 
     def __init__(self, vilao, vida = 3, x=240, y=240):
-        super().__init__(x, y, vida)
+        super().__init__(x, y, vida, HitBox(x, y, 50, 25))
         self.k = 20
         self.atk_c = 0
         self.is_atk_possible = True
@@ -36,7 +36,7 @@ class Chalice(Personagem):
         self.life = Chalice_Life_bar(vida)
         self.last_attack_object = []
         self.changed = False
-
+    
     def update(self) -> None:
         self.change_attack_mode()
         self.common_attack_bullet()
@@ -98,11 +98,11 @@ class Chalice(Personagem):
         if self.contador_test.esta_zerado():
             if self.contador_simple_shoot.contador < 2:
                 #b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, 10)
-                b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 0, 10, 50)
+                b1 = Tiro(self.posX, self.posY, self.vilao, 0, 2, 0, 10, 50)
                 self.last_attack_object.insert(0, b1)  
             else:
                 #b1 = Bullet(self.x, self.y, self.vilao, 0, 2, 0, 50, -15)
-                b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 0, -15, 50)
+                b1 = Tiro(self.posX, self.posY, self.vilao, 0, 2, 0, -15, 50)
                 self.last_attack_object.insert(0, b1)  
             self.contador_simple_shoot.incrementa()
         self.contador_test.incrementa()
@@ -117,17 +117,19 @@ class Chalice(Personagem):
             b2 = Bullet(self.x, self.y, self.vilao, a_disp, 0)
             b3 = Bullet(self.x, self.y, self.vilao, (-1)*a_disp, 1)
             '''
-            b1 = Tiro(self.x, self.y, self.vilao, 0, 2, 20)
-            b2 = Tiro(self.x, self.y, self.vilao, a_disp, 0)
-            b3 = Tiro(self.x, self.y, self.vilao, (-1)*a_disp, 1)
+            b2 = Tiro(self.posX, self.posY, self.vilao, a_disp, 0)
+            b1 = Tiro(self.posX, self.posY, self.vilao, 0, 2, 20)
+            b3 = Tiro(self.posX, self.posY, self.vilao, (-1) * a_disp, 1)
         self.contador_tiro.incrementa()
 
     def mini_bomb_attack(self):
         if self.contador_bomb.esta_zerado():
             if self.contador_aux.contador % 2 == 0:
-                bomb1 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(-20,1,5), "A", random.randrange(25,35,5))
+                #bomb1 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(-20,1,5), "A", random.randrange(25,35,5))
+                bomb1 = MiniBomba(self.posX, self.posY, self.vilao, random.randrange(-20,1,5), "A", random.randrange(25,35,5))
             else:
-                bomb2 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(0,21,5), "A", random.randrange(25,45,5))
+                #bomb2 = Mini_Bomb(self.x, self.y, self.vilao, random.randrange(0,21,5), "A", random.randrange(25,45,5))
+                bomb2 = MiniBomba(self.posX, self.posY, self.vilao, random.randrange(0,21,5), "A", random.randrange(25,45,5))
             self.contador_aux.incrementa()
         self.contador_bomb.incrementa()
 
@@ -166,6 +168,7 @@ class Chalice(Personagem):
         self.x += self.especial_vel
     
         
+'''
 class Bullet(Image):
     QTD_IMAGENS_BULLET = 4
 
@@ -205,7 +208,7 @@ class Bullet(Image):
     def causa_dano(self, dano: int):
         if self.vilao.life > 0:
             self.vilao.life -= dano
-
+'''
 class Mini_Bomb(Image):
     QTD_IMAGENS_MINI_BOMB = 8
 
@@ -243,7 +246,7 @@ class Mini_Bomb(Image):
         self.vy -= 2
         self.y -= self.vy
 
-    def causa_dano(self,dano:int):
+    def causa_dano(self, dano: int):
         if self.vilao.life > 0:
             self.vilao.life -= dano
  

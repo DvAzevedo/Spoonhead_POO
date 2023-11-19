@@ -1,8 +1,6 @@
-from tupy import*
 import math
-from Classes.Animacao import Animacao
-from Classes.Contador import Contador
-from Classes.Personagem import Personagem
+from Classes.Animacao import *
+from Classes.Personagem import *
 from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
@@ -181,17 +179,13 @@ class TouroStar(Image):
         self.count += 1
         self.destruir()
 
-
-
-
 #Hilda Build
 class HildaBerg(Personagem):
     STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "touro", "touroAtk", "transition"]
     ANIME_DELAY = 2
     def __init__(self, x, y):
+        super().__init__(x, y, 1000, HitBox(x, y, 50, 50))
         self.file = hildaIntro[0]
-        self.x = x
-        self.y = y
         self.state = HildaBerg.STATE_LIST[0]
         self.introAnime = Animacao(QTD_IMGS_STATE_INTRO, hildaIntro, HildaBerg.ANIME_DELAY)
         self.normalAnime = Animacao(QTD_IMGS_STATE_NORMAL, hildaNormal, HildaBerg.ANIME_DELAY)
@@ -206,38 +200,37 @@ class HildaBerg(Personagem):
         self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.dashIntroAnime, self.dashAnime, self.summonAnime, self.touroAnime,  self.touroAtkAnime, self.transitionAnime]
         self.delayCount = Contador(HildaBerg.ANIME_DELAY)
         self.count = 0
-        self.life = 1000
+        #self.life = 1000
         self.i = 1.5
         self.estrelaFoiInstaciada = False
         # DEFINICAO DA VIDA DE HILDA E IMAGEM
-        self.life = 1000
-        self.test_life_bar = Life_vilao(self,self.life,self.x,self.y)
+        self.test_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
 
     # Positions Update    
     def normalUpdatePosition(self):
         self.i += 0.1
-        self.x = ((100 * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN) 
-        self.y = ((-100 * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN)
-        self.test_life_bar._x = self.x + self.test_life_bar.x0
-        self.test_life_bar._y = self.y + self.test_life_bar.y0
+        self.posX = ((100 * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN) 
+        self.posY = ((-100 * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN)
+        self.test_life_bar._x = self.posX + self.test_life_bar.x0
+        self.test_life_bar._y = self.posY + self.test_life_bar.y0
     
     def transitionUpdatePosition(self):
         if self.transitionAnime.imgsCont.contador > 37 and self.transitionAnime.imgsCont.contador < QTD_IMGS_STATE_TRANSITION:
-            self.x += (X_POSITION_ORIGIN - self.x) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
-            self.y += (Y_POSITION_ORIGIN - self.y) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
+            self.posX += (X_POSITION_ORIGIN - self.posX) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
+            self.posY += (Y_POSITION_ORIGIN - self.posY) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
     
     def dashUpdatePosition(self):
-        self.x -= 60
+        self.posX -= 60
     
     def touroAtkUpdatePosition(self):
         result = any(self.file == touroAtkImgList[i] for i in range(10, 21))
         if result:
-            self.x -= 50
+            self.posX -= 50
         else:
-            self.x +=3
+            self.posX += 3
     
     def summonUpdatePosition(self):
-        self.x += 16
+        self.posX += 16
 
     def updatePosition(self):
         if self.state == "normal" or self.state == "laugh" or self.state == "touro":
@@ -284,19 +277,19 @@ class HildaBerg(Personagem):
             self.animate(4)
             self.backToNormal(self.dashIntroAnime.ultimaImg, "dash")
             if self.file == self.dashIntroAnime.ultimaImg:
-                DashSmoke(self.x, self.y)
+                DashSmoke(self.posX, self.posY)
 
         elif self.state == "dash":
             self.animate(5)
             if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
-                TouroStar(self.x, self.y)
+                TouroStar(self.posX, self.posY)
                 self.estrelaFoiInstaciada = True
             self.backToNormal(self.dashAnime.ultimaImg, "summon")
         
         elif self.state == "summon":
             self.animate(6)
             if self.file == hildaSummon[19] or self.file == hildaSummon[16]:
-                DashExplo(self.x, self.y)
+                DashExplo(self.posX, self.posY)
             self.backToNormal(self.summonAnime.ultimaImg, "touro")
         
         elif self.state == "touro":
@@ -306,7 +299,7 @@ class HildaBerg(Personagem):
         elif self.state == "touroAtk":
             self.animate(8)
             if self.file == self.touroAtkAnime.ultimaImg: # Gambiarra para touro chegar pra trás
-                self.x += 30
+                self.posX += 30
                 self.estrelaFoiInstaciada = False
             if self.estrelaFoiInstaciada == False:
                 self.backToNormal(self.touroAtkAnime.ultimaImg, "touro")
@@ -322,13 +315,13 @@ class HildaBerg(Personagem):
     def risada(self):
         if keyboard.is_key_just_down('r'):
             if self.state == "normal":
-                Ha(self.x, self.y)
+                Ha(self.posX, self.posY)
                 self.state = "laugh" 
     
     def tornado(self):
         if keyboard.is_key_just_down('t'):
             if self.state == "normal":
-                Tornado(self.x, self.y)
+                Tornado(self.posX, self.posY)
                 self.state = "tornado" 
             
     def dash(self):
@@ -340,6 +333,7 @@ class HildaBerg(Personagem):
         if keyboard.is_key_just_down('c'):
             if self.state == "touro":
                 self.state = "touroAtk" 
+    
     def attaks(self):
         self.risada()
         self.tornado()
@@ -347,8 +341,8 @@ class HildaBerg(Personagem):
         self.touroAtk()
 
     def atualiza_label_life(self):
-        if self.life != self.test_life_bar.life:
-            self.test_life_bar.label.text = str(self.life)
+        if self.vida != self.test_life_bar.life:
+            self.test_life_bar.label.text = str(self.vida)
             self.test_life_bar._rectangle._width = self.test_life_bar.label._width
             self.test_life_bar._rectangle._height = self.test_life_bar.label._height
 
@@ -357,8 +351,9 @@ class HildaBerg(Personagem):
         self.attaks()
         self.animateCase()
         self.updatePosition()
+        self.hitbox.atualiza_posicao(self.posX, self.posY)
         self.atualiza_label_life()
         if self.count == 800: # Isso vai ser definido de acordo com a vida
             self.state = "transition"
         if keyboard.is_key_just_down('l'):
-            new_life_bar = Life_vilao(self,self.life,self.x,self.y)
+            new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)

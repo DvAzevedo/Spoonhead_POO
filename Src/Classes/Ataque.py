@@ -4,12 +4,11 @@ from Classes.Animacao import Animacao
 from Classes.Personagem import Personagem
 
 class Ataque(ABC, Image):
-    def __init__(self, x: int, y: int, imagens: list, animacao: Animacao, alvo: Personagem, dano: int) -> None:
+    def __init__(self, x: int, y: int, alvo: Personagem, animacao: Animacao, dano: int) -> None:
         self._x = x
         self._y = y
-        self._listaDeImagens = imagens
-        self._animacao = animacao
         self._alvo = alvo
+        self._animacao = animacao
         self._dano = dano
         pass
     
@@ -32,12 +31,12 @@ class Ataque(ABC, Image):
         pass
     
     @property
-    def listaDeImagens(self) -> list:
-        return self._listaDeImagens
+    def alvo(self) -> Personagem:
+        return self._alvo
     
-    @listaDeImagens.setter
-    def listaDeImagens(self, imagens: list) -> None:
-        self._listaDeImagens = imagens
+    @alvo.setter
+    def alvo(self, alvo: Personagem) -> None:
+        self._alvo = alvo
         pass
     
     @property
@@ -47,15 +46,6 @@ class Ataque(ABC, Image):
     @animacao.setter
     def animacao(self, animacao: Animacao) -> None:
         self._animacao = animacao
-        pass
-    
-    @property
-    def alvo(self) -> Personagem:
-        return self._alvo
-    
-    @alvo.setter
-    def alvo(self, alvo: Personagem) -> None:
-        self._alvo = alvo
         pass
     
     @property
@@ -77,5 +67,10 @@ class Ataque(ABC, Image):
     
     def colide_com_alvo(self, alvo: Personagem) -> bool:
         if self._collides_with(alvo.hitbox):
+            return True
+        return False
+    
+    def fora_da_tela(self) -> bool:
+        if self.posX < -20 or self.posX > 840 or self.posY < 0 or self.posY > 800:
             return True
         return False

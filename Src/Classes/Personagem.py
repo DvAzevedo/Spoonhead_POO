@@ -1,13 +1,14 @@
-from tupy import *
+from tupy import Image
 from abc import ABC, abstractmethod
 from Classes.Hitbox import HitBox
 
+
 class Personagem(Image, ABC):
-    def __init__(self, x: int, y: int, vida: int) -> None:
+    def __init__(self, x: int, y: int, vida: int, hitbox: HitBox) -> None:
         self._x = x
         self._y = y
         self._vida = vida
-        self._hitbox = HitBox(x, y, 30, 30)
+        self._hitbox = hitbox
         pass
     
     @property
