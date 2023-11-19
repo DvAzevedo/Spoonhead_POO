@@ -1,8 +1,6 @@
 import math
-from Classes.Animacao import Animacao
-from Classes.Ataque import Ataque
+from Classes.Ataque import *
 from Classes.Chalice.listasDeImagens import BulletDict
-from Classes.Personagem import Personagem
 
 class Tiro(Ataque):
     QTD_IMAGENS = 4
