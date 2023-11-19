@@ -137,7 +137,7 @@ class Bullet(Image):
         if self.x > 840 or (self.y < 0 or self.y > 800):
             self.destroy()
         if self._collides_with(self.vilao):
-            self.destroy()
+            self._hide()
         self.x += self.v
         self.y -= self.vy
 
