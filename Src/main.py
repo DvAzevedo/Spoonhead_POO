@@ -23,6 +23,9 @@ criar_cenario()
 s = Chalice()
 cena.heroi = s
 vi = HildaBerg(700, 220)
+#s = Chalice(vi)
+
+cena.heroi = s
 
 
 
