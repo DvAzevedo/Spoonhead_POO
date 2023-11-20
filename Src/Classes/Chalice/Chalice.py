@@ -13,7 +13,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_ESPECIAL = 4
 
     def __init__(self, oponente: Personagem, x=240, y=240, vida = 3):
-        super().__init__(x, y, vida, HitBox(x, y, 50, 25))
+        super().__init__(x, y, vida, HitBox(x - 54, y - 40, 108, 80))
         self._oponente = oponente
         self._animacao = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self._animacaoAtual = self.animacao
@@ -151,21 +151,21 @@ class Chalice(Personagem):
     
     def movimenta(self) -> None:
         if self.animacaoAtual == self.animacao or self.animacaoAtual == self.animacaoEspecial:
-            if keyboard.is_key_down('Left') and self.x >= 20:
-                self.x -= self.velocidade
-            if keyboard.is_key_down('Right') and self.x <= 780:
-                self.x += self.velocidade
-            if keyboard.is_key_down('Up') and self.y >= 20:
+            if keyboard.is_key_down('Left') and self.posX >= 20:
+                self.posX -= self.velocidade
+            if keyboard.is_key_down('Right') and self.posX <= 780:
+                self.posX += self.velocidade
+            if keyboard.is_key_down('Up') and self.posY >= 20:
                 if self.modoEspecial is False:
-                    self.y -= self.velocidade
-            if keyboard.is_key_down('Down') and self.y <= 480:
+                    self.posY -= self.velocidade
+            if keyboard.is_key_down('Down') and self.posY <= 480:
                 if self.modoEspecial is False:
-                    self.y += self.velocidade
+                    self.posY += self.velocidade
         if self.animacaoAtual == self.animacao:
             if keyboard.is_key_down('e'):
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
-        self.hitbox.atualiza_posicao(self.x, self.y)
+        self.hitbox.atualiza_posicao(self.posX - 54, self.posY - 40)
     
     def troca_modo_de_ataque(self):
         if keyboard.is_key_just_down('z'):
@@ -200,11 +200,11 @@ class Chalice(Personagem):
 '''
     def flee(self) -> None:
         if keyboard.is_key_just_down('q'):
-            self.y -= 20
+            self.posY -= 20
             
     def break_attack(self,status: bool):
         self.possibilidadeDeAtaque = status
 
     def especial_movement(self) -> None:
-        self.x += self.especial_vel
+        self.posX += self.especial_vel
 '''
