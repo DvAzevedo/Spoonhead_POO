@@ -2,7 +2,6 @@ from tupy import Image
 from abc import ABC, abstractmethod
 from Classes.Hitbox import HitBox
 
-
 class Personagem(Image, ABC):
     def __init__(self, x: int, y: int, vida: int, hitbox: HitBox) -> None:
         self._x = x
@@ -47,6 +46,14 @@ class Personagem(Image, ABC):
         self._hitbox = hitbox
         pass
     
+    @abstractmethod
+    def ataca(self):
+        pass
+    
+    @abstractmethod
+    def movimenta(self):
+        pass
+    
     def decrementa_vida(self) -> None:
         self.vida -= 1
         pass
@@ -54,4 +61,3 @@ class Personagem(Image, ABC):
     def sofre_dano(self, dano) -> None:
         self.vida -= dano
         pass
-    

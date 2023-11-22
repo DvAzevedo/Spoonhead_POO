@@ -1,7 +1,6 @@
-from tupy import Image
 from abc import ABC, abstractmethod
-from Classes.Animacao import Animacao
-from Classes.Personagem import Personagem
+from Classes.Animacao import *
+from Classes.Personagem import *
 
 class Ataque(ABC, Image):
     def __init__(self, x: int, y: int, alvo: Personagem, animacao: Animacao, dano: int) -> None:

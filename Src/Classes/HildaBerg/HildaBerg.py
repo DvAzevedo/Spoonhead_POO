@@ -232,7 +232,7 @@ class HildaBerg(Personagem):
     def summonUpdatePosition(self):
         self.posX += 16
 
-    def updatePosition(self):
+    def movimenta(self) -> None:
         if self.state == "normal" or self.state == "laugh" or self.state == "touro":
             self.normalUpdatePosition()   
         if self.state == "dash":
@@ -243,6 +243,7 @@ class HildaBerg(Personagem):
             self.summonUpdatePosition()
         if self.state == "transition":
             self.transitionUpdatePosition()
+        pass
 
     # Animations
     def isAnimeFinish(self, lastImg):
@@ -334,7 +335,7 @@ class HildaBerg(Personagem):
             if self.state == "touro":
                 self.state = "touroAtk" 
     
-    def attaks(self):
+    def ataca(self):
         self.risada()
         self.tornado()
         self.dash()
@@ -348,9 +349,9 @@ class HildaBerg(Personagem):
 
     def update(self):
         self.count +=1
-        self.attaks()
+        self.ataca()
         self.animateCase()
-        self.updatePosition()
+        self.movimenta()
         self.hitbox.atualiza_posicao(self.posX, self.posY)
         self.atualiza_label_life()
         if self.count == 800: # Isso vai ser definido de acordo com a vida

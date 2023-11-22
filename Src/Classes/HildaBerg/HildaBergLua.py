@@ -9,6 +9,7 @@ class HildaBergLua(Personagem):
     QTD_IMG_STATE_NORMAL = 16
     ANIME_DELAY = 2
     STATE = 0
+    
     def __init__(self, x, y):
         self.file = hildaMoon[0]
         self.imgs = hildaMoon
@@ -16,6 +17,12 @@ class HildaBergLua(Personagem):
         self.y = y
         self.normalAnime = Animacao(HildaBergLua.QTD_IMG_STATE_NORMAL, hildaMoon, HildaBergLua.ANIME_DELAY)
         self.count = 0
+
+    def ataca(self):
+        return super().ataca()
+
+    def movimenta(self):
+        return super().movimenta()
 
     def update(self):
         self.normalAnime.animar()
