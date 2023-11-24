@@ -1,12 +1,14 @@
 from Classes.Contador import Contador
 
 class Animacao:
-    def __init__(self, qtd_imgs: int, imgs: list, atraso: int) -> None:
+    def __init__(self, qtd_imgs: int, imgs: list, atraso: int, backTo: bool = False, state_backTo: str = None) -> None:
         self._atrasoCont = Contador(atraso)
         self._imgsCont = Contador(qtd_imgs)
         self._listaImagens = imgs
         self._imagem = imgs[0]
         self._ultimaImg = imgs[qtd_imgs-1]
+        self.backTo = backTo
+        self.state_backTo = state_backTo
         self._fim = False
         pass
 
@@ -64,6 +66,11 @@ class Animacao:
         self._fim = valor
         pass
     
+    def backToState(self) -> str:
+        if self.backTo:
+            if self.imagem == self.ultimaImg:
+                return self.state_backTo
+
     def animar(self) -> None:
         self.atrasoCont.incrementa()
         if self.atrasoCont.esta_zerado():

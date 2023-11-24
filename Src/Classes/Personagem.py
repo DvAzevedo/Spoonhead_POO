@@ -8,6 +8,7 @@ class Personagem(Image, ABC):
         self._y = y
         self._vida = vida
         self._hitbox = hitbox
+        self.imune = False
         pass
     
     @property
@@ -59,5 +60,6 @@ class Personagem(Image, ABC):
         pass
     
     def sofre_dano(self, dano) -> None:
-        self.vida -= dano
+        if self.imune == False:
+            self.vida -= dano
         pass
