@@ -1,4 +1,5 @@
 hildaIntro = []
+hildaIntroFinal = []
 hildaTornado = []
 hildaDash = []
 hildaDashIntro = []
@@ -17,6 +18,9 @@ hildaLaugh = []
 
 for i in range(1, 44):
     hildaIntro.append(f"../../Img/HildaNormal/Intro/blimp_intro_{i:04d}.png")
+
+for i in range(34, 44):
+    hildaIntroFinal.append(f"../../Img/HildaNormal/Intro/blimp_intro_{i:04d}.png")
 
 for i in range(1, 22):
     hildaNormal.append(f"../../Img/HildaNormal/Idle/blimp_idle_{i:04d}.png")
