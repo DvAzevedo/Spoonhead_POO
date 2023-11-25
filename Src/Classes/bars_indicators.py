@@ -42,10 +42,13 @@ class Chalice_Life_bar(Image):
         self.alternate = False
 
     def decrease_hp(self) -> None:
-        if self.hp > 1:
+        if self.hp > 0:
             self.hp -= 1
-            self.file = f"../Img/Chalice/Life/hp_0{self.hp}.png"
-    
+            if self.hp > 0:
+                self.file = f"../Img/Chalice/Life/hp_0{self.hp}.png"
+            else:
+                self.file = f"../Img/Chalice/Life/hp_01_dead.png"
+                
     def update(self) -> None:
         if self.hp == 1:
             self.contador_critical.incrementa()

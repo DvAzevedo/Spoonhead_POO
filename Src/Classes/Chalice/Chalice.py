@@ -197,6 +197,10 @@ class Chalice(Personagem):
             else:
                 self.modoDeAtaque = 0
     
+    def reduz_vida(self):
+        self.barraDeVida.decrease_hp()
+        self.vida = self.barraDeVida.hp
+    
     def update(self) -> None:
         self.troca_modo_de_ataque()
         self.ataca()
