@@ -52,3 +52,7 @@ for i in range(1, 5):
 CollideSmoke = []
 for i in range(1, 9):
     CollideSmoke.append(f"../Img/CollideSmoke/smoke_{i:04d}.png")
+    
+ChaliceGhost = []
+for i in range(1, 25):
+    ChaliceGhost.append(f"../Img/Chalice/Ghost/chalice_plane_ghost_{i:04d}.png")

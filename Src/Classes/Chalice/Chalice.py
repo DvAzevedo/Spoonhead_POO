@@ -12,6 +12,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
     QTD_IMAGENS_TRANSICAO_ESPECIAL = 18
     QTD_IMAGENS_ESPECIAL = 4
+    QTD_IMAGENS_GHOST = 24
 
     def __init__(self, oponente: Personagem, x=240, y=240, vida = 3):
         super().__init__(x, y, vida, HitBox(x - 54, y - 40, 108, 80))
@@ -20,6 +21,7 @@ class Chalice(Personagem):
         self._animacaoAtual = self.animacao
         self._animacaoDeTransicao = Animacao(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self._animacaoEspecial = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
+        self._animacaoGhost = Animacao(Chalice.QTD_IMAGENS_GHOST, ChaliceGhost, 2)
         self._barraDeVida = Chalice_Life_bar(vida)
         self._ShootSpark = ShootSpark(x+70, y+5)
         self._contadorAuxiliar = Contador(2)
@@ -75,6 +77,15 @@ class Chalice(Personagem):
         self._animacaoEspecial = animacao
         pass
     
+    @property
+    def animacaoGhost(self) -> Animacao:
+        return self._animacaoGhost
+    
+    @animacaoGhost.setter
+    def animacaoGhost(self, animacao: Animacao) -> None:
+        self._animacaoGhost = animacao
+        pass
+        
     @property
     def barraDeVida(self) -> Chalice_Life_bar:
         return self._barraDeVida
@@ -170,6 +181,9 @@ class Chalice(Personagem):
                 self.animacaoAtual = self.animacaoDeTransicao
         self.hitbox.atualiza_posicao(self.posX - 54, self.posY - 40)
     
+    def movimenta_ghost(self) -> None:
+        self.posY -= 8
+    
     def troca_modo_de_ataque(self):
         if keyboard.is_key_just_down('z'):
             if not self.contadorAuxiliar.esta_zerado():
@@ -197,7 +211,12 @@ class Chalice(Personagem):
             self._show()
         if keyboard.is_key_just_down('k'):
                 self.barraDeVida.decrease_hp()
+                if self.vida > 0:
+                    self.vida -= 1
         Tiro.corrige_origem(self.posX, self.posY)
+        if self.vida == 0:
+            self.animacaoAtual = self.animacaoGhost
+            self.movimenta_ghost()
         if self.atacando:
             self._ShootSpark._show()
         else:
