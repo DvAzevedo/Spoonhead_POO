@@ -44,3 +44,7 @@ for i in range(1,5):
         alter = ["critical","lowlevel","dead"]
         for word in alter:
             HP_bar.append(f"../Img/Chalice/Life/hp_{i:02d}_{word}.png")
+            
+Spark = []
+for i in range(1, 5):
+    Spark.append(f"../Img/Chalice/ShootSparks/plane_shoot_spark_{i:04d}.png")

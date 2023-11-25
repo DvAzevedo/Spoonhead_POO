@@ -6,6 +6,7 @@ from Classes.Chalice.Ataques.MiniBomba import MiniBomba
 from Classes.Chalice.Ataques.Tiro import Tiro
 from Classes.Chalice.listasDeImagens import *
 from Classes.Personagem import *
+from Classes.Chalice.ShootSpark import *
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -20,6 +21,7 @@ class Chalice(Personagem):
         self._animacaoDeTransicao = Animacao(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self._animacaoEspecial = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self._barraDeVida = Chalice_Life_bar(vida)
+        self._ShootSpark = ShootSpark(x+70, y+5)
         self._contadorAuxiliar = Contador(2)
         self._contadorDeTiroSimples = Contador(4)
         self._atacando = False
@@ -140,6 +142,7 @@ class Chalice(Personagem):
         if keyboard.is_key_just_down('space'):
             if self.animacaoAtual == self.animacao:
                 self.atacando = not self.atacando
+            
         if self.atacando == True:
             if self.modoDeAtaque == 0:
                 Tiro.tiro_simples(self.contadorDeTiroSimples, self.posX, self.posY, self.oponente)
@@ -195,6 +198,12 @@ class Chalice(Personagem):
         if keyboard.is_key_just_down('k'):
                 self.barraDeVida.decrease_hp()
         Tiro.corrige_origem(self.posX, self.posY)
+        if self.atacando:
+            self._ShootSpark._show()
+        else:
+            self._ShootSpark._hide()
+        self._ShootSpark.x = self.posX + 70
+        self._ShootSpark.y = self.posY + 5
         pass
     
 '''
