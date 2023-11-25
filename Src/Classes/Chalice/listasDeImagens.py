@@ -48,3 +48,7 @@ for i in range(1,5):
 Spark = []
 for i in range(1, 5):
     Spark.append(f"../Img/Chalice/ShootSparks/plane_shoot_spark_{i:04d}.png")
+    
+CollideSmoke = []
+for i in range(1, 9):
+    CollideSmoke.append(f"../Img/CollideSmoke/smoke_{i:04d}.png")

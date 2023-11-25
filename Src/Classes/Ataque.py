@@ -1,13 +1,16 @@
 from abc import ABC, abstractmethod
 from Classes.Animacao import *
 from Classes.Personagem import *
+from Classes.Chalice.listasDeImagens import CollideSmoke
 
 class Ataque(ABC, Image):
+    QTD_IMAGENS_SMOKE = 8
     def __init__(self, x: int, y: int, alvo: Personagem, animacao: Animacao, dano: int) -> None:
         self._x = x
         self._y = y
         self._alvo = alvo
         self._animacao = animacao
+        self._animacaoSmoke = Animacao(Ataque.QTD_IMAGENS_SMOKE, CollideSmoke, 1)
         self._dano = dano
         pass
     

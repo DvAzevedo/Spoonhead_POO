@@ -89,7 +89,7 @@ class Tiro(Ataque):
             pass
         if self.colide_com_alvo(self.alvo):
             self.causa_dano()
-            self.destroy()
+            self.animacaoAtual = self._animacaoSmoke
             pass
         self.posX += self.velocidadeX
         self.posY -= self.velocidadeY
@@ -136,5 +136,8 @@ class Tiro(Ataque):
     
     def update(self) -> None:
         self.file = self.animacaoAtual.anima()
-        self.atualiza_coordenadas()
+        if self.animacaoAtual != self._animacaoSmoke:
+            self.atualiza_coordenadas()
+        if(self.file == self._animacaoSmoke.ultimaImg):
+                self.destroy()
         pass
