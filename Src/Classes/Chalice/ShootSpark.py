@@ -11,20 +11,20 @@ class ShootSpark(Image):
         self.animacao = Animacao(ShootSpark.QTD_IMAGENS, Spark, 2)
     
     @property
-    def x(self):
+    def posX(self) -> int:
         return self._x
     
-    @x.setter
-    def x(self, x1):
+    @posX.setter
+    def posX(self, x1: int) -> None:
         self._x = x1
         pass
     
     @property
-    def y(self):
+    def posY(self) -> int:
         return self._y
     
-    @y.setter
-    def y(self, y1):
+    @posY.setter
+    def posY(self, y1: int) -> None:
         self._y = y1
         pass
     

@@ -18,7 +18,7 @@ Qtd_de_imag_texto = 2
 delay_texto = 6
 
 class FundoDoMenu(Image):
-    def __init__(self):
+    def __init__(self) -> None:
         self._x = 450
         self._y = 250
         self._file = "../Img/Menus/title_screen_background.png"
@@ -29,7 +29,7 @@ class FundoDoMenu(Image):
             self._destroy()
 
 class PressioneTab(Image):
-    def __init__(self):
+    def __init__(self) -> None:
         self._x = 450
         self._y = 205
         self._file = "../Img/Menus/texto0001.png"
@@ -42,7 +42,7 @@ class PressioneTab(Image):
             self._destroy()
 
 class CupAndMug(Image):
-    def __init__(self):
+    def __init__(self) -> None:
         self._x = 450
         self._y = 360
         self._file = "../Img/Menus/CupheadAndMugman/cuphead_title_screen_0001.png"

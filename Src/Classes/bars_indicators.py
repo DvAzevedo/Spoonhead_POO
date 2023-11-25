@@ -1,10 +1,11 @@
 from tupy import *
 from Classes.Contador import Contador
 from Classes.Chalice.listasDeImagens import *
+from Classes.Personagem import Personagem
 
 class Life_vilao(BaseGroup):
 
-    def __init__(self,vilao,life,x=0,y=0):
+    def __init__(self, vilao: Personagem, life: int, x: int = 0, y: int = 0):
         self.x0 = -35
         self.y0 = 110
         self.vilao = vilao
@@ -31,7 +32,7 @@ class Life_vilao(BaseGroup):
 # run(globals())
 
 class Chalice_Life_bar(Image):
-    def __init__(self,life):
+    def __init__(self,life: int):
         self.hp_inicial = life
         self.hp = self.hp_inicial
         self.file = f"../Img/Chalice/Life/hp_0{life}.png"
@@ -40,12 +41,12 @@ class Chalice_Life_bar(Image):
         self.contador_critical = Contador(2)
         self.alternate = False
 
-    def decrease_hp(self):
+    def decrease_hp(self) -> None:
         if self.hp > 1:
             self.hp -= 1
             self.file = f"../Img/Chalice/Life/hp_0{self.hp}.png"
     
-    def update(self):
+    def update(self) -> None:
         if self.hp == 1:
             self.contador_critical.incrementa()
             if self.contador_critical._contador == 0:

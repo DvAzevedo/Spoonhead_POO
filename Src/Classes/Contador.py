@@ -1,5 +1,5 @@
 class Contador:
-    def __init__(self, maximo) -> None:
+    def __init__(self, maximo: int) -> None:
         self._maximo = maximo
         self._contador = 0
         pass
@@ -9,7 +9,7 @@ class Contador:
         return self._maximo
     
     @maximo.setter
-    def maximo(self, maximo) -> None:
+    def maximo(self, maximo: int) -> None:
         self._maximo = maximo
         pass
     
@@ -18,7 +18,7 @@ class Contador:
         return self._contador
     
     @contador.setter
-    def contador(self, contador) -> None:
+    def contador(self, contador: int) -> None:
         self._contador = contador
         pass
     

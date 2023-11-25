@@ -26,7 +26,7 @@ delay_ready = 1
 
 
 class Transicao(Image):
-    def __init__(self):
+    def __init__(self) -> None:
         self._x = 450
         self._y = 250
         self._file = "../Img/InicioDeJogo/Transitions/Transition0001.png"
@@ -46,7 +46,7 @@ class Transicao(Image):
             
 
 class Ready(Image):
-    def __init__(self):
+    def __init__(self) -> None:
         self._x = 450
         self._y = 250
         self._file = "../Img/InicioDeJogo/ReadyWALLOP!/FightText_GetReady_0001.png"

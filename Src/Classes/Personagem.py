@@ -15,7 +15,7 @@ class Personagem(Image, ABC):
         return self._x
     
     @posX.setter
-    def posX(self, x) -> None:
+    def posX(self, x: int) -> None:
         self._x = x
         pass
     
@@ -24,7 +24,7 @@ class Personagem(Image, ABC):
         return self._y
     
     @posY.setter
-    def posY(self, y) -> None:
+    def posY(self, y: int) -> None:
         self._y = y
         pass
     
@@ -33,7 +33,7 @@ class Personagem(Image, ABC):
         return self._vida
     
     @vida.setter
-    def vida(self, vida) -> None:
+    def vida(self, vida: int) -> None:
         self._vida = vida
         pass
     
@@ -47,17 +47,17 @@ class Personagem(Image, ABC):
         pass
     
     @abstractmethod
-    def ataca(self):
+    def ataca(self) -> None:
         pass
     
     @abstractmethod
-    def movimenta(self):
+    def movimenta(self) -> None:
         pass
     
     def decrementa_vida(self) -> None:
         self.vida -= 1
         pass
     
-    def sofre_dano(self, dano) -> None:
+    def sofre_dano(self, dano: int) -> None:
         self.vida -= dano
         pass

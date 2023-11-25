@@ -5,7 +5,7 @@ from Classes.Cenario import *
 from Classes.MenuInicial import *
 from Classes.InicioDeJogo import *
 from Classes.Chalice.Chalice import Chalice
-from Classes.cena import cena
+from Classes.cena import Cena
 from Classes.HildaBerg.HildaBerg import *
 
 ''' 
@@ -30,8 +30,7 @@ deixar um textinho no final do código.
 Cenario.criar_cenario()
 vilao = HildaBerg(700, 220)
 jogador = Chalice(vilao)
-cena.heroi = jogador
-
+cena = Cena(jogador, vilao)
 
 MensagemDeReady = Ready()
 TransicaoParaAGameplay = Transicao()

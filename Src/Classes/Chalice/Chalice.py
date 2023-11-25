@@ -7,6 +7,8 @@ from Classes.Chalice.Ataques.Tiro import Tiro
 from Classes.Chalice.listasDeImagens import *
 from Classes.Personagem import *
 from Classes.Chalice.ShootSpark import *
+from Classes.Hitbox import HitBox
+from Classes.Contador import Contador
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -14,7 +16,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_ESPECIAL = 4
     QTD_IMAGENS_GHOST = 24
 
-    def __init__(self, oponente: Personagem, x=240, y=240, vida = 3):
+    def __init__(self, oponente: Personagem, x: int = 240, y: int = 240, vida: int = 3):
         super().__init__(x, y, vida, HitBox(x - 54, y - 40, 108, 80))
         self._oponente = oponente
         self._animacao = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
@@ -184,7 +186,7 @@ class Chalice(Personagem):
     def movimenta_ghost(self) -> None:
         self.posY -= 8
     
-    def troca_modo_de_ataque(self):
+    def troca_modo_de_ataque(self) -> None:
         if keyboard.is_key_just_down('z'):
             if not self.contadorAuxiliar.esta_zerado():
                 self.contadorAuxiliar.zera_contador()
@@ -216,13 +218,14 @@ class Chalice(Personagem):
         Tiro.corrige_origem(self.posX, self.posY)
         if self.vida == 0:
             self.animacaoAtual = self.animacaoGhost
+            self.atacando = False
             self.movimenta_ghost()
         if self.atacando:
             self._ShootSpark._show()
         else:
             self._ShootSpark._hide()
-        self._ShootSpark.x = self.posX + 70
-        self._ShootSpark.y = self.posY + 5
+        self._ShootSpark.posX = self.posX + 70
+        self._ShootSpark.posY = self.posY + 5
         pass
     
 '''

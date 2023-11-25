@@ -4,7 +4,7 @@ from Classes.Personagem import *
 from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
-from Classes.cena import cena
+from Classes.cena import Cena
 from Classes.bars_indicators import *
 
 Y_POSITION_ORIGIN = 240

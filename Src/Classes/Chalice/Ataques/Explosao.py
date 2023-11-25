@@ -8,7 +8,7 @@ class Explosao(Ataque):
         super().__init__(x, y, alvo, Animacao(Explosao.QTD_IMAGENS_EXPLOSAO, ChaliceExplosion, 1), dano)
         pass
     
-    def atualiza_coordenadas(self):
+    def atualiza_coordenadas(self) -> None:
         return super().atualiza_coordenadas()
         
     def causa_dano(self) -> None:
