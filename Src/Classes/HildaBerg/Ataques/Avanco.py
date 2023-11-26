@@ -14,7 +14,7 @@ class Avanco(Ataque):
     def __init__(self, x: int, y: int, alvo: Personagem, ator: HildaBerg) -> None:
         super().__init__(x, y, alvo, Animacao(Avanco.QTD_IMGS_AVANCO, hildaDash, Avanco.ANIME_DELAY), 1)
         self._animacaoIntro = Animacao(Avanco.QTD_IMGS_INTRO, hildaDashIntro, 1)
-        self._ator = hilda
+        self._ator = ator
         self._estrela = False
         pass
     
