@@ -22,4 +22,4 @@ class HildaBergLua(Personagem):
     def update(self):
         self.normalAnime.animar()
         self.file = self.normalAnime.imagem
-        self.hitbox.atualiza_posicao(self.posX - 85, self.posY - 60)
+        self.hitbox.atualiza_posicao(self.posX - 80, self.posY - 55)
