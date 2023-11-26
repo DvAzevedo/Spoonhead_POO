@@ -1,12 +1,9 @@
-from tupy import*
 import pygame
+from tupy import*
 from pygame.locals import *
 from Classes.Cenario import *
 from Classes.MenuInicial import *
 from Classes.InicioDeJogo import *
-from Classes.Chalice.Chalice import Chalice
-from Classes.cena import Cena
-from Classes.HildaBerg.HildaBerg import *
 
 ''' 
 MENSAGEM IMPORTANTE QUANTO A MÚSICA
@@ -28,16 +25,12 @@ quanto no menu ocorrem travamentos, afinal são periodos carregados de muitas im
 deixar um textinho no final do código.
 '''
 Cenario.criar_cenario()
-vilao = HildaBerg()
-jogador = Chalice(vilao)
-vilao.alvo = jogador
-cena = Cena(jogador, vilao)
 
-MensagemDeReady = Ready()
-TransicaoParaAGameplay = Transicao()    
-FundoDoMenuInicial = FundoDoMenu()
-CupAndMugMenu = CupAndMug()
-MensagemDoMenu = PressioneTab()
+mensagemDeReady = Ready()
+transicaoParaAGameplay = Transicao()    
+fundoDoMenuInicial = FundoDoMenu()
+cupAndMugMenu = CupAndMug()
+mensagemDoMenu = PressioneTab()
  
 run(globals())
 
