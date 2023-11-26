@@ -7,10 +7,10 @@ from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
 class Avanco(Ataque):
     QTD_IMGS_INTRO = 18
     QTD_IMGS_AVANCO = 6
-    ANIME_DELAY = 2
+    ATRASO_DE_ANIMACAO = 2
     
     def __init__(self, x: int, y: int, alvo: Personagem, ator: Personagem) -> None:
-        super().__init__(x, y, alvo, Animacao(Avanco.QTD_IMGS_AVANCO, hildaDash, Avanco.ANIME_DELAY), 1)
+        super().__init__(x, y, alvo, Animacao(Avanco.QTD_IMGS_AVANCO, hildaDash, Avanco.ATRASO_DE_ANIMACAO), 1)
         self._animacaoIntro = Animacao(Avanco.QTD_IMGS_INTRO, hildaDashIntro, 1)
         self._ator = ator
         self._estrela = False
@@ -54,15 +54,15 @@ class Avanco(Ataque):
         pass
     
     def tipoDeAnimacao(self) -> None:
-        if self.ator.state == "dashIntro":
+        if self.ator.estado == "dashIntro":
             self._hide()
             self.animacaoIntro.animar()
             self.file = self.animacaoIntro.imagem
             self.ator.file = self.file
-            self.ator.voltaAoNormal(self.animacaoIntro.ultimaImg, "dash")
+            self.ator.volta_ao_normal(self.animacaoIntro.ultimaImg, "dash")
             if self.ator.file == self.animacaoIntro.ultimaImg:
                 Fumaca(self.ator.posX, self.ator.posY, self.alvo)
-        if self.ator.state == "dash":
+        if self.ator.estado == "dash":
             self._hide()
             self.animacao.animar()
             self.file = self.animacao.imagem
@@ -70,7 +70,7 @@ class Avanco(Ataque):
             if self.ator.file == hildaDash[1] and not self.estrela:
                 EstrelaDeTouro(self.ator.posX, self.ator.posY, self.alvo)
                 self.estrela = True
-            self.ator.voltaAoNormal(self.animacao.ultimaImg, "summon")
+            self.ator.volta_ao_normal(self.animacao.ultimaImg, "summon")
         pass
     
     def update(self) -> None:
@@ -80,11 +80,11 @@ class Avanco(Ataque):
         pass
     
 class Fumaca(Ataque):
-    QTD_IMGS_FUMACA = 6
-    ANIME_DELAY = 2
+    QTD_IMAGENS = 6
+    ATRASO_DE_ANIMACAO = 2
     
     def __init__(self, x: int, y: int, alvo: Personagem) -> None:
-        super().__init__(x, y, alvo, Animacao(Fumaca.QTD_IMGS_FUMACA, dashSmoke, Fumaca.ANIME_DELAY), 0)
+        super().__init__(x, y, alvo, Animacao(Fumaca.QTD_IMAGENS, dashSmoke, Fumaca.ATRASO_DE_ANIMACAO), 0)
         self.file = dashSmoke[0]
         self.posX += 190
         self.posY += 13
@@ -105,13 +105,13 @@ class Fumaca(Ataque):
         pass
 
 class Explosao(Ataque):
-    POS_X_ORIGEM = 700
-    POS_Y_ORIGEM = 240
-    QTD_IMGS_EXPLOSAO = 15
-    ANIME_DELAY = 2
+    ORIGEM_X = 700
+    ORIGEM_Y = 240
+    QTD_IMAGENS = 15
+    ATRASO_DE_ANIMACAO = 2
     
     def __init__(self, x: int, y: int, alvo: Personagem) -> None:
-        super().__init__(x, y, alvo, Animacao(Explosao.QTD_IMGS_EXPLOSAO, dashExplo, Explosao.ANIME_DELAY), 0)
+        super().__init__(x, y, alvo, Animacao(Explosao.QTD_IMAGENS, dashExplo, Explosao.ATRASO_DE_ANIMACAO), 0)
         self.file = dashExplo[0]
         self._theta = np.linspace(0, 30 * np.pi, 30)
         self._incrementador = 0
@@ -137,8 +137,8 @@ class Explosao(Ataque):
     
     def atualiza_coordenadas(self) -> None:
         coordenadas = archimedean_spiral(self.theta[self.incrementador], 1, 1)
-        self.posX = coordenadas[0] + Explosao.POS_X_ORIGEM
-        self.posY = coordenadas[1] + Explosao.POS_Y_ORIGEM
+        self.posX = coordenadas[0] + Explosao.ORIGEM_X
+        self.posY = coordenadas[1] + Explosao.ORIGEM_Y
         self.incrementador += 1
         pass
     
