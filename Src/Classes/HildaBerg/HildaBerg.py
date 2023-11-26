@@ -26,8 +26,8 @@ class HildaBerg(Personagem):
     ESTADOS = ["intro", "normal", "rindo", "tornado", "avancoIntro", "avanco", "summonando", "touro", "touroAtq", "transicao"]
     ATRASO_DE_ANIMACAO = 2
     
-    def __init__(self, x: int, y: int, alvo=None) -> None:
-        super().__init__(x, y, 1000, HitBox(x, y, 50, 50))
+    def __init__(self, x: int = ORIGEM_X, y: int = ORIGEM_Y, alvo=None) -> None:
+        super().__init__(x, y, 1000, HitBox(x - 85, y - 60, 170, 120))
         self._alvo = alvo
         self.file = hildaIntro[0]
         self._estado = HildaBerg.ESTADOS[0]
@@ -201,10 +201,11 @@ class HildaBerg(Personagem):
         if self.estado == "transicao":
             self.movimento_de_transicao()
             pass
+        self.hitbox.atualiza_posicao(self.posX - 85, self.posY - 60)
         pass
     
     def movimento_de_ataque_touro(self) -> None:
-        resultado = any(self.vida == touroAtkImgList[i] for i in range(10, 21))
+        resultado = any(self.file == touroAtkImgList[i] for i in range(10, 21))
         if resultado:
             self.posX -= 50
             pass
@@ -287,13 +288,13 @@ class HildaBerg(Personagem):
             self.animar(7)
             if self.animacao_finalizada(self.animacaoDeTransicao.ultimaImg):
                 self._hide()
-                HildaBergLua(ORIGEM_X, ORIGEM_Y)
+                HildaBergLua(ORIGEM_X, ORIGEM_Y, self.vida, self.hitbox)
                 self.destroy()
             pass
         else:
             pass
 
-    # Attaks
+    #Ataques
     def ataca(self) -> None:
         self.risada()
         self.tornado()
@@ -340,7 +341,6 @@ class HildaBerg(Personagem):
         self.ataca()
         self.tipo_de_animacao()
         self.movimenta()
-        self.hitbox.atualiza_posicao(self.posX, self.posY)
         self.atualiza_barra_de_vida()
         if self.contador == 800: #Isso vai ser definido de acordo com a vida
             self.estado = "transicao"
