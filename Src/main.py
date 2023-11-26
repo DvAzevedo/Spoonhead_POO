@@ -28,7 +28,7 @@ quanto no menu ocorrem travamentos, afinal são periodos carregados de muitas im
 deixar um textinho no final do código.
 '''
 Cenario.criar_cenario()
-vilao = HildaBerg(700, 220)
+vilao = HildaBerg()
 jogador = Chalice(vilao)
 vilao.alvo = jogador
 cena = Cena(jogador, vilao)
