@@ -1,7 +1,8 @@
-from typing import Optional
+import pygame
 from tupy import *
 from Classes.Animacao import *
-import pygame
+from Classes.Chalice.Chalice import Chalice
+from Classes.HildaBerg.HildaBerg import *
 
 '''
 SE VC VEIO PARA PELA MÚSICA:
@@ -32,17 +33,16 @@ class Transicao(Image):
         self._file = "../Img/InicioDeJogo/Transitions/Transition0001.png"
         self.animacaoo = Animacao(Qtd_de_imag_transicao, listaTransicao, delay_transicao)
         self.ApertouTabUmaVez = False
-
+    
     def update(self) -> None:
         if keyboard.is_key_just_down('Tab') == True:
             self.ApertouTabUmaVez = True
-
-
         if self.ApertouTabUmaVez == True:
             self._file = self.animacaoo.anima()
             if self._file == "../Img/InicioDeJogo/Transitions/Transition0017.png" :
                 self._hide()
                 self._destroy()
+        pass
             
 
 class Ready(Image):
@@ -52,6 +52,13 @@ class Ready(Image):
         self._file = "../Img/InicioDeJogo/ReadyWALLOP!/FightText_GetReady_0001.png"
         self.animacaoo = Animacao(Qtd_de_imag_ready, listaReady, delay_ready)
         self.ApertouTabUmaVez2 = False
+        self.gerouPersonagens = False
+
+    def gerarPersonagens(self) -> None:
+        vilao = HildaBerg()
+        jogador = Chalice(vilao)
+        vilao.alvo = jogador
+        pass
 
     def update(self) -> None:
         if keyboard.is_key_just_down('Tab') == True:
@@ -62,11 +69,14 @@ class Ready(Image):
         if self.ApertouTabUmaVez2 == True:
             self._file = self.animacaoo.anima()
             if self._file == "../Img/InicioDeJogo/ReadyWALLOP!/FightText_GetReady_0051.png" :
-                    self._hide()
-                    #comentar/descomentar as duas linhas abaixo para retirar/colocar a música, se quiser mudar basta mudar o caminho do arquivo
-                    pygame.mixer.music.load('Sound/Music/MusicaDaGameplay.mp3')
-                    pygame.mixer.music.play(-1)
-                    self._destroy()
+                self._hide()
+                #comentar/descomentar as duas linhas abaixo para retirar/colocar a música, se quiser mudar basta mudar o caminho do arquivo
+                pygame.mixer.music.load('Sound/Music/MusicaDaGameplay.mp3')
+                pygame.mixer.music.play(-1)
+                if not self.gerouPersonagens:
+                    self.gerarPersonagens()
+                    self.gerouPersonagens = True
+                self._destroy()
 
             
 
