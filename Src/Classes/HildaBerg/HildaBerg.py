@@ -4,6 +4,7 @@ from Classes.Personagem import *
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
 from Classes.HildaBerg.HildaBergLua import HildaBergLua
+from Classes.HildaBerg.Ataques.Avanco import Avanco, Explosao
 from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
 from Classes.HildaBerg.Ataques.Risada import Risada
 from Classes.HildaBerg.Ataques.Tornado import Tornado
@@ -168,9 +169,9 @@ class DashExplo(Image):
         self.count = 0
     
     def trajetoria(self):
-        coor = archimedean_spiral(self.theta[self.count], self.a, self.b)
-        self.x = coor[0] + X_POSITION_ORIGIN
-        self.y = coor[1] + Y_POSITION_ORIGIN
+        coordenada = archimedean_spiral(self.theta[self.count], self.a, self.b)
+        self.x = coordenada[0] + X_POSITION_ORIGIN
+        self.y = coordenada[1] + Y_POSITION_ORIGIN
         self.count += 1
 
     def animate(self):
@@ -256,13 +257,13 @@ class HildaBerg(Personagem):
         pass
 
     # Animations
-    def isAnimeFinish(self, lastImg):
-        if self.file == lastImg:
+    def animacaoFinalizada(self, ultimaImg):
+        if self.file == ultimaImg:
             return True
         
-    def backToNormal(self, lastImg, state):
-        if self.file == lastImg:
-            self.state = state
+    def voltaAoNormal(self, ultimaImg, estado):
+        if self.file == ultimaImg:
+            self.state = estado
 
     def animate(self, indice):
         self.animeClassList[indice].animar()
@@ -271,37 +272,38 @@ class HildaBerg(Personagem):
     def animateCase(self):# Mudar para switch case
         if self.state == "intro":
             self.animate(0)
-            self.backToNormal(self.introAnime.ultimaImg, "normal")
+            self.voltaAoNormal(self.introAnime.ultimaImg, "normal")
 
         elif self.state == "normal":
             self.animate(1)
 
         elif self.state == "laugh":
             self.animate(2)
-            self.backToNormal(self.laughAnime.ultimaImg, "normal")
+            self.voltaAoNormal(self.laughAnime.ultimaImg, "normal")
     
         elif self.state == "tornado":
             self.animate(3)
-            self.backToNormal(self.tornadoAnime.ultimaImg, "normal")
+            self.voltaAoNormal(self.tornadoAnime.ultimaImg, "normal")
+        
+    #    elif self.state == "dashIntro":
+    #        self.animate(4)
+    #        self.voltaAoNormal(self.dashIntroAnime.ultimaImg, "dash")
+    #        if self.file == self.dashIntroAnime.ultimaImg:
+    #            DashSmoke(self.posX, self.posY)
 
-        elif self.state == "dashIntro":
-            self.animate(4)
-            self.backToNormal(self.dashIntroAnime.ultimaImg, "dash")
-            if self.file == self.dashIntroAnime.ultimaImg:
-                DashSmoke(self.posX, self.posY)
-
-        elif self.state == "dash":
-            self.animate(5)
-            if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
-                EstrelaDeTouro(self.posX, self.posY, self.alvo)
-                self.estrelaFoiInstaciada = True
-            self.backToNormal(self.dashAnime.ultimaImg, "summon")
+    #    elif self.state == "dash":
+    #        self.animate(5)
+    #        if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
+    #            EstrelaDeTouro(self.posX, self.posY, self.alvo)
+    #            self.estrelaFoiInstaciada = True
+    #        self.voltaAoNormal(self.dashAnime.ultimaImg, "summon")
         
         elif self.state == "summon":
             self.animate(6)
             if self.file == hildaSummon[19] or self.file == hildaSummon[16]:
-                DashExplo(self.posX, self.posY)
-            self.backToNormal(self.summonAnime.ultimaImg, "touro")
+                #DashExplo(self.posX, self.posY)
+                Explosao(self.posX, self.posY, self.alvo)
+            self.voltaAoNormal(self.summonAnime.ultimaImg, "touro")
         
         elif self.state == "touro":
             self.animate(7)
@@ -313,11 +315,11 @@ class HildaBerg(Personagem):
                 self.posX += 30
                 self.estrelaFoiInstaciada = False
             if self.estrelaFoiInstaciada == False:
-                self.backToNormal(self.touroAtkAnime.ultimaImg, "touro")
+                self.voltaAoNormal(self.touroAtkAnime.ultimaImg, "touro")
         
         elif self.state == "transition":
             self.animate(9)
-            if self.isAnimeFinish(self.transitionAnime.ultimaImg):
+            if self.animacaoFinalizada(self.transitionAnime.ultimaImg):
                 self._hide()
                 HildaBergLua(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
                 self.destroy()
@@ -335,10 +337,12 @@ class HildaBerg(Personagem):
                 Tornado(self.posX, self.posY, self.alvo)
                 self.state = "tornado" 
             
-    def dash(self):
+    def avanco(self):
         if keyboard.is_key_just_down('d'):
             if self.state == "normal":
-                self.state = "dashIntro" 
+                self.state = "dashIntro"
+                #self.file = hildaDashIntro[0]
+                Avanco(self.posX, self.posY, self.alvo, self) 
 
     def touroAtk(self):
         if keyboard.is_key_just_down('c'):
@@ -348,7 +352,7 @@ class HildaBerg(Personagem):
     def ataca(self):
         self.risada()
         self.tornado()
-        self.dash()
+        self.avanco()
         self.touroAtk()
 
     def atualiza_label_life(self):
