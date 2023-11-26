@@ -17,7 +17,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_GHOST = 24
 
     def __init__(self, oponente: Personagem, x: int = 240, y: int = 240, vida: int = 3):
-        super().__init__(x, y, vida, HitBox(x - 35, y - 20, 70, 40))
+        super().__init__(x, y, vida, HitBox(x - 35, y - 25, 70, 50))
         self._oponente = oponente
         self._animacao = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self._animacaoAtual = self.animacao
@@ -208,8 +208,7 @@ class Chalice(Personagem):
             if keyboard.is_key_down('e'):
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
-        
-        self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 20)
+        self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 25)
     
     def movimenta_ghost(self) -> None:
         self.posY -= 8
@@ -244,7 +243,7 @@ class Chalice(Personagem):
             self.animacaoAtual = self.animacao
             self.posX -= 10
             self._show()
-        if self.vida == 0:
+        if self.vida <= 0:
             self.animacaoAtual = self.animacaoGhost
             self.atacando = False
             self.estaMorto = True
