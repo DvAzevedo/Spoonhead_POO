@@ -27,7 +27,7 @@ class HildaBerg(Personagem):
     ATRASO_DE_ANIMACAO = 2
     
     def __init__(self, x: int = ORIGEM_X, y: int = ORIGEM_Y, alvo=None) -> None:
-        super().__init__(x, y, 1000, HitBox(x - 85, y - 60, 170, 120))
+        super().__init__(x, y, 1000, HitBox(x - 80, y - 55, 160, 110))
         self._alvo = alvo
         self.file = hildaIntro[0]
         self._estado = HildaBerg.ESTADOS[0]
@@ -211,7 +211,7 @@ class HildaBerg(Personagem):
         if self.estado == "transicao":
             self.movimento_de_transicao()
             pass
-        self.hitbox.atualiza_posicao(self.posX - 85, self.posY - 60)
+        self.hitbox.atualiza_posicao(self.posX - 80, self.posY - 55)
         pass
     
     def movimento_de_ataque_touro(self) -> None:
@@ -288,6 +288,8 @@ class HildaBerg(Personagem):
             pass
         elif self.estado == "touroAtq":
             self.animar(6)
+            if self._collides_with(self.alvo):
+                self.alvo.decrementa_vida()
             if self.file == self.animacaoAtqTouro.ultimaImg: #Gambiarra para o touro chegar pra trás
                 self.posX += 30
                 self.estrela = False
