@@ -192,6 +192,11 @@ class Chalice(Personagem):
                 MiniBomba.bombardeio(self.contadorAuxiliar, self.posX, self.posY, self.oponente)
                 self.contadorAuxiliar.zera_contador()
     
+    def decrementa_vida(self) -> None:
+        super().decrementa_vida()
+        self.barraDeVida.decrease_hp()
+        pass
+    
     def movimenta(self) -> None:
         if self.animacaoAtual == self.animacao or self.animacaoAtual == self.animacaoEspecial:
             if keyboard.is_key_down('Left') and self.posX >= 20:
@@ -210,8 +215,9 @@ class Chalice(Personagem):
                 self.animacaoAtual = self.animacaoDeTransicao
         self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 25)
     
-    def movimenta_ghost(self) -> None:
+    def movimenta_fantasma(self) -> None:
         self.posY -= 8
+        pass
     
     def troca_modo_de_ataque(self) -> None:
         if keyboard.is_key_down('z'):
@@ -247,7 +253,7 @@ class Chalice(Personagem):
             self.animacaoAtual = self.animacaoGhost
             self.atacando = False
             self.estaMorto = True
-            self.movimenta_ghost()
+            self.movimenta_fantasma()
         if keyboard.is_key_just_down('k'):
                 self.barraDeVida.decrease_hp()
                 if self.vida > 0:
