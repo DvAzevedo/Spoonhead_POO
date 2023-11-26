@@ -7,6 +7,7 @@ from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.Ataques.Avanco import Avanco, Explosao
 from Classes.HildaBerg.Ataques.Risada import Risada
 from Classes.HildaBerg.Ataques.Tornado import Tornado
+from Classes.HildaBerg.Ataques.estrela import EstrelaLua2
 from Classes.HildaBerg.Ataques.estrela import EstrelaLua
 from Classes.cena import Cena
 from Classes.bars_indicators import *
@@ -56,7 +57,7 @@ class HildaBerg(Personagem):
     ESTADOS = ["intro", "normal", "rindo", "tornado", "avancoIntro", "avanco", "summonando", "touro", "touroAtq", "transicao", "morte", "lua", "luaAtkIntro", "luaAtk"]
     ATRASO_DE_ANIMACAO = 2
     def __init__(self, x: int = ORIGEM_X, y: int = ORIGEM_Y, alvo=None) -> None:
-        super().__init__(x, y, 200, HitBox(x - 80, y - 55, 160, 110))
+        super().__init__(x, y, 1000, HitBox(x - 80, y - 55, 160, 110))
         self._alvo = alvo
         self.file = hildaIntro[0]
         self._estado = HildaBerg.ESTADOS[0]
@@ -363,6 +364,7 @@ class HildaBerg(Personagem):
         self.tornado()
         self.touro_atq()
         self.lua_atq()
+        self.lua_atq2()
         pass
 
     def avanco(self) -> None:
@@ -393,9 +395,15 @@ class HildaBerg(Personagem):
         pass
 
     def lua_atq(self) -> None:
-        if self.contadorParaAtaques.contador % 20 == 0:
+        if self.contadorParaAtaques.contador % 100 == 0:
             if self.estado == "luaAtk":
                 EstrelaLua(self.posX, self.posY, self.alvo)
+        pass
+
+    def lua_atq2(self) -> None:
+        if self.contadorParaAtaques.contador % 50 == 0:
+            if self.estado == "luaAtk":
+                EstrelaLua2(self.posX, self.posY, self.alvo)
         pass
     
     '''
