@@ -1,7 +1,5 @@
 from Classes.Animacao import Animacao
 from Classes.Ataque import *
-from Classes.Personagem import Personagem
-from Classes.HildaBerg.HildaBerg import HildaBerg
 from Classes.HildaBerg.listasDeImagens import hildaDashIntro, hildaDash, dashSmoke, dashExplo
 from Classes.HildaBerg.trajetoria import *
 from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
@@ -11,7 +9,7 @@ class Avanco(Ataque):
     QTD_IMGS_AVANCO = 6
     ANIME_DELAY = 2
     
-    def __init__(self, x: int, y: int, alvo: Personagem, ator: HildaBerg) -> None:
+    def __init__(self, x: int, y: int, alvo: Personagem, ator: Personagem) -> None:
         super().__init__(x, y, alvo, Animacao(Avanco.QTD_IMGS_AVANCO, hildaDash, Avanco.ANIME_DELAY), 1)
         self._animacaoIntro = Animacao(Avanco.QTD_IMGS_INTRO, hildaDashIntro, 1)
         self._ator = ator
@@ -28,11 +26,11 @@ class Avanco(Ataque):
         pass
     
     @property
-    def ator(self) -> HildaBerg:
+    def ator(self) -> Personagem:
         return self._ator
     
     @ator.setter
-    def ator(self, ator: HildaBerg) -> None:
+    def ator(self, ator: Personagem) -> None:
         self._ator = ator
         pass
     
@@ -57,24 +55,28 @@ class Avanco(Ataque):
     
     def tipoDeAnimacao(self) -> None:
         if self.ator.state == "dashIntro":
-            self.ator._hide()
+            self._hide()
             self.animacaoIntro.animar()
-            self.ator.file = self.animacaoIntro.imagem
+            self.file = self.animacaoIntro.imagem
+            self.ator.file = self.file
             self.ator.voltaAoNormal(self.animacaoIntro.ultimaImg, "dash")
             if self.ator.file == self.animacaoIntro.ultimaImg:
                 Fumaca(self.ator.posX, self.ator.posY, self.alvo)
         if self.ator.state == "dash":
+            self._hide()
             self.animacao.animar()
-            self.ator.file = self.animacao.imagem
+            self.file = self.animacao.imagem
+            self.ator.file = self.file
             if self.ator.file == hildaDash[1] and not self.estrela:
                 EstrelaDeTouro(self.ator.posX, self.ator.posY, self.alvo)
                 self.estrela = True
             self.ator.voltaAoNormal(self.animacao.ultimaImg, "summon")
-            self.ator._show()
         pass
     
     def update(self) -> None:
         self.atualiza_coordenadas()
+        if self.ator.file == self.animacao.ultimaImg:
+            self.destroy()
         pass
     
 class Fumaca(Ataque):
@@ -83,15 +85,12 @@ class Fumaca(Ataque):
     
     def __init__(self, x: int, y: int, alvo: Personagem) -> None:
         super().__init__(x, y, alvo, Animacao(Fumaca.QTD_IMGS_FUMACA, dashSmoke, Fumaca.ANIME_DELAY), 0)
+        self.file = dashSmoke[0]
         self.posX += 190
         self.posY += 13
-        self.file = dashSmoke[0]
         pass
     
     def atualiza_coordenadas(self) -> None:
-        if self.file == self.animacao.ultimaImg:
-            self.destroy()
-            pass
         self.posX -= 60
         pass
     
@@ -101,11 +100,13 @@ class Fumaca(Ataque):
     def update(self) -> None:
         self.atualiza_coordenadas()
         self.file = self.animacao.anima()
+        if self.file == self.animacao.ultimaImg:
+            self.destroy()
         pass
 
 class Explosao(Ataque):
-    POS_X_ORIGEM = 240
-    POS_Y_ORIGEM = 700
+    POS_X_ORIGEM = 700
+    POS_Y_ORIGEM = 240
     QTD_IMGS_EXPLOSAO = 15
     ANIME_DELAY = 2
     
@@ -135,12 +136,10 @@ class Explosao(Ataque):
         pass
     
     def atualiza_coordenadas(self) -> None:
-        if self.file == self.animacao.ultimaImg:
-            self.destroy()
-            pass
         coordenadas = archimedean_spiral(self.theta[self.incrementador], 1, 1)
         self.posX = coordenadas[0] + Explosao.POS_X_ORIGEM
         self.posY = coordenadas[1] + Explosao.POS_Y_ORIGEM
+        self.incrementador += 1
         pass
     
     def causa_dano(self) -> None:
@@ -149,4 +148,6 @@ class Explosao(Ataque):
     def update(self) -> None:
         self.atualiza_coordenadas()
         self.file = self.animacao.anima()
+        if self.file == self.animacao.ultimaImg:
+            self.destroy()
         pass
