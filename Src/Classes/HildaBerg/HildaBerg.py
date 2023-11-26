@@ -43,6 +43,7 @@ class HildaBerg(Personagem):
         self._contadorDeAtraso = Contador(HildaBerg.ATRASO_DE_ANIMACAO)
         self._contadorParaAtaques = Contador(300)
         self._angulacao = 1.5
+        self._atacando = True
         self._contador = 0
         self._estrela = False
         # DEFINICAO DA VIDA DE HILDA E IMAGEM
@@ -194,6 +195,15 @@ class HildaBerg(Personagem):
         self._estrela = estrela
         pass
     
+    @property
+    def atacando(self) -> bool:
+        return self._atacando
+    
+    @atacando.setter
+    def atacando(self, valor: bool) -> None:
+        self._atacando = valor
+        pass
+    
     #Movimentação
     def movimenta(self) -> None:
         if self.estado == "normal" or self.estado == "rindo" or self.estado == "touro":
@@ -288,7 +298,7 @@ class HildaBerg(Personagem):
             pass
         elif self.estado == "touroAtq":
             self.animar(6)
-            if self._collides_with(self.alvo):
+            if self._collides_with(self.alvo.hitbox):
                 self.alvo.decrementa_vida()
             if self.file == self.animacaoAtqTouro.ultimaImg: #Gambiarra para o touro chegar pra trás
                 self.posX += 30
@@ -350,11 +360,15 @@ class HildaBerg(Personagem):
 
     def update(self) -> None:
         self.contador +=1
-        self.contadorParaAtaques.incrementa()
+        if self.atacando:
+            self.contadorParaAtaques.incrementa()
         self.ataca()
         self.tipo_de_animacao()
         self.movimenta()
         self.atualiza_barra_de_vida()
+        if self.alvo.estaMorto:
+            self.contadorParaAtaques.contador = 1
+            self.atacando = False
         if self.vida <= 350: #Isso vai ser definido de acordo com a vida
             self.estado = "transicao"
         #if keyboard.is_key_just_down('l'):
