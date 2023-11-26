@@ -96,6 +96,10 @@ moonAtk = []
 moonAtkBack = []
 moonSmoke = []
 moonDeath = []
+estrelaList = []
+
+for i in range(1, 17):
+    estrelaList.append(f"../../Img/HildaMoon/Proje/blimp_star_a_{i:04d}.png")
 
 for i in range(1, 17):
     hildaMoon.append(f"../../Img/HildaMoon/Idle/blimp_moon_idle_{i:04d}.png")
