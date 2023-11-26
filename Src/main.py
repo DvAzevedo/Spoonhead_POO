@@ -30,6 +30,7 @@ deixar um textinho no final do código.
 Cenario.criar_cenario()
 vilao = HildaBerg(700, 220)
 jogador = Chalice(vilao)
+vilao.alvo = jogador
 cena = Cena(jogador, vilao)
 
 MensagemDeReady = Ready()

@@ -1,9 +1,12 @@
 import math
 from Classes.Animacao import *
 from Classes.Personagem import *
-from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
+from Classes.HildaBerg.HildaBergLua import HildaBergLua
+from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
+from Classes.HildaBerg.Ataques.Risada import Risada
+from Classes.HildaBerg.Ataques.Tornado import Tornado
 from Classes.cena import Cena
 from Classes.bars_indicators import *
 
@@ -20,16 +23,17 @@ QTD_IMGS_STATE_DASH = 6
 QTD_IMGS_STATE_SUMMON = 21
 
 QTD_IMGS_STATE_TOURO = 16
-QTD_IMGS_STAR_TOURO = 3
+#QTD_IMGS_STAR_TOURO = 3
 QTD_IMGS_ATK_TOURO = 21
 
-QTD_IMGS_ATK_HA = 46
-QTD_IMGS_ATK_TORNADO = 16
-QTD_IMGS_ATK_TORNADO_INTRO = 12
+#QTD_IMGS_ATK_HA = 46
+#QTD_IMGS_ATK_TORNADO = 16
+#QTD_IMGS_ATK_TORNADO_INTRO = 12
 QTD_IMGS_ATK_DASH_EXPLO = 15
 QTD_IMGS_ATK_DASH_SMOKE = 6
 
 #Attaks
+'''
 class Ha(Image):
     
     ANIME_DELAY = 1
@@ -58,8 +62,6 @@ class Ha(Image):
         self.trajetoria()
         self.animate()
         self.destruir()
-
-    
 
 class Tornado(Image):
     ANIME_DELAY = 1
@@ -104,6 +106,31 @@ class Tornado(Image):
         self.changeAnimate()
         self.animate()
         self.destruir()
+        
+class TouroStar(Image):
+    ANIME_DELAY = 1
+    def __init__(self, x, y):
+        self.file = touroStarImgList[0]
+        self.touroStarAnime = Animacao(QTD_IMGS_STAR_TOURO, touroStarImgList, TouroStar.ANIME_DELAY)
+        self.x = x - 30
+        self.y = y
+        self.count = 0
+
+    def animate(self):
+        self.file = self.touroStarAnime.anima()
+
+    def destruir(self):
+        if self.count == 16:
+            self.destroy()
+
+    def update(self):
+        self.animate()
+        self.count += 1
+        self.destruir()
+'''
+
+    
+
 
 class DashSmoke(Image):
     ANIME_DELAY = 2
@@ -158,33 +185,15 @@ class DashExplo(Image):
         self.animate()
         self.destruir()
 
-class TouroStar(Image):
-    ANIME_DELAY = 1
-    def __init__(self, x, y):
-        self.file = touroStarImgList[0]
-        self.touroStarAnime = Animacao(QTD_IMGS_STAR_TOURO, touroStarImgList, TouroStar.ANIME_DELAY)
-        self.x = x - 30
-        self.y = y
-        self.count = 0
 
-    def animate(self):
-        self.file = self.touroStarAnime.anima()
-
-    def destruir(self):
-        if self.count == 16:
-            self.destroy()
-
-    def update(self):
-        self.animate()
-        self.count += 1
-        self.destruir()
 
 #Hilda Build
 class HildaBerg(Personagem):
     STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "touro", "touroAtk", "transition"]
     ANIME_DELAY = 2
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int, alvo=None) -> None:
         super().__init__(x, y, 1000, HitBox(x, y, 50, 50))
+        self.alvo = alvo
         self.file = hildaIntro[0]
         self.state = HildaBerg.STATE_LIST[0]
         self.introAnime = Animacao(QTD_IMGS_STATE_INTRO, hildaIntro, HildaBerg.ANIME_DELAY)
@@ -205,7 +214,8 @@ class HildaBerg(Personagem):
         self.estrelaFoiInstaciada = False
         # DEFINICAO DA VIDA DE HILDA E IMAGEM
         self.test_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
-
+        pass
+    
     # Positions Update    
     def normalUpdatePosition(self):
         self.i += 0.1
@@ -283,7 +293,7 @@ class HildaBerg(Personagem):
         elif self.state == "dash":
             self.animate(5)
             if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
-                TouroStar(self.posX, self.posY)
+                EstrelaDeTouro(self.posX, self.posY, self.alvo)
                 self.estrelaFoiInstaciada = True
             self.backToNormal(self.dashAnime.ultimaImg, "summon")
         
@@ -316,13 +326,13 @@ class HildaBerg(Personagem):
     def risada(self):
         if keyboard.is_key_just_down('r'):
             if self.state == "normal":
-                Ha(self.posX, self.posY)
+                Risada(self.posX, self.posY, self.alvo)
                 self.state = "laugh" 
     
     def tornado(self):
         if keyboard.is_key_just_down('t'):
             if self.state == "normal":
-                Tornado(self.posX, self.posY)
+                Tornado(self.posX, self.posY, self.alvo)
                 self.state = "tornado" 
             
     def dash(self):
