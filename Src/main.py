@@ -17,7 +17,7 @@ ninguém merece ficar codando ouvindo a música repetidas vezes, por isso se qui
 pygame.init()
 #comentar/descomentar as duas linhas abaixo para retirar/colocar a música do menu
 pygame.mixer.music.load('Sound/Music/MusicaDoMenu.mp3')
-pygame.mixer.music.play(-1)
+# pygame.mixer.music.play(-1)
 
 
 '''
@@ -33,11 +33,11 @@ jogador = Chalice(vilao)
 cena = Cena(jogador, vilao)
 
 MensagemDeReady = Ready()
-TransicaoParaAGameplay = Transicao()
+TransicaoParaAGameplay = Transicao()    
 FundoDoMenuInicial = FundoDoMenu()
 CupAndMugMenu = CupAndMug()
 MensagemDoMenu = PressioneTab()
-
+ 
 run(globals())
 
 '''
