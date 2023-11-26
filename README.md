@@ -44,20 +44,20 @@ Caso queira encerrar a execução do programa, basta clicar na tecla _"Esc"_ ou 
 - Se, em sua tela, já estiverem carregadas 5 cartas de baralho ao lado da barra de vida, você pode apertar a tecla _"e"_ para usar um ataque especial.
 
 ## Desenvolvedores
-- Davi
+- Davi Azevedo
   - Responsável pela implementação e animação da personagem **HildaBerg**.
     - Nota 5/5.
-- Estácio
-  -  Responsável pela implementação e animação da personagem **Chalice**.
+- Estácio Gonçalves de Jesus Junior
+  - Responsável pela implementação e animação da personagem **Chalice**.
     - Nota 5/5.
-- Fábio
+- Fábio Tosta
   - Responsável pela implementação e animação da barra de vida, do ataque especial e da hitbox.
     - Nota 5/5.
 - João Gabriel Zeba de Souza
   - Responsável pela implementação e animação dos ataques.
     - Nota 5/5.
 - João Victor Luz Oliveira
-  - Responsável pela implementação e animação do cenário e da tela.
+  - Responsável pela implementação e animação do cenário e da tela inicial.
     - Nota 5/5.
 
 Vale ressaltar que todos contribuiram ativamente para a elaboração, o planejamento e o desenvolvimento de todo o projeto. Toda a equipe se empenhou na busca por materiais e ideias, assim como colaborou na codificação de todas as partes do jogo desenvolvido.
