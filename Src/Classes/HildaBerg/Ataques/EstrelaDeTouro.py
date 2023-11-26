@@ -8,7 +8,7 @@ class EstrelaDeTouro(Ataque):
     QTD_IMGS_STAR_TOURO = 3
     
     def __init__(self, x: int, y: int, alvo: Personagem) -> None:
-        super().__init__(x, y, alvo, Animacao(EstrelaDeTouro.QTD_IMGS_STAR_TOURO, touroStarImgList, EstrelaDeTouro.ANIME_DELAY), 1)
+        super().__init__(x, y, alvo, Animacao(EstrelaDeTouro.QTD_IMGS_STAR_TOURO, touroStarImgList, EstrelaDeTouro.ANIME_DELAY), 0)
         self.posX -= 30
         self._incrementador = 0
         pass
