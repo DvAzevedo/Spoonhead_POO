@@ -39,7 +39,7 @@ class HildaBerg(Personagem):
         self._animacaoSummonando = Animacao(QTD_IMGS_ESTADO_SUMMONANDO, hildaSummon, HildaBerg.ATRASO_DE_ANIMACAO)
         self._animacaoTouro = Animacao(QTD_IMGS_ESTADO_TOURO, touroImgList, HildaBerg.ATRASO_DE_ANIMACAO)
         self._animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
-        self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.dashIntroAnime, self.dashAnime, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao]
+        self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao]
         self._contadorDeAtraso = Contador(HildaBerg.ATRASO_DE_ANIMACAO)
         self._angulacao = 1.5
         self._contador = 0
