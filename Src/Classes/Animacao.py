@@ -1,7 +1,7 @@
 from Classes.Contador import Contador
 
 class Animacao:
-    def __init__(self, qtd_imgs: int, imgs: list, atraso: int, backTo: bool = False, state_backTo: str = None) -> None:
+    def __init__(self, qtd_imgs: int, imgs: list[str], atraso: int, backTo: bool = False, state_backTo: str = None) -> None:
         self._atrasoCont = Contador(atraso)
         self._imgsCont = Contador(qtd_imgs)
         self._listaImagens = imgs
@@ -31,11 +31,11 @@ class Animacao:
         pass
     
     @property
-    def listaImagens(self) -> list:
+    def listaImagens(self) -> list[str]:
         return self._listaImagens
     
     @listaImagens.setter
-    def listaImagens(self, lista: list) -> None:
+    def listaImagens(self, lista: list[str]) -> None:
         self._listaImagens = lista
         pass
     

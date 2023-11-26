@@ -1,6 +1,7 @@
 import math
 from Classes.Ataque import *
 from Classes.Chalice.listasDeImagens import BulletDict
+from Classes.Contador import Contador
 
 class Tiro(Ataque):
     CONTADOR_TIRO_SIMPLES = Contador(3)
@@ -8,16 +9,18 @@ class Tiro(Ataque):
     QTD_IMAGENS = 4
     TIROS_DISPARADOS = []
     
-    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, indiceDaAnimacao=0, deslocamentoX=0, deslocamentoY=0, velocidade=35) -> None:
+    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, indiceDaAnimacao: int = 0, deslocamentoX: int = 0, deslocamentoY: int = 0, velocidade: int = 35) -> None:
         self._angulo = angulo*(math.pi)/180
         self._indiceDaAnimacao = indiceDaAnimacao
         self._deslocamentoX = deslocamentoX
         self._deslocamentoY = deslocamentoY
         self._velocidadeX = velocidade
         super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 2)
+        self.file = BulletDict[0][0]
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
         self.mudou = False
+        self._hide()
         pass
     
     @property
@@ -70,7 +73,7 @@ class Tiro(Ataque):
         return self._velocidadeY
     
     @velocidadeY.setter
-    def velocidadeY(self, velocidade: float) -> None:
+    def velocidadeY(self, velocidade: int) -> None:
         self._velocidadeY = velocidade
         pass
     
@@ -89,7 +92,7 @@ class Tiro(Ataque):
             pass
         if self.colide_com_alvo(self.alvo):
             self.causa_dano()
-            self.destroy()
+            self.animacaoAtual = self._animacaoSmoke
             pass
         self.posX += self.velocidadeX
         self.posY -= self.velocidadeY
@@ -135,6 +138,10 @@ class Tiro(Ataque):
         pass
     
     def update(self) -> None:
+        self._show()
         self.file = self.animacaoAtual.anima()
-        self.atualiza_coordenadas()
+        if self.animacaoAtual != self._animacaoSmoke:
+            self.atualiza_coordenadas()
+        if(self.file == self._animacaoSmoke.ultimaImg):
+                self.destroy()
         pass

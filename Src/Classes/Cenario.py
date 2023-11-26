@@ -1,7 +1,7 @@
 from tupy import *
 
-class Cenario(Image):
-    def __init__(self, x: int, y: int, v: int, f: str, r = -630, p = 1900) -> None:
+class Cenario(BaseImage):
+    def __init__(self, x: int, y: int, v: int, f: str, r: int = -630, p: int = 1900) -> None:
         self._x = x 
         self._y = y 
         self._velocidade = v
@@ -15,7 +15,7 @@ class Cenario(Image):
         return self._x
     
     @posX.setter
-    def posX(self, x) -> None:
+    def posX(self, x: int) -> None:
         self._x = x
         pass
     
@@ -24,7 +24,7 @@ class Cenario(Image):
         return self._y
     
     @posY.setter
-    def posy(self, y) -> None:
+    def posY(self, y: int) -> None:
         self._y = y
         pass
     
@@ -33,7 +33,7 @@ class Cenario(Image):
         return self._velocidade
     
     @velocidade.setter
-    def velocidade(self, v) -> None:
+    def velocidade(self, v: int) -> None:
         self._velocidade = v
         pass
     
@@ -42,7 +42,7 @@ class Cenario(Image):
         return self._file
     
     @file.setter
-    def file(self, f) -> None:
+    def file(self, f: str) -> None:
         self._file = f
         pass
     
@@ -51,7 +51,7 @@ class Cenario(Image):
         return self._reinicia
     
     @reinicia.setter
-    def reinicia(self, r) -> None:
+    def reinicia(self, r: int) -> None:
         self._reinicia = r
         pass
     
@@ -60,7 +60,7 @@ class Cenario(Image):
         return self._pidse
     
     @pidse.setter
-    def pidse(self, p) -> None:
+    def pidse(self, p: int) -> None:
         self._pidse = p
         pass
     

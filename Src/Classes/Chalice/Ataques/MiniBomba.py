@@ -1,18 +1,21 @@
 import math, random
 from Classes.Ataque import *
 from Classes.Chalice.listasDeImagens import MiniBombMove
+from Classes.Contador import Contador
 
 class MiniBomba(Ataque):
     QTD_IMAGENS = 8
     CONTADOR = Contador(4)
     
-    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, tipoDaAnimacao: str, velocidade=25) -> None:
+    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, tipoDaAnimacao: str, velocidade: int = 25) -> None:
         super().__init__(x, y, alvo, Animacao(MiniBomba.QTD_IMAGENS, MiniBombMove, 2), 5)
         self._angulo = angulo*(math.pi)/180
         self._tipoDaAnimacao = tipoDaAnimacao
         self._velocidadeX = velocidade
+        self.file = MiniBombMove[0]
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
+        self._hide()
         pass
     
     @property
@@ -66,7 +69,7 @@ class MiniBomba(Ataque):
             pass
         if self.colide_com_alvo(self.alvo):
             self.causa_dano()
-            self.destroy()
+            self.animacaoAtual = self._animacaoSmoke
             pass
         self.posX += 0.7 * self.velocidadeX
         self.velocidadeY -= 2
@@ -89,6 +92,10 @@ class MiniBomba(Ataque):
         pass
     
     def update(self) -> None:
+        self._show()
         self.file = self.animacaoAtual.anima()
-        self.atualiza_coordenadas()
+        if self.animacaoAtual != self._animacaoSmoke:
+            self.atualiza_coordenadas()
+        if(self.file == self._animacaoSmoke.ultimaImg):
+                self.destroy()
         pass

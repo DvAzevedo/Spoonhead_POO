@@ -6,27 +6,42 @@ from Classes.Chalice.Ataques.MiniBomba import MiniBomba
 from Classes.Chalice.Ataques.Tiro import Tiro
 from Classes.Chalice.listasDeImagens import *
 from Classes.Personagem import *
+from Classes.Chalice.ShootSpark import *
+from Classes.Hitbox import HitBox
+from Classes.Contador import Contador
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
     QTD_IMAGENS_TRANSICAO_ESPECIAL = 18
     QTD_IMAGENS_ESPECIAL = 4
+    QTD_IMAGENS_GHOST = 24
 
-    def __init__(self, oponente: Personagem, x=240, y=240, vida = 3):
-        super().__init__(x, y, vida, HitBox(x - 54, y - 40, 108, 80))
+    def __init__(self, oponente: Personagem, x: int = 240, y: int = 240, vida: int = 3):
+        super().__init__(x, y, vida, HitBox(x - 35, y - 25, 70, 50))
         self._oponente = oponente
         self._animacao = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self._animacaoAtual = self.animacao
         self._animacaoDeTransicao = Animacao(Chalice.QTD_IMAGENS_TRANSICAO_ESPECIAL, ChaliceTransitionToSpecial, 2)
         self._animacaoEspecial = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
+        self._animacaoGhost = Animacao(Chalice.QTD_IMAGENS_GHOST, ChaliceGhost, 2)
         self._barraDeVida = Chalice_Life_bar(vida)
+        self._specialCards = []
+        self._barraDeSpecial = Chalice_special_card(0)
+        self._contadorSpecial = Contador(24)
+        self._contador_decreaseSpecial = Contador(44)
+        self._numero_cards_Special = 1
+        self._special_full_charged = False
+        self._special_decrease = False
+        self._ShootSpark = ShootSpark(x+70, y+5)
         self._contadorAuxiliar = Contador(2)
         self._contadorDeTiroSimples = Contador(4)
         self._atacando = False
+        self._estaMorto = False
         self._modoDeAtaque = 0
         self._modoEspecial = False
         #self.possibilidadeDeAtaque = True
         self._velocidade = 20
+        self._auto_incremente_special_bar = Contador(1)
         
     @property
     def oponente(self) -> Personagem:
@@ -74,12 +89,30 @@ class Chalice(Personagem):
         pass
     
     @property
+    def animacaoGhost(self) -> Animacao:
+        return self._animacaoGhost
+    
+    @animacaoGhost.setter
+    def animacaoGhost(self, animacao: Animacao) -> None:
+        self._animacaoGhost = animacao
+        pass
+    
+    @property
     def barraDeVida(self) -> Chalice_Life_bar:
         return self._barraDeVida
     
     @barraDeVida.setter
     def barraDeVida(self, barraDeVida: Chalice_Life_bar) -> None:
         self._barraDeVida = barraDeVida
+        pass
+
+    @property
+    def barraDeSpecial(self) -> Chalice_special_card:
+        return self._barraDeSpecial
+    
+    @barraDeSpecial.setter
+    def barraDeSpecial(self, barraDeSpecial: Chalice_special_card) -> None:
+        self._barraDeSpecial = barraDeSpecial
         pass
     
     @property
@@ -136,10 +169,20 @@ class Chalice(Personagem):
         self._velocidade = velocidade
         pass
     
+    @property
+    def estaMorto(self) -> bool:
+        return self._estaMorto
+    
+    @estaMorto.setter
+    def estaMorto(self, valor: bool) -> None:
+        self._estaMorto = valor
+        pass
+    
     def ataca(self) -> None:
         if keyboard.is_key_just_down('space'):
             if self.animacaoAtual == self.animacao:
                 self.atacando = not self.atacando
+            
         if self.atacando == True:
             if self.modoDeAtaque == 0:
                 Tiro.tiro_simples(self.contadorDeTiroSimples, self.posX, self.posY, self.oponente)
@@ -165,10 +208,13 @@ class Chalice(Personagem):
             if keyboard.is_key_down('e'):
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
-        self.hitbox.atualiza_posicao(self.posX - 54, self.posY - 40)
+        self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 25)
     
-    def troca_modo_de_ataque(self):
-        if keyboard.is_key_just_down('z'):
+    def movimenta_ghost(self) -> None:
+        self.posY -= 8
+    
+    def troca_modo_de_ataque(self) -> None:
+        if keyboard.is_key_down('z'):
             if not self.contadorAuxiliar.esta_zerado():
                 self.contadorAuxiliar.zera_contador()
             if self.modoDeAtaque == 0:
@@ -178,7 +224,12 @@ class Chalice(Personagem):
             else:
                 self.modoDeAtaque = 0
     
+    def reduz_vida(self):
+        self.barraDeVida.decrease_hp()
+        self.vida = self.barraDeVida.hp
+    
     def update(self) -> None:
+        self.cria_special_cards()
         self.troca_modo_de_ataque()
         self.ataca()
         self.movimenta()
@@ -192,10 +243,78 @@ class Chalice(Personagem):
             self.animacaoAtual = self.animacao
             self.posX -= 10
             self._show()
+        if self.vida <= 0:
+            self.animacaoAtual = self.animacaoGhost
+            self.atacando = False
+            self.estaMorto = True
+            self.movimenta_ghost()
         if keyboard.is_key_just_down('k'):
                 self.barraDeVida.decrease_hp()
+                if self.vida > 0:
+                    self.decrementa_vida()
         Tiro.corrige_origem(self.posX, self.posY)
-        pass
+        
+        if self.atacando:
+            self._ShootSpark._show()
+        else:
+            self._ShootSpark._hide()
+        self._ShootSpark.posX = self.posX + 70
+        self._ShootSpark.posY = self.posY + 5
+        if ((self._auto_incremente_special_bar.esta_zerado()) and (self._special_full_charged is False) and (self._special_decrease is False)):
+            self.altera_special_cards()
+        self._auto_incremente_special_bar.incrementa()
+        if keyboard.is_key_just_down('o'):
+            if self._special_full_charged is True:
+                self._special_decrease = True
+        self.special_full()
+        if self._special_decrease is True:
+            self.special_full_decrease()
+    
+    # def test_crescimento_barra_special(self):
+        
+    def cria_special_cards(self):
+        if len(self._specialCards) == 0:
+            for i in range(5):
+                self._specialCards.append(Chalice_special_card(i))
+
+    def altera_special_cards(self):
+        if self._numero_cards_Special < 6:
+            if self._specialCards[self._numero_cards_Special-1].s_level < 45:
+                self._specialCards[self._numero_cards_Special-1].increase_special_bar()
+            else:
+                self._numero_cards_Special += 1
+                if self._numero_cards_Special != 6:
+                    self._specialCards[self._numero_cards_Special-1].increase_special_bar()
+                else:
+                    self._special_full_charged = True
+
+    def special_full(self):
+        if self._special_full_charged is True:
+            self.movimento_special_carregado()
+
+    def special_full_decrease(self):
+        if self._contadorSpecial.esta_zerado() is False:
+            self.movimento_special_carregado()
+        else:
+            self._special_full_charged = False
+            if self._auto_incremente_special_bar.esta_zerado():
+                for i in range(5):
+                    if self._specialCards[i].file != "../Img/Chalice/SpecialCards/SC01.png":
+                        self._specialCards[i].atualiza_imagem(44 - (self._contador_decreaseSpecial._contador))
+                        self._contador_decreaseSpecial.incrementa()
+                    else:
+                        self._specialCards[i].hide()
+                        self._special_decrease = False
+                        
+    def movimento_special_carregado(self):
+        if self._auto_incremente_special_bar.esta_zerado():
+            for i in range(5):
+                if self._contadorSpecial._contador < 12:
+                    self._specialCards[i].atualiza_imagem(44 - (self._contadorSpecial._contador))
+                else:
+                    self._specialCards[i].atualiza_imagem((self._contadorSpecial._contador)+21)
+            self._contadorSpecial.incrementa()
+
     
 '''
     def flee(self) -> None:

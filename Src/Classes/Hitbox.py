@@ -2,7 +2,7 @@ from tupy import Rectangle
 
 class HitBox(Rectangle):
     def __init__(self, x: int, y: int, largura: int, altura: int) -> None:
-        super().__init__(x, y, largura, altura, outline = 'black')
+        super().__init__(x, y, largura, altura, outline = '')
         pass
         #para deixar a hitbox transparente faça outline = '', inicialmente as linhas são boas para ter uma noção do tamanho
     

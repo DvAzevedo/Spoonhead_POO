@@ -1,18 +1,23 @@
 from abc import ABC, abstractmethod
 from Classes.Animacao import *
 from Classes.Personagem import *
+from Classes.Chalice.listasDeImagens import CollideSmoke
+from tupy import Image
 
 class Ataque(ABC, Image):
+    QTD_IMAGENS_SMOKE = 8
+    
     def __init__(self, x: int, y: int, alvo: Personagem, animacao: Animacao, dano: int) -> None:
         self._x = x
         self._y = y
         self._alvo = alvo
         self._animacao = animacao
+        self._animacaoSmoke = Animacao(Ataque.QTD_IMAGENS_SMOKE, CollideSmoke, 1)
         self._dano = dano
         pass
     
     @property
-    def posX(self) -> int:
+    def posX(self) -> float:
         return self._x
     
     @posX.setter
@@ -21,7 +26,7 @@ class Ataque(ABC, Image):
         pass
     
     @property
-    def posY(self) -> int:
+    def posY(self) -> float:
         return self._y
     
     @posY.setter
@@ -57,11 +62,11 @@ class Ataque(ABC, Image):
         pass
     
     @abstractmethod
-    def atualiza_coordenadas(self):
+    def atualiza_coordenadas(self) -> None:
         pass
     
     @abstractmethod
-    def causa_dano(self):
+    def causa_dano(self) -> None:
         pass
     
     def colide_com_alvo(self, alvo: Personagem) -> bool:
