@@ -5,370 +5,345 @@ from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
 from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.Ataques.Avanco import Avanco, Explosao
-from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
 from Classes.HildaBerg.Ataques.Risada import Risada
 from Classes.HildaBerg.Ataques.Tornado import Tornado
 from Classes.cena import Cena
 from Classes.bars_indicators import *
 
-Y_POSITION_ORIGIN = 240
-X_POSITION_ORIGIN = 700
+ORIGEM_X = 700
+ORIGEM_Y = 240
 
-QTD_IMGS_STATE_NORMAL = 21
-QTD_IMGS_STATE_LAUGH = 19
-QTD_IMGS_STATE_INTRO = 43
-QTD_IMGS_STATE_TRANSITION = 48
-QTD_IMGS_STATE_TORNADO = 38
-QTD_IMGS_STATE_DASH_INTRO = 18
-QTD_IMGS_STATE_DASH = 6
-QTD_IMGS_STATE_SUMMON = 21
+QTD_IMGS_ESTADO_NORMAL = 21
+QTD_IMGS_ESTADO_RINDO = 19
+QTD_IMGS_ESTADO_INTRO = 43
+QTD_IMGS_ESTADO_TRANSICAO = 48
+QTD_IMGS_ESTADO_TORNADO = 38
+QTD_IMGS_ESTADO_SUMMONANDO = 21
+QTD_IMGS_ESTADO_TOURO = 16
+QTD_IMGS_ATQ_TOURO = 21
 
-QTD_IMGS_STATE_TOURO = 16
-#QTD_IMGS_STAR_TOURO = 3
-QTD_IMGS_ATK_TOURO = 21
-
-#QTD_IMGS_ATK_HA = 46
-#QTD_IMGS_ATK_TORNADO = 16
-#QTD_IMGS_ATK_TORNADO_INTRO = 12
-QTD_IMGS_ATK_DASH_EXPLO = 15
-QTD_IMGS_ATK_DASH_SMOKE = 6
-
-#Attaks
-'''
-class Ha(Image):
-    
-    ANIME_DELAY = 1
-    def __init__(self, x, y):
-        self.file = imgListHa[0]
-        self.animateHa = Animacao(QTD_IMGS_ATK_HA, imgListHa, Ha.ANIME_DELAY)
-        self.x = x
-        self.y = y
-        self.yo = y
-        self.sin = -1
-
-    def trajetoria(self):
-        self.sin += 1
-        self.x -= 20
-        self.y = ((math.sin(self.sin)*5)+Y_POSITION_ORIGIN)
-
-    def animate(self):
-        self.animateHa.animar()
-        self.file = self.animateHa.imagem
-
-    def destruir(self):
-        if self.x < -20:
-            self.destroy()
-
-    def update(self):
-        self.trajetoria()
-        self.animate()
-        self.destruir()
-
-class Tornado(Image):
-    ANIME_DELAY = 1
-    def __init__(self, x, y):
-        self.file = hildaTornadoAtkIntro[0]
-        self.introAnime = Animacao(QTD_IMGS_ATK_TORNADO_INTRO, hildaTornadoAtkIntro, 2)
-        self.atkAnime = Animacao(QTD_IMGS_ATK_TORNADO, hildaTornadoAtk, Tornado.ANIME_DELAY)
-        self.currentAnime = self.introAnime
-        self.x = x - 80
-        self.y = y
-        self.heroi_x = cena.getHeroiPosition()[0]
-        self.heroi_y = cena.getHeroiPosition()[1]
-        self.praCima = False
-        if self.heroi_y > self.y:
-            self.praCima = True
-
-    def trajetoria(self):
-        if self.currentAnime == self.atkAnime:
-            if self.x > self.heroi_x:
-                self.x -= ((self.x - self.heroi_x )/ 30) + 10
-                self.y -= ((self.y - self.heroi_y )/ 30)
-            else:
-                self.x -= 5
-                if self.praCima:
-                    self.y += 2
-                else:
-                    self.y -=2
-
-    def animate(self):
-        self.file = self.currentAnime.anima()
-
-    def changeAnimate(self):
-        if self.file == self.introAnime.ultimaImg:
-            self.currentAnime = self.atkAnime
-
-    def destruir(self):
-        if self.x < -20:
-            self.destroy()
-
-    def update(self):
-        self.trajetoria()
-        self.changeAnimate()
-        self.animate()
-        self.destruir()
-        
-class TouroStar(Image):
-    ANIME_DELAY = 1
-    def __init__(self, x, y):
-        self.file = touroStarImgList[0]
-        self.touroStarAnime = Animacao(QTD_IMGS_STAR_TOURO, touroStarImgList, TouroStar.ANIME_DELAY)
-        self.x = x - 30
-        self.y = y
-        self.count = 0
-
-    def animate(self):
-        self.file = self.touroStarAnime.anima()
-
-    def destruir(self):
-        if self.count == 16:
-            self.destroy()
-
-    def update(self):
-        self.animate()
-        self.count += 1
-        self.destruir()
-'''
-
-    
-
-
-class DashSmoke(Image):
-    ANIME_DELAY = 2
-    def __init__(self, x, y):
-        self.file = dashSmoke[0]
-        self.dashSmokeAnime = Animacao(QTD_IMGS_ATK_DASH_SMOKE, dashSmoke, DashSmoke.ANIME_DELAY)
-        self.x = x + 190
-        self.y = y + 13
-
-    def trajetoria(self):
-        self.x -= 60
-
-    def animate(self):
-        self.file = self.dashSmokeAnime.anima()
-
-    def destruir(self):
-        if self.file == self.dashSmokeAnime.ultimaImg:
-            self.destroy()
-
-    def update(self):
-        self.trajetoria()
-        self.animate()
-        self.destruir()
-
-class DashExplo(Image):
-    ANIME_DELAY = 2
-    def __init__(self, x, y):
-        self.file = dashExplo[0]
-        self.dashExploAnime = Animacao(QTD_IMGS_ATK_DASH_EXPLO, dashExplo, DashExplo.ANIME_DELAY)
-        self.x = x 
-        self.y = y 
-        self.theta = np.linspace(0, 30 * np.pi, 30)
-        self.a = 1
-        self.b = 1
-        self.count = 0
-    
-    def trajetoria(self):
-        coordenada = archimedean_spiral(self.theta[self.count], self.a, self.b)
-        self.x = coordenada[0] + X_POSITION_ORIGIN
-        self.y = coordenada[1] + Y_POSITION_ORIGIN
-        self.count += 1
-
-    def animate(self):
-        self.file = self.dashExploAnime.anima()
-
-    def destruir(self):
-        if self.file == self.dashExploAnime.ultimaImg:
-            self.destroy()
-
-    def update(self):
-        self.trajetoria()
-        self.animate()
-        self.destruir()
-
-
-
-#Hilda Build
 class HildaBerg(Personagem):
-    STATE_LIST = ["intro", "normal", "laugh", "tornado", "dashIntro", "dash", "summon", "touro", "touroAtk", "transition"]
-    ANIME_DELAY = 2
+    ESTADOS = ["intro", "normal", "rindo", "tornado", "avancoIntro", "avanco", "summonando", "touro", "touroAtq", "transicao"]
+    ATRASO_DE_ANIMACAO = 2
+    
     def __init__(self, x: int, y: int, alvo=None) -> None:
         super().__init__(x, y, 1000, HitBox(x, y, 50, 50))
-        self.alvo = alvo
+        self._alvo = alvo
         self.file = hildaIntro[0]
-        self.state = HildaBerg.STATE_LIST[0]
-        self.introAnime = Animacao(QTD_IMGS_STATE_INTRO, hildaIntro, HildaBerg.ANIME_DELAY)
-        self.normalAnime = Animacao(QTD_IMGS_STATE_NORMAL, hildaNormal, HildaBerg.ANIME_DELAY)
-        self.laughAnime = Animacao(QTD_IMGS_STATE_LAUGH, hildaLaugh, 1)
-        self.transitionAnime = Animacao(QTD_IMGS_STATE_TRANSITION, hildaTransition, HildaBerg.ANIME_DELAY)
-        self.tornadoAnime = Animacao(QTD_IMGS_STATE_TORNADO, hildaTornado, 1)
-        self.dashIntroAnime = Animacao(QTD_IMGS_STATE_DASH_INTRO, hildaDashIntro, 1)
-        self.dashAnime = Animacao(QTD_IMGS_STATE_DASH, hildaDash, HildaBerg.ANIME_DELAY)
-        self.summonAnime = Animacao(QTD_IMGS_STATE_SUMMON, hildaSummon, HildaBerg.ANIME_DELAY)
-        self.touroAnime = Animacao(QTD_IMGS_STATE_TOURO, touroImgList, HildaBerg.ANIME_DELAY)
-        self.touroAtkAnime = Animacao(QTD_IMGS_ATK_TOURO, touroAtkImgList, 1)
-        self.animeClassList = [self.introAnime, self.normalAnime, self.laughAnime, self.tornadoAnime, self.dashIntroAnime, self.dashAnime, self.summonAnime, self.touroAnime,  self.touroAtkAnime, self.transitionAnime]
-        self.delayCount = Contador(HildaBerg.ANIME_DELAY)
-        self.count = 0
-        #self.life = 1000
-        self.i = 1.5
-        self.estrelaFoiInstaciada = False
+        self._estado = HildaBerg.ESTADOS[0]
+        self._animacaoIntro = Animacao(QTD_IMGS_ESTADO_INTRO, hildaIntro, HildaBerg.ATRASO_DE_ANIMACAO)
+        self._animacaoPadrao = Animacao(QTD_IMGS_ESTADO_NORMAL, hildaNormal, HildaBerg.ATRASO_DE_ANIMACAO)
+        self._animacaoRindo = Animacao(QTD_IMGS_ESTADO_RINDO, hildaLaugh, 1)
+        self._animacaoDeTransicao = Animacao(QTD_IMGS_ESTADO_TRANSICAO, hildaTransition, HildaBerg.ATRASO_DE_ANIMACAO)
+        self._animacaoTornado = Animacao(QTD_IMGS_ESTADO_TORNADO, hildaTornado, 1)
+        self._animacaoSummonando = Animacao(QTD_IMGS_ESTADO_SUMMONANDO, hildaSummon, HildaBerg.ATRASO_DE_ANIMACAO)
+        self._animacaoTouro = Animacao(QTD_IMGS_ESTADO_TOURO, touroImgList, HildaBerg.ATRASO_DE_ANIMACAO)
+        self._animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
+        self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.dashIntroAnime, self.dashAnime, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao]
+        self._contadorDeAtraso = Contador(HildaBerg.ATRASO_DE_ANIMACAO)
+        self._angulacao = 1.5
+        self._contador = 0
+        self._estrela = False
         # DEFINICAO DA VIDA DE HILDA E IMAGEM
-        self.test_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
+        self.teste_barraDeVida = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
     
-    # Positions Update    
-    def normalUpdatePosition(self):
-        self.i += 0.1
-        self.posX = ((100 * math.sqrt(2) * math.cos(self.i) * math.sin(self.i) / (1 + math.sin(self.i)**2)) + X_POSITION_ORIGIN) 
-        self.posY = ((-100 * math.sqrt(2) * math.cos(self.i) / (1 + math.sin(self.i)**2)) + Y_POSITION_ORIGIN)
-        self.test_life_bar._x = self.posX + self.test_life_bar.x0
-        self.test_life_bar._y = self.posY + self.test_life_bar.y0
+    #Propriedades
+    @property
+    def alvo(self) -> Personagem:
+        return self._alvo
     
-    def transitionUpdatePosition(self):
-        if self.transitionAnime.imgsCont.contador > 37 and self.transitionAnime.imgsCont.contador < QTD_IMGS_STATE_TRANSITION:
-            self.posX += (X_POSITION_ORIGIN - self.posX) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
-            self.posY += (Y_POSITION_ORIGIN - self.posY) / (QTD_IMGS_STATE_TRANSITION - self.transitionAnime.imgsCont.contador)
+    @alvo.setter
+    def alvo(self, alvo: Personagem) -> None:
+        self._alvo = alvo
+        pass
     
-    def dashUpdatePosition(self):
-        self.posX -= 60
+    @property
+    def estado(self) -> str:
+        return self._estado
     
-    def touroAtkUpdatePosition(self):
-        result = any(self.file == touroAtkImgList[i] for i in range(10, 21))
-        if result:
-            self.posX -= 50
-        else:
-            self.posX += 3
+    @estado.setter
+    def estado(self, estado: str) -> None:
+        self._estado = estado
+        pass
     
-    def summonUpdatePosition(self):
-        self.posX += 16
-
+    @property
+    def animacaoIntro(self) -> Animacao:
+        return self._animacaoIntro
+    
+    @animacaoIntro.setter
+    def animacaoIntro(self, animacao: Animacao) -> None:
+        self._animacaoIntro = animacao
+        pass
+    
+    @property
+    def animacaoPadrao(self) -> Animacao:
+        return self._animacaoPadrao
+    
+    @animacaoPadrao.setter
+    def animacaoPadrao(self, animacao: Animacao) -> None:
+        self._animacaoPadrao = animacao
+        pass
+    
+    @property
+    def animacaoRindo(self) -> Animacao:
+        return self._animacaoRindo
+    
+    @animacaoRindo.setter
+    def animacaoRindo(self, animacao: Animacao) -> None:
+        self._animacaoRindo = animacao
+        pass
+    
+    @property
+    def animacaoDeTransicao(self) -> Animacao:
+        return self._animacaoDeTransicao
+    
+    @animacaoDeTransicao.setter
+    def animacaoDeTransicao(self, animacao: Animacao) -> None:
+        self._animacaoDeTransicao = animacao
+        pass
+    
+    @property
+    def animacaoTornado(self) -> Animacao:
+        return self._animacaoTornado
+    
+    @animacaoTornado.setter
+    def animacaoTornado(self, animacao: Animacao) -> None:
+        self._animacaoTornado = animacao
+        pass
+    
+    @property
+    def animacaoSummonando(self) -> Animacao:
+        return self._animacaoSummonando
+    
+    @animacaoSummonando.setter
+    def animacaoSummonando(self, animacao: Animacao) -> None:
+        self._animacaoSummonando = animacao
+        pass
+    
+    @property
+    def animacaoTouro(self) -> Animacao:
+        return self._animacaoTouro
+    
+    @animacaoTouro.setter
+    def animacaoTouro(self, animacao: Animacao) -> None:
+        self._animacaoTouro = animacao
+        pass
+    
+    @property
+    def animacaoAtqTouro(self) -> Animacao:
+        return self._animacaoAtqTouro
+    
+    @animacaoAtqTouro.setter
+    def animacaoAtqTouro(self, animacao: Animacao) -> None:
+        self._animacaoAtqTouro = animacao
+        pass
+    
+    @property
+    def animacoes(self) -> list:
+        return self._animacoes
+    
+    @animacoes.setter
+    def animacoes(self, animacoes: list) -> None:
+        self._animacoes = animacoes
+        pass
+    
+    @property
+    def contadorDeAtraso(self) -> Contador:
+        return self._contadorDeAtraso
+    
+    @contadorDeAtraso.setter
+    def contadorDeAtraso(self, contador: Contador) -> None:
+        self._contadorDeAtraso = contador
+        pass
+    
+    @property
+    def angulacao(self) -> float:
+        return self._angulacao
+    
+    @angulacao.setter
+    def angulacao(self, angulacao: float) -> None:
+        self._angulacao = angulacao
+        pass
+    
+    @property
+    def contador(self) -> int:
+        return self._contador
+    
+    @contador.setter
+    def contador(self, contador: int) -> None:
+        self._contador = contador
+        pass
+    
+    @property
+    def estrela(self) -> bool:
+        return self._estrela
+    
+    @estrela.setter
+    def estrela(self, estrela: bool) -> None:
+        self._estrela = estrela
+        pass
+    
+    #Movimentação
     def movimenta(self) -> None:
-        if self.state == "normal" or self.state == "laugh" or self.state == "touro":
-            self.normalUpdatePosition()   
-        if self.state == "dash":
-            self.dashUpdatePosition()
-        if self.state == "touroAtk":
-            self.touroAtkUpdatePosition()
-        if self.state == "summon":
-            self.summonUpdatePosition()
-        if self.state == "transition":
-            self.transitionUpdatePosition()
+        if self.estado == "normal" or self.estado == "rindo" or self.estado == "touro":
+            self.movimento_padrao()
+            pass   
+        if self.estado == "avanco":
+            self.movimento_de_avanco()
+            pass
+        if self.estado == "touroAtq":
+            self.movimento_de_ataque_touro()
+            pass
+        if self.estado == "summonando":
+            self.movimento_summonando()
+            pass
+        if self.estado == "transicao":
+            self.movimento_de_transicao()
+            pass
+        pass
+    
+    def movimento_de_ataque_touro(self) -> None:
+        resultado = any(self.vida == touroAtkImgList[i] for i in range(10, 21))
+        if resultado:
+            self.posX -= 50
+            pass
+        self.posX += 3
+        pass
+    
+    def movimento_de_avanco(self) -> None:
+        self.posX -= 60
+        pass
+    
+    def movimento_de_transicao(self) -> None:
+        if self.animacaoDeTransicao.imgsCont.contador > 37 and self.animacaoDeTransicao.imgsCont.contador < QTD_IMGS_ESTADO_TRANSICAO:
+            self.posX += (ORIGEM_X - self.posX) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
+            self.posY += (ORIGEM_Y - self.posY) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
+        pass 
+    
+    def movimento_padrao(self) -> None:
+        self.angulacao += 0.1
+        self.posX = ((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X) 
+        self.posY = ((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y)
+        self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
+        self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
+        pass 
+    
+    def movimento_summonando(self) -> None:
+        self.posX += 16
         pass
 
-    # Animations
-    def animacaoFinalizada(self, ultimaImg):
+    #Animações
+    def animacao_finalizada(self, ultimaImg: str) -> bool:
         if self.file == ultimaImg:
             return True
-        
-    def voltaAoNormal(self, ultimaImg, estado):
-        if self.file == ultimaImg:
-            self.state = estado
-
-    def animate(self, indice):
-        self.animeClassList[indice].animar()
-        self.file = self.animeClassList[indice].imagem
-        
-    def animateCase(self):# Mudar para switch case
-        if self.state == "intro":
-            self.animate(0)
-            self.voltaAoNormal(self.introAnime.ultimaImg, "normal")
-
-        elif self.state == "normal":
-            self.animate(1)
-
-        elif self.state == "laugh":
-            self.animate(2)
-            self.voltaAoNormal(self.laughAnime.ultimaImg, "normal")
+        return False
     
-        elif self.state == "tornado":
-            self.animate(3)
-            self.voltaAoNormal(self.tornadoAnime.ultimaImg, "normal")
+    def animar(self, indice: int) -> None:
+        self.animacoes[indice].animar()
+        self.file = self.animacoes[indice].imagem
+        pass
         
-    #    elif self.state == "dashIntro":
-    #        self.animate(4)
-    #        self.voltaAoNormal(self.dashIntroAnime.ultimaImg, "dash")
-    #        if self.file == self.dashIntroAnime.ultimaImg:
-    #            DashSmoke(self.posX, self.posY)
-
-    #    elif self.state == "dash":
-    #        self.animate(5)
-    #        if self.file == hildaDash[1] and self.estrelaFoiInstaciada == False:
-    #            EstrelaDeTouro(self.posX, self.posY, self.alvo)
-    #            self.estrelaFoiInstaciada = True
-    #        self.voltaAoNormal(self.dashAnime.ultimaImg, "summon")
+    def volta_ao_normal(self, ultimaImg: str, estado: str) -> None:
+        if self.file == ultimaImg:
+            self.estado = estado
+        pass
         
-        elif self.state == "summon":
-            self.animate(6)
+    def tipo_de_animacao(self) -> None: #Mudar para switch case
+        if self.estado == "intro":
+            self.animar(0)
+            self.volta_ao_normal(self.animacaoIntro.ultimaImg, "normal")
+            pass
+        elif self.estado == "normal":
+            self.animar(1)
+            pass
+        elif self.estado == "rindo":
+            self.animar(2)
+            self.volta_ao_normal(self.animacaoRindo.ultimaImg, "normal")
+            pass
+        elif self.estado == "tornado":
+            self.animar(3)
+            self.volta_ao_normal(self.animacaoTornado.ultimaImg, "normal")
+            pass
+        elif self.estado == "summonando":
+            self.animar(4)
             if self.file == hildaSummon[19] or self.file == hildaSummon[16]:
-                #DashExplo(self.posX, self.posY)
                 Explosao(self.posX, self.posY, self.alvo)
-            self.voltaAoNormal(self.summonAnime.ultimaImg, "touro")
-        
-        elif self.state == "touro":
-            self.animate(7)
+            self.volta_ao_normal(self.animacaoSummonando.ultimaImg, "touro")
+            pass
+        elif self.estado == "touro":
+            self.animar(5)
             #self.backToNormal(self.touroAnime.lastImg, "normal")
-            
-        elif self.state == "touroAtk":
-            self.animate(8)
-            if self.file == self.touroAtkAnime.ultimaImg: # Gambiarra para touro chegar pra trás
+            pass
+        elif self.estado == "touroAtq":
+            self.animar(6)
+            if self.file == self.animacaoAtqTouro.ultimaImg: #Gambiarra para o touro chegar pra trás
                 self.posX += 30
-                self.estrelaFoiInstaciada = False
-            if self.estrelaFoiInstaciada == False:
-                self.voltaAoNormal(self.touroAtkAnime.ultimaImg, "touro")
-        
-        elif self.state == "transition":
-            self.animate(9)
-            if self.animacaoFinalizada(self.transitionAnime.ultimaImg):
+                self.estrela = False
+            if self.estrela == False:
+                self.volta_ao_normal(self.animacaoAtqTouro.ultimaImg, "touro")
+            pass
+        elif self.estado == "transicao":
+            self.animar(7)
+            if self.animacao_finalizada(self.animacaoDeTransicao.ultimaImg):
                 self._hide()
-                HildaBergLua(X_POSITION_ORIGIN, Y_POSITION_ORIGIN)
+                HildaBergLua(ORIGEM_X, ORIGEM_Y)
                 self.destroy()
+            pass
+        else:
+            pass
 
     # Attaks
-    def risada(self):
-        if keyboard.is_key_just_down('r'):
-            if self.state == "normal":
-                Risada(self.posX, self.posY, self.alvo)
-                self.state = "laugh" 
-    
-    def tornado(self):
-        if keyboard.is_key_just_down('t'):
-            if self.state == "normal":
-                Tornado(self.posX, self.posY, self.alvo)
-                self.state = "tornado" 
-            
-    def avanco(self):
-        if keyboard.is_key_just_down('d'):
-            if self.state == "normal":
-                self.state = "dashIntro"
-                #self.file = hildaDashIntro[0]
-                Avanco(self.posX, self.posY, self.alvo, self) 
-
-    def touroAtk(self):
-        if keyboard.is_key_just_down('c'):
-            if self.state == "touro":
-                self.state = "touroAtk" 
-    
-    def ataca(self):
+    def ataca(self) -> None:
         self.risada()
         self.tornado()
         self.avanco()
-        self.touroAtk()
+        self.touro_atq()
+        pass
 
-    def atualiza_label_life(self):
-        if self.vida != self.test_life_bar.life:
-            self.test_life_bar.label.text = str(self.vida)
-            self.test_life_bar._rectangle._width = self.test_life_bar.label._width
-            self.test_life_bar._rectangle._height = self.test_life_bar.label._height
+    def avanco(self) -> None:
+        if keyboard.is_key_just_down('d'):
+            if self.estado == "normal":
+                self.estado = "avancoIntro"
+                Avanco(self.posX, self.posY, self.alvo, self)
+        pass
+    
+    def risada(self) -> None:
+        if keyboard.is_key_just_down('r'):
+            if self.estado == "normal":
+                Risada(self.posX, self.posY, self.alvo)
+                self.estado = "rindo" 
+        pass
+    
+    def tornado(self) -> None:
+        if keyboard.is_key_just_down('t'):
+            if self.estado == "normal":
+                Tornado(self.posX, self.posY, self.alvo)
+                self.estado = "tornado"
+        pass
 
-    def update(self):
-        self.count +=1
+    def touro_atq(self) -> None:
+        if keyboard.is_key_just_down('c'):
+            if self.estado == "touro":
+                self.estado = "touroAtq"
+        pass
+    
+    def atualiza_barra_de_vida(self) -> None:
+        if self.vida != self.teste_barraDeVida.life:
+            self.teste_barraDeVida.label.text = str(self.vida)
+            self.teste_barraDeVida._rectangle._width = self.teste_barraDeVida.label._width
+            self.teste_barraDeVida._rectangle._height = self.teste_barraDeVida.label._height
+        pass
+
+    def update(self) -> None:
+        self.contador +=1
         self.ataca()
-        self.animateCase()
+        self.tipo_de_animacao()
         self.movimenta()
         self.hitbox.atualiza_posicao(self.posX, self.posY)
-        self.atualiza_label_life()
-        if self.count == 800: # Isso vai ser definido de acordo com a vida
-            self.state = "transition"
+        self.atualiza_barra_de_vida()
+        if self.contador == 800: #Isso vai ser definido de acordo com a vida
+            self.estado = "transicao"
         if keyboard.is_key_just_down('l'):
             new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
+        pass
