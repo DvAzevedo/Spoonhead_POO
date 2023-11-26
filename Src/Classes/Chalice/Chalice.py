@@ -17,7 +17,7 @@ class Chalice(Personagem):
     QTD_IMAGENS_GHOST = 24
 
     def __init__(self, oponente: Personagem, x: int = 240, y: int = 240, vida: int = 3):
-        super().__init__(x, y, vida, HitBox(x - 50, y - 35, 100, 70))
+        super().__init__(x, y, vida, HitBox(x - 35, y - 20, 70, 40))
         self._oponente = oponente
         self._animacao = Animacao(Chalice.QTD_IMAGENS_NORMAL, ChaliceNormal, 6)
         self._animacaoAtual = self.animacao
@@ -36,6 +36,7 @@ class Chalice(Personagem):
         self._contadorAuxiliar = Contador(2)
         self._contadorDeTiroSimples = Contador(4)
         self._atacando = False
+        self._estaMorto = False
         self._modoDeAtaque = 0
         self._modoEspecial = False
         #self.possibilidadeDeAtaque = True
@@ -95,7 +96,7 @@ class Chalice(Personagem):
     def animacaoGhost(self, animacao: Animacao) -> None:
         self._animacaoGhost = animacao
         pass
-        
+    
     @property
     def barraDeVida(self) -> Chalice_Life_bar:
         return self._barraDeVida
@@ -168,6 +169,15 @@ class Chalice(Personagem):
         self._velocidade = velocidade
         pass
     
+    @property
+    def estaMorto(self) -> bool:
+        return self._estaMorto
+    
+    @estaMorto.setter
+    def estaMorto(self, valor: bool) -> None:
+        self._estaMorto = valor
+        pass
+    
     def ataca(self) -> None:
         if keyboard.is_key_just_down('space'):
             if self.animacaoAtual == self.animacao:
@@ -198,7 +208,8 @@ class Chalice(Personagem):
             if keyboard.is_key_down('e'):
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
-        self.hitbox.atualiza_posicao(self.posX - 50, self.posY - 35)
+        
+        self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 20)
     
     def movimenta_ghost(self) -> None:
         self.posY -= 8
@@ -233,15 +244,17 @@ class Chalice(Personagem):
             self.animacaoAtual = self.animacao
             self.posX -= 10
             self._show()
-        if keyboard.is_key_just_down('k'):
-                self.barraDeVida.decrease_hp()
-                if self.vida > 0:
-                    self.vida -= 1
-        Tiro.corrige_origem(self.posX, self.posY)
         if self.vida == 0:
             self.animacaoAtual = self.animacaoGhost
             self.atacando = False
+            self.estaMorto = True
             self.movimenta_ghost()
+        if keyboard.is_key_just_down('k'):
+                self.barraDeVida.decrease_hp()
+                if self.vida > 0:
+                    self.decrementa_vida()
+        Tiro.corrige_origem(self.posX, self.posY)
+        
         if self.atacando:
             self._ShootSpark._show()
         else:
