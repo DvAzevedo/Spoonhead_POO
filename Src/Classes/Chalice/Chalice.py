@@ -9,6 +9,7 @@ from Classes.Personagem import *
 from Classes.Chalice.ShootSpark import *
 from Classes.Hitbox import HitBox
 from Classes.Contador import Contador
+from Classes.You_died_screen import You_Died
 
 class Chalice(Personagem):
     QTD_IMAGENS_NORMAL = 6
@@ -194,7 +195,10 @@ class Chalice(Personagem):
     
     def decrementa_vida(self) -> None:
         super().decrementa_vida()
-        self.barraDeVida.decrease_hp()
+        if self.barraDeVida.hp>0 and self.animacaoAtual == self.animacao:
+            self.barraDeVida.decrease_hp()
+            if self.barraDeVida.hp == 0:
+                dead_screen = You_Died()
         pass
     
     def movimenta(self) -> None:
@@ -210,7 +214,7 @@ class Chalice(Personagem):
                 if self.modoEspecial is False:
                     self.posY += self.velocidade
         if self.animacaoAtual == self.animacao:
-            if keyboard.is_key_down('e'):
+            if keyboard.is_key_down('e') and self._special_full_charged:
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
         self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 25)
@@ -230,10 +234,6 @@ class Chalice(Personagem):
             else:
                 self.modoDeAtaque = 0
     
-    def reduz_vida(self):
-        self.barraDeVida.decrease_hp()
-        self.vida = self.barraDeVida.hp
-    
     def update(self) -> None:
         self.cria_special_cards()
         self.troca_modo_de_ataque()
@@ -249,7 +249,7 @@ class Chalice(Personagem):
             self.animacaoAtual = self.animacao
             self.posX -= 10
             self._show()
-        if self.vida <= 0:
+        if self.barraDeVida.hp <= 0:
             self.animacaoAtual = self.animacaoGhost
             self.atacando = False
             self.estaMorto = True
