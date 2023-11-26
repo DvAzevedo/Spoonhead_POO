@@ -29,10 +29,13 @@ class Chalice(Personagem):
         self._specialCards = []
         self._barraDeSpecial = Chalice_special_card(0)
         self._contadorSpecial = Contador(24)
-        self._contador_decreaseSpecial = Contador(44)
+        self._contador_decreaseSpecial = Contador(33)
         self._numero_cards_Special = 1
         self._special_full_charged = False
         self._special_decrease = False
+        self._special_charged_stop = False
+
+
         self._ShootSpark = ShootSpark(x+70, y+5)
         self._contadorAuxiliar = Contador(2)
         self._contadorDeTiroSimples = Contador(4)
@@ -266,17 +269,25 @@ class Chalice(Personagem):
             self._ShootSpark._hide()
         self._ShootSpark.posX = self.posX + 70
         self._ShootSpark.posY = self.posY + 5
+
+
+        self._auto_incremente_special_bar.incrementa()
+
         if ((self._auto_incremente_special_bar.esta_zerado()) and (self._special_full_charged is False) and (self._special_decrease is False)):
             self.altera_special_cards()
-        self._auto_incremente_special_bar.incrementa()
+            
+        self.special_full()
+
         if keyboard.is_key_just_down('o'):
             if self._special_full_charged is True:
                 self._special_decrease = True
-        self.special_full()
-        if self._special_decrease is True:
+                self._numero_cards_Special = 1
+
+        if (self._special_charged_stop is True) and (self._special_decrease is True):
             self.special_full_decrease()
-    
-    # def test_crescimento_barra_special(self):
+
+
+
         
     def cria_special_cards(self):
         if len(self._specialCards) == 0:
@@ -293,33 +304,44 @@ class Chalice(Personagem):
                     self._specialCards[self._numero_cards_Special-1].increase_special_bar()
                 else:
                     self._special_full_charged = True
+                    self._numero_cards_Special = 1
+                    for i in range(5):
+                        self._specialCards[i].s_level =0
 
     def special_full(self):
         if self._special_full_charged is True:
             self.movimento_special_carregado()
 
-    def special_full_decrease(self):
-        if self._contadorSpecial.esta_zerado() is False:
-            self.movimento_special_carregado()
-        else:
-            self._special_full_charged = False
-            if self._auto_incremente_special_bar.esta_zerado():
-                for i in range(5):
-                    if self._specialCards[i].file != "../Img/Chalice/SpecialCards/SC01.png":
-                        self._specialCards[i].atualiza_imagem(44 - (self._contador_decreaseSpecial._contador))
-                        self._contador_decreaseSpecial.incrementa()
-                    else:
-                        self._specialCards[i].hide()
-                        self._special_decrease = False
-                        
     def movimento_special_carregado(self):
-        if self._auto_incremente_special_bar.esta_zerado():
+        if (self._auto_incremente_special_bar.esta_zerado()) and (self._special_charged_stop is False):
             for i in range(5):
                 if self._contadorSpecial._contador < 12:
                     self._specialCards[i].atualiza_imagem(44 - (self._contadorSpecial._contador))
+                    if (44 - self._contadorSpecial._contador == 33) and (self._special_decrease is True):
+                        self._special_charged_stop = True
                 else:
                     self._specialCards[i].atualiza_imagem((self._contadorSpecial._contador)+21)
             self._contadorSpecial.incrementa()
+
+    def special_full_decrease(self):
+        if self._auto_incremente_special_bar.esta_zerado():
+            k = self._contador_decreaseSpecial._contador
+            self._contador_decreaseSpecial.incrementa()
+            for i in range(5):
+                if (33 - k) >= 10:
+                    self._specialCards[i].file = f"../Img/Chalice/SpecialCards/SC{33 -k}.png"
+                else:
+                    if (33 - k) > 1:
+                        self._specialCards[i].file = f"../Img/Chalice/SpecialCards/SC0{33 -k}.png"
+                    else:
+                        print("acessado!")
+                        self._specialCards[i].file = f"../Img/Chalice/SpecialCards/SC00.png"
+            if (33-k) == 1:
+                self._special_charged_stop = False
+                self._special_decrease = False
+                self._special_full_charged = False
+                # self._numero_cards_Special = 1
+
 
     
 '''
