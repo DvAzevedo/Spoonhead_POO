@@ -41,6 +41,7 @@ class HildaBerg(Personagem):
         self._animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
         self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao]
         self._contadorDeAtraso = Contador(HildaBerg.ATRASO_DE_ANIMACAO)
+        self._contadorParaAtaques = Contador(300)
         self._angulacao = 1.5
         self._contador = 0
         self._estrela = False
@@ -155,6 +156,15 @@ class HildaBerg(Personagem):
     @contadorDeAtraso.setter
     def contadorDeAtraso(self, contador: Contador) -> None:
         self._contadorDeAtraso = contador
+        pass
+    
+    @property
+    def contadorParaAtaques(self) -> Contador:
+        return self._contadorParaAtaques
+    
+    @contadorParaAtaques.setter
+    def contadorParaAtaques(self, contador: Contador) -> None:
+        self._contadorParaAtaques = contador
         pass
     
     @property
@@ -296,35 +306,35 @@ class HildaBerg(Personagem):
 
     #Ataques
     def ataca(self) -> None:
+        self.avanco()
         self.risada()
         self.tornado()
-        self.avanco()
         self.touro_atq()
         pass
 
     def avanco(self) -> None:
-        if keyboard.is_key_just_down('d'):
+        if self.vida <= 650:
             if self.estado == "normal":
                 self.estado = "avancoIntro"
                 Avanco(self.posX, self.posY, self.alvo, self)
         pass
     
     def risada(self) -> None:
-        if keyboard.is_key_just_down('r'):
+        if self.contadorParaAtaques.contador % 100 == 0:
             if self.estado == "normal":
                 Risada(self.posX, self.posY, self.alvo)
                 self.estado = "rindo" 
         pass
     
     def tornado(self) -> None:
-        if keyboard.is_key_just_down('t'):
+        if self.contadorParaAtaques.contador % 150 == 0:
             if self.estado == "normal":
                 Tornado(self.posX, self.posY, self.alvo)
                 self.estado = "tornado"
         pass
 
     def touro_atq(self) -> None:
-        if keyboard.is_key_just_down('c'):
+        if self.contadorParaAtaques.contador % 150 == 0:
             if self.estado == "touro":
                 self.estado = "touroAtq"
         pass
@@ -338,12 +348,13 @@ class HildaBerg(Personagem):
 
     def update(self) -> None:
         self.contador +=1
+        self.contadorParaAtaques.incrementa()
         self.ataca()
         self.tipo_de_animacao()
         self.movimenta()
         self.atualiza_barra_de_vida()
-        if self.contador == 800: #Isso vai ser definido de acordo com a vida
+        if self.vida <= 350: #Isso vai ser definido de acordo com a vida
             self.estado = "transicao"
-        if keyboard.is_key_just_down('l'):
-            new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
+        #if keyboard.is_key_just_down('l'):
+        #    new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
