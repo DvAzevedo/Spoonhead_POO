@@ -5,6 +5,7 @@ from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
 from Classes.HildaBerg.Ataques.Risada import Risada
+from Classes.HildaBerg.Ataques.Tornado import Tornado
 from Classes.cena import Cena
 from Classes.bars_indicators import *
 
@@ -25,8 +26,8 @@ QTD_IMGS_STAR_TOURO = 3
 QTD_IMGS_ATK_TOURO = 21
 
 #QTD_IMGS_ATK_HA = 46
-QTD_IMGS_ATK_TORNADO = 16
-QTD_IMGS_ATK_TORNADO_INTRO = 12
+#QTD_IMGS_ATK_TORNADO = 16
+#QTD_IMGS_ATK_TORNADO_INTRO = 12
 QTD_IMGS_ATK_DASH_EXPLO = 15
 QTD_IMGS_ATK_DASH_SMOKE = 6
 
@@ -61,9 +62,7 @@ class Ha(Image):
         self.animate()
         self.destruir()
 
-'''
 
-    
 class Tornado(Image):
     ANIME_DELAY = 1
     def __init__(self, x, y):
@@ -107,6 +106,10 @@ class Tornado(Image):
         self.changeAnimate()
         self.animate()
         self.destruir()
+'''
+
+    
+
 
 class DashSmoke(Image):
     ANIME_DELAY = 2
@@ -327,7 +330,7 @@ class HildaBerg(Personagem):
     def tornado(self):
         if keyboard.is_key_just_down('t'):
             if self.state == "normal":
-                Tornado(self.posX, self.posY)
+                Tornado(self.posX, self.posY, self.alvo)
                 self.state = "tornado" 
             
     def dash(self):
