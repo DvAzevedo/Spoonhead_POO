@@ -1,8 +1,5 @@
-import math
-from Classes.Animacao import Animacao
 from Classes.Ataque import *
 from Classes.HildaBerg.listasDeImagens import hildaTornadoAtkIntro, hildaTornadoAtk
-from Classes.Personagem import Personagem
 
 class Tornado(Ataque):
     ANIME_DELAY = 1
