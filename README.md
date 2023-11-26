@@ -64,6 +64,6 @@ Vale ressaltar que todos contribuiram ativamente para a elaboração, o planejam
 
 ### Agradecimentos
 
-Gostaríamos de agradecer ao professor Rodrigo Rocha pelo suporte didático ao longo do desenvolvimento do projeto.
+Gostaríamos de agradecer ao professor Rodrigo Rocha pelo suporte ao longo do desenvolvimento do projeto.
 
 Também dirigimos agradecimentos ao StudioMDHR, responsável pelo desenvolvimento do jogo original _"Cuphead"_.
