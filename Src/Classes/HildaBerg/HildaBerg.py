@@ -6,11 +6,10 @@ from Classes.HildaBerg.HildaBergAtks import*
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.HildaBergDics import *
 from Classes.HildaBerg.trajetoria import *
-from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.Ataques.Avanco import Avanco, Explosao
 from Classes.HildaBerg.Ataques.Risada import Risada
 from Classes.HildaBerg.Ataques.Tornado import Tornado
-from Classes.cena import Cena
+from Classes.cena import*
 from Classes.bars_indicators import *
 
 Y_POSITION_ORIGIN = 240
@@ -236,32 +235,32 @@ class HildaBerg(Personagem):
         self.posX += 3
         pass
     
-    def movimento_de_avanco(self) -> None:
-        self.posX -= 60
-        pass
+    # def movimento_de_avanco(self) -> None:
+    #     self.posX -= 60
+    #     pass
     
-    def movimento_de_transicao(self) -> None:
-        if self.animacaoDeTransicao.imgsCont.contador > 37 and self.animacaoDeTransicao.imgsCont.contador < QTD_IMGS_ESTADO_TRANSICAO:
-            self.posX += (ORIGEM_X - self.posX) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
-            self.posY += (ORIGEM_Y - self.posY) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
-        pass 
+    # def movimento_de_transicao(self) -> None:
+    #     if self.animacaoDeTransicao.imgsCont.contador > 37 and self.animacaoDeTransicao.imgsCont.contador < QTD_IMGS_ESTADO_TRANSICAO:
+    #         self.posX += (ORIGEM_X - self.posX) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
+    #         self.posY += (ORIGEM_Y - self.posY) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
+    #     pass 
     
-    def movimento_padrao(self) -> None:
-        self.angulacao += 0.1
-        self.posX = ((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X) 
-        self.posY = ((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y)
-        #self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
-        #self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
-        pass 
+    # def movimento_padrao(self) -> None:
+    #     self.angulacao += 0.1
+    #     self.posX = ((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X) 
+    #     self.posY = ((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y)
+    #     #self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
+    #     #self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
+    #     pass 
     
-    def movimento_summonando(self) -> None:
-        self.posX += 16
-        pass
+    # def movimento_summonando(self) -> None:
+    #     self.posX += 16
+    #     pass
 
-    #Animações
-    def animacao_finalizada(self, ultimaImg: str) -> bool:
-        if self.file == ultimaImg:
-            return True
+    # #Animações
+    # def animacao_finalizada(self, ultimaImg: str) -> bool:
+    #     if self.file == ultimaImg:
+    #         return True
         
     def backToNormal(self, lastImg, state):
         if self.file == lastImg:

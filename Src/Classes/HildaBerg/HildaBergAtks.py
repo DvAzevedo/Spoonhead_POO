@@ -4,7 +4,7 @@ from Classes.HildaBerg.globalVar import*
 from Classes.Animacao import *
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
-from Classes.cena import cena
+from Classes.cena import*
 
 Y_POSITION_ORIGIN = 240
 X_POSITION_ORIGIN = 700
