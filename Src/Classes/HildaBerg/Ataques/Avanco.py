@@ -54,15 +54,15 @@ class Avanco(Ataque):
         pass
     
     def tipoDeAnimacao(self) -> None:
-        if self.ator.estado == "dashIntro":
+        if self.ator.estado == "avancoIntro":
             self._hide()
             self.animacaoIntro.animar()
             self.file = self.animacaoIntro.imagem
             self.ator.file = self.file
-            self.ator.volta_ao_normal(self.animacaoIntro.ultimaImg, "dash")
+            self.ator.volta_ao_normal(self.animacaoIntro.ultimaImg, "avanco")
             if self.ator.file == self.animacaoIntro.ultimaImg:
                 Fumaca(self.ator.posX, self.ator.posY, self.alvo)
-        if self.ator.estado == "dash":
+        if self.ator.estado == "avanco":
             self._hide()
             self.animacao.animar()
             self.file = self.animacao.imagem
@@ -70,7 +70,7 @@ class Avanco(Ataque):
             if self.ator.file == hildaDash[1] and not self.estrela:
                 EstrelaDeTouro(self.ator.posX, self.ator.posY, self.alvo)
                 self.estrela = True
-            self.ator.volta_ao_normal(self.animacao.ultimaImg, "summon")
+            self.ator.volta_ao_normal(self.animacao.ultimaImg, "summonando")
         pass
     
     def update(self) -> None:
