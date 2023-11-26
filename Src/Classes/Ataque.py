@@ -6,6 +6,7 @@ from tupy import Image
 
 class Ataque(ABC, Image):
     QTD_IMAGENS_SMOKE = 8
+    
     def __init__(self, x: int, y: int, alvo: Personagem, animacao: Animacao, dano: int) -> None:
         self._x = x
         self._y = y
