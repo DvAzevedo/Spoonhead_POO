@@ -5,7 +5,7 @@
 
 * [Descrição do Projeto](#descrição-do-projeto)
 
-* [Acesso e Download](#acesso-e-download)
+* [Acesso](#acesso-e-download)
 
 * [Pré-requisitos](#pré-requisitos)
 
