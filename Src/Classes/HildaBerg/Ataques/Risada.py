@@ -46,6 +46,7 @@ class Risada(Ataque):
             pass
         if self.colide_com_alvo(self.alvo):
             self.causa_dano()
+            self.destroy()
             pass
         self.sen += 1
         self.posX -= 20

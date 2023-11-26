@@ -46,6 +46,7 @@ class Tornado(Ataque):
             pass
         if self.colide_com_alvo(self.alvo):
             self.causa_dano()
+            self.destroy()
             pass
         if self.animacaoAtual == self.animacao:
             if self.posX > self.alvo.posX:
