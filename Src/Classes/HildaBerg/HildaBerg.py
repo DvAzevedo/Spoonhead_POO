@@ -47,7 +47,7 @@ class HildaBerg(Personagem):
         self._contador = 0
         self._estrela = False
         # DEFINICAO DA VIDA DE HILDA E IMAGEM
-        self.teste_barraDeVida = Life_vilao(self, self.vida, self.posX, self.posY)
+        #self.teste_barraDeVida = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
     
     #Propriedades
@@ -246,8 +246,8 @@ class HildaBerg(Personagem):
         self.angulacao += 0.1
         self.posX = ((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X) 
         self.posY = ((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y)
-        self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
-        self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
+        #self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
+        #self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
         pass 
     
     def movimento_summonando(self) -> None:
@@ -351,6 +351,7 @@ class HildaBerg(Personagem):
                 self.estado = "touroAtq"
         pass
     
+    '''
     def atualiza_barra_de_vida(self) -> None:
         if self.vida != self.teste_barraDeVida.life:
             self.teste_barraDeVida.label.text = str(self.vida)
@@ -358,6 +359,8 @@ class HildaBerg(Personagem):
             self.teste_barraDeVida._rectangle._height = self.teste_barraDeVida.label._height
         pass
 
+    '''
+    
     def update(self) -> None:
         self.contador +=1
         if self.atacando:
@@ -365,7 +368,7 @@ class HildaBerg(Personagem):
         self.ataca()
         self.tipo_de_animacao()
         self.movimenta()
-        self.atualiza_barra_de_vida()
+        #self.atualiza_barra_de_vida()
         if self.alvo.estaMorto:
             self.contadorParaAtaques.contador = 1
             self.atacando = False
