@@ -12,8 +12,10 @@ class MiniBomba(Ataque):
         self._angulo = angulo*(math.pi)/180
         self._tipoDaAnimacao = tipoDaAnimacao
         self._velocidadeX = velocidade
+        self.file = MiniBombMove[0]
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
+        self._hide()
         pass
     
     @property
@@ -90,6 +92,7 @@ class MiniBomba(Ataque):
         pass
     
     def update(self) -> None:
+        self._show()
         self.file = self.animacaoAtual.anima()
         if self.animacaoAtual != self._animacaoSmoke:
             self.atualiza_coordenadas()

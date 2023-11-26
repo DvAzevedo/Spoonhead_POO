@@ -16,9 +16,11 @@ class Tiro(Ataque):
         self._deslocamentoY = deslocamentoY
         self._velocidadeX = velocidade
         super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 2)
+        self.file = BulletDict[0][0]
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
         self.mudou = False
+        self._hide()
         pass
     
     @property
@@ -136,6 +138,7 @@ class Tiro(Ataque):
         pass
     
     def update(self) -> None:
+        self._show()
         self.file = self.animacaoAtual.anima()
         if self.animacaoAtual != self._animacaoSmoke:
             self.atualiza_coordenadas()
