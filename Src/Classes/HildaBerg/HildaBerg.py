@@ -22,10 +22,38 @@ QTD_IMGS_ESTADO_SUMMONANDO = 21
 QTD_IMGS_ESTADO_TOURO = 16
 QTD_IMGS_ATQ_TOURO = 21
 
+
+
+# animacaoIntro = Animacao(QTD_IMGS_ESTADO_INTRO, hildaIntro, ATRASO_DE_ANIMACAO)
+# animacaoPadrao = Animacao(QTD_IMGS_ESTADO_NORMAL, hildaNormal, ATRASO_DE_ANIMACAO)
+# animacaoRindo = Animacao(QTD_IMGS_ESTADO_RINDO, hildaLaugh, 1)
+# animacaoDeTransicao = Animacao(QTD_IMGS_ESTADO_TRANSICAO, hildaTransition, ATRASO_DE_ANIMACAO)
+# animacaoTornado = Animacao(QTD_IMGS_ESTADO_TORNADO, hildaTornado, 1)
+# animacaoSummonando = Animacao(QTD_IMGS_ESTADO_SUMMONANDO, hildaSummon, ATRASO_DE_ANIMACAO)
+# animacaoTouro = Animacao(QTD_IMGS_ESTADO_TOURO, touroImgList, ATRASO_DE_ANIMACAO)
+# animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
+
+QTD_IMG_MOON_STATE_NORMAL = 16
+QTD_IMG_MOON_STATE_ATK_INTRO = 12
+QTD_IMG_MOON_STATE_ATK = 8
+QTD_IMG_MOON_STATE_ATK_BACK = 8
+QTD_IMG_MOON_STATE_SMOKE = 15
+QTD_IMG_MOON_STATE_DEATH = 16
+ANIME_DELAY_MOON = 2
+
+MOON_STATE_LIST = ["idle", "atkIntro", "atk", "death"]
+
+moon_idleAnime = Animacao(QTD_IMG_MOON_STATE_NORMAL, hildaMoon, ANIME_DELAY_MOON)
+moon_atkIntroAnime = Animacao(QTD_IMG_MOON_STATE_ATK_INTRO, moonAtkIntro, ANIME_DELAY_MOON)
+moon_atkAnime = Animacao(QTD_IMG_MOON_STATE_ATK, moonAtk, ANIME_DELAY_MOON)
+moon_atkBackAnime = Animacao(QTD_IMG_MOON_STATE_ATK_BACK, moonAtkBack, ANIME_DELAY_MOON)
+moon_smokeAnime = Animacao(QTD_IMG_MOON_STATE_SMOKE, moonSmoke, ANIME_DELAY_MOON)
+moon_deathAnime = Animacao(QTD_IMG_MOON_STATE_DEATH, moonDeath, ANIME_DELAY_MOON)
+
+
 class HildaBerg(Personagem):
-    ESTADOS = ["intro", "normal", "rindo", "tornado", "avancoIntro", "avanco", "summonando", "touro", "touroAtq", "transicao"]
+    ESTADOS = ["intro", "normal", "rindo", "tornado", "avancoIntro", "avanco", "summonando", "touro", "touroAtq", "transicao", "morte", "lua", "luaAtkIntro", "luaAtk"]
     ATRASO_DE_ANIMACAO = 2
-    
     def __init__(self, x: int = ORIGEM_X, y: int = ORIGEM_Y, alvo=None) -> None:
         super().__init__(x, y, 1000, HitBox(x - 80, y - 55, 160, 110))
         self._alvo = alvo
@@ -39,7 +67,7 @@ class HildaBerg(Personagem):
         self._animacaoSummonando = Animacao(QTD_IMGS_ESTADO_SUMMONANDO, hildaSummon, HildaBerg.ATRASO_DE_ANIMACAO)
         self._animacaoTouro = Animacao(QTD_IMGS_ESTADO_TOURO, touroImgList, HildaBerg.ATRASO_DE_ANIMACAO)
         self._animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
-        self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao]
+        self._animacoes = [self.animacaoIntro, self.animacaoPadrao, self.animacaoRindo, self.animacaoTornado, self.animacaoSummonando, self.animacaoTouro,  self.animacaoAtqTouro, self.animacaoDeTransicao, moon_deathAnime, moon_idleAnime, moon_atkIntroAnime, moon_atkAnime]
         self._contadorDeAtraso = Contador(HildaBerg.ATRASO_DE_ANIMACAO)
         self._contadorParaAtaques = Contador(300)
         self._angulacao = 1.5
@@ -308,12 +336,23 @@ class HildaBerg(Personagem):
             pass
         elif self.estado == "transicao":
             self.animar(7)
-            if self.animacao_finalizada(self.animacaoDeTransicao.ultimaImg):
-                self._hide()
-                HildaBergLua(ORIGEM_X, ORIGEM_Y, self.vida, self.hitbox)
-                self.destroy()
+            self.volta_ao_normal(self.animacaoDeTransicao.ultimaImg, "lua")
             pass
+        elif self.estado == "morte":
+            self.animar(8)
+        elif self.estado == "lua":
+            self.animar(9)
+            self.volta_ao_normal(moon_idleAnime.ultimaImg, "luaAtkIntro")
+        elif self.estado == "luaAtkIntro":
+            self.animar(10)
+            # self.volta_ao_normal(moon_atkIntroAnime.ultimaImg, "luaAtk")
+            if self.file == moon_atkIntroAnime.ultimaImg:
+                self.estado = "luaAtk"
+            pass
+        elif self.estado == "luaAtk":
+            self.animar(11)
         else:
+            # moon_deathAnime, moon_idleAnime, moon_atkIntroAnime, moon_atkAnime
             pass
 
     #Ataques
@@ -350,6 +389,12 @@ class HildaBerg(Personagem):
             if self.estado == "touro":
                 self.estado = "touroAtq"
         pass
+
+    def lua_atq(self) -> None:
+        if self.contadorParaAtaques.contador % 100 == 0:
+            if self.estado == "lua":
+                self.estado = "luaAtqIntro"
+        pass
     
     '''
     def atualiza_barra_de_vida(self) -> None:
@@ -372,8 +417,11 @@ class HildaBerg(Personagem):
         if self.alvo.estaMorto:
             self.contadorParaAtaques.contador = 1
             self.atacando = False
-        if self.vida <= 350: #Isso vai ser definido de acordo com a vida
+        if self.vida <= 350 and self.estado == "touro": #Isso vai ser definido de acordo com a vida
+            Explosao(self.posX, self.posY, self.alvo)
             self.estado = "transicao"
+        if self.vida <= 0: #Isso vai ser definido de acordo com a vida
+            self.estado = "morte"
         #if keyboard.is_key_just_down('l'):
         #    new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
