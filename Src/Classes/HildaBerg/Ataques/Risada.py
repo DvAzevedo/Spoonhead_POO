@@ -3,12 +3,11 @@ from Classes.Ataque import *
 from Classes.HildaBerg.listasDeImagens import imgListHa
 
 class Risada(Ataque):
-    
-    ANIME_DELAY = 1
-    QTD_IMGS_ATK_HA = 46
+    ATRASO_DE_ANIMACAO = 1
+    QTD_IMAGENS = 46
     
     def __init__(self, x: int, y: int, alvo: Personagem) -> None:
-        super().__init__(x, y, alvo, Animacao(Risada.QTD_IMGS_ATK_HA, imgListHa, Risada.ANIME_DELAY), 1)
+        super().__init__(x, y, alvo, Animacao(Risada.QTD_IMAGENS, imgListHa, Risada.ATRASO_DE_ANIMACAO), 1)
         self._file = imgListHa[0]
         self._origemY = self.posY
         self._sen = -1
