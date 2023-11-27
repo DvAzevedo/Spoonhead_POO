@@ -43,7 +43,6 @@ class Chalice(Personagem):
         self._estaMorto = False
         self._modoDeAtaque = 0
         self._modoEspecial = False
-        #self.possibilidadeDeAtaque = True
         self._velocidade = 20
         self._auto_incremente_special_bar = Contador(2)
         
@@ -259,52 +258,22 @@ class Chalice(Personagem):
             self.atacando = False
             self.estaMorto = True
             self.movimenta_fantasma()
-
-
         if self.animacaoAtual == self.animacao:
             self._auto_incremente_special_bar.incrementa()
-
-        
-        # if keyboard.is_key_just_down('k'):
-        #         self.barraDeVida.decrease_hp()
-        #         if self.vida > 0:
-        #             self.decrementa_vida()
-
-
         Tiro.corrige_origem(self.posX, self.posY)
-        
         if self.atacando:
             self._ShootSpark._show()
         else:
             self._ShootSpark._hide()
         self._ShootSpark.posX = self.posX + 70
-        self._ShootSpark.posY = self.posY + 5
-
-        ####
-        ####
-
-
-
-        
-            
+        self._ShootSpark.posY = self.posY + 5 
         if ((self._auto_incremente_special_bar.esta_zerado()) and (self._special_full_charged is False) and (self._special_decrease is False)):
             self.altera_special_cards()
-
-        # self.aumenta_especial()
-            
         self.special_full()
-
-        # if keyboard.is_key_just_down('o'):
-        #     if self._special_full_charged is True:
-        #         self._special_decrease = True
-        #         self._numero_cards_Special = 1
-
         if (self._special_charged_stop is True) and (self._special_decrease is True):
             self.special_full_decrease()
-
-
-
-        
+        pass
+    
     def cria_special_cards(self) -> None:
         if len(self._specialCards) == 0:
             for i in range(5):
@@ -355,21 +324,8 @@ class Chalice(Personagem):
                 self._special_charged_stop = False
                 self._special_decrease = False
                 self._special_full_charged = False
-                # self._numero_cards_Special = 1
 
     def aumenta_especial(self) -> None:
         if (self._special_full_charged is False) and (self._special_decrease is False):
             self.altera_special_cards()
         self._auto_incremente_special_bar.incrementa()
-    
-'''
-    def flee(self) -> None:
-        if keyboard.is_key_just_down('q'):
-            self.posY -= 20
-            
-    def break_attack(self,status: bool):
-        self.possibilidadeDeAtaque = status
-
-    def especial_movement(self) -> None:
-        self.posX += self.especial_vel
-'''
