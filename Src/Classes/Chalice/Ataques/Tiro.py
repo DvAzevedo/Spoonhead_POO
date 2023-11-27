@@ -3,6 +3,7 @@ from Classes.Ataque import *
 from Classes.Chalice.listasDeImagens import BulletDict
 from Classes.Contador import Contador
 
+
 class Tiro(Ataque):
     CONTADOR_TIRO_SIMPLES = Contador(3)
     CONTADOR_TIRO_TRIPLO = Contador(7)
@@ -22,6 +23,7 @@ class Tiro(Ataque):
         self.mudou = False
         self._hide()
         pass
+        # self._dono_ataque = dono_ataque
     
     @property
     def angulo(self) -> float:

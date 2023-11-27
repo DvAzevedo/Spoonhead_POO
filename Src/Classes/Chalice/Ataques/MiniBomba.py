@@ -7,7 +7,7 @@ class MiniBomba(Ataque):
     QTD_IMAGENS = 8
     CONTADOR = Contador(4)
     
-    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, tipoDaAnimacao: str, velocidade: int = 25) -> None:
+    def __init__(self, x: int, y: int, alvo: Personagem, angulo: int, tipoDaAnimacao: str, velocidade: int = 25,personagem = None) -> None:
         super().__init__(x, y, alvo, Animacao(MiniBomba.QTD_IMAGENS, MiniBombMove, 2), 5)
         self._angulo = angulo*(math.pi)/180
         self._tipoDaAnimacao = tipoDaAnimacao
@@ -16,6 +16,7 @@ class MiniBomba(Ataque):
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
         self._hide()
+        self._personagem = personagem
         pass
     
     @property

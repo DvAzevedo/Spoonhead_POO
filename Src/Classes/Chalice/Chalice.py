@@ -45,7 +45,7 @@ class Chalice(Personagem):
         self._modoEspecial = False
         #self.possibilidadeDeAtaque = True
         self._velocidade = 20
-        self._auto_incremente_special_bar = Contador(1)
+        self._auto_incremente_special_bar = Contador(2)
         
     @property
     def oponente(self) -> Personagem:
@@ -220,7 +220,9 @@ class Chalice(Personagem):
             if keyboard.is_key_down('e') and self._special_full_charged:
                 self.atacando = False
                 self.animacaoAtual = self.animacaoDeTransicao
+                self._special_decrease = True
         self.hitbox.atualiza_posicao(self.posX - 35, self.posY - 25)
+
     
     def movimenta_fantasma(self) -> None:
         self.posY -= 8
@@ -257,10 +259,18 @@ class Chalice(Personagem):
             self.atacando = False
             self.estaMorto = True
             self.movimenta_fantasma()
-        if keyboard.is_key_just_down('k'):
-                self.barraDeVida.decrease_hp()
-                if self.vida > 0:
-                    self.decrementa_vida()
+
+
+        if self.animacaoAtual == self.animacao:
+            self._auto_incremente_special_bar.incrementa()
+
+        
+        # if keyboard.is_key_just_down('k'):
+        #         self.barraDeVida.decrease_hp()
+        #         if self.vida > 0:
+        #             self.decrementa_vida()
+
+
         Tiro.corrige_origem(self.posX, self.posY)
         
         if self.atacando:
@@ -270,18 +280,24 @@ class Chalice(Personagem):
         self._ShootSpark.posX = self.posX + 70
         self._ShootSpark.posY = self.posY + 5
 
+        ####
+        ####
 
-        self._auto_incremente_special_bar.incrementa()
 
+
+        
+            
         if ((self._auto_incremente_special_bar.esta_zerado()) and (self._special_full_charged is False) and (self._special_decrease is False)):
             self.altera_special_cards()
+
+        # self.aumenta_especial()
             
         self.special_full()
 
-        if keyboard.is_key_just_down('o'):
-            if self._special_full_charged is True:
-                self._special_decrease = True
-                self._numero_cards_Special = 1
+        # if keyboard.is_key_just_down('o'):
+        #     if self._special_full_charged is True:
+        #         self._special_decrease = True
+        #         self._numero_cards_Special = 1
 
         if (self._special_charged_stop is True) and (self._special_decrease is True):
             self.special_full_decrease()
@@ -334,7 +350,6 @@ class Chalice(Personagem):
                     if (33 - k) > 1:
                         self._specialCards[i].file = f"../Img/Chalice/SpecialCards/SC0{33 -k}.png"
                     else:
-                        print("acessado!")
                         self._specialCards[i].file = f"../Img/Chalice/SpecialCards/SC00.png"
             if (33-k) == 1:
                 self._special_charged_stop = False
@@ -342,7 +357,10 @@ class Chalice(Personagem):
                 self._special_full_charged = False
                 # self._numero_cards_Special = 1
 
-
+    def aumenta_especial(self):
+        if (self._special_full_charged is False) and (self._special_decrease is False):
+            self.altera_special_cards()
+        self._auto_incremente_special_bar.incrementa()
     
 '''
     def flee(self) -> None:
