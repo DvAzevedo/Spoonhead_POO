@@ -3,6 +3,7 @@ from Classes.Ataque import *
 from Classes.HildaBerg.listasDeImagens import hildaDashIntro, hildaDash, dashSmoke, dashExplo
 from Classes.HildaBerg.trajetoria import *
 from Classes.HildaBerg.Ataques.EstrelaDeTouro import EstrelaDeTouro
+import numpy as np
 
 class Avanco(Ataque):
     QTD_IMGS_INTRO = 18
