@@ -5,7 +5,7 @@
 
 * [Descrição do Projeto](#descrição-do-projeto)
 
-* [Acesso e Download](#acesso-e-download)
+* [Acesso](#acesso)
 
 * [Pré-requisitos](#pré-requisitos)
 
@@ -25,7 +25,7 @@ Ao jogar _"Spoonhead Game"_, você controlará a personagem **Chalice**, que pil
 O desafio consiste em atacar o inimigo e esquivar dos ataques recebidos até que um dos personagens seja derrotado. Parece ser uma tarefa simples, mas ela exigirá do jogador muita proeza para que ele vença essa batalha.
 
 ## Acesso e Download
-Você pode acessar diretamente o código fonte do projeto clicando [aqui](https://github.com/DvAzevedo/Spoonhead_POO.git) ou baixá-lo clicando [aqui](https://github.com/DvAzevedo/Spoonhead_POO/blob/main/SpoonheadGame_POO.zip).
+Você pode acessar diretamente o código fonte do projeto clicando [aqui](https://github.com/DvAzevedo/Spoonhead_POO.git).
 
 ## Pré-requisitos
 Para rodar o jogo, o usuário deve ter devidamente instalado em sua máquina os seguintes requisitos:
