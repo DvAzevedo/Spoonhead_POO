@@ -357,7 +357,7 @@ class Chalice(Personagem):
                 self._special_full_charged = False
                 # self._numero_cards_Special = 1
 
-    def aumenta_especial(self):
+    def aumenta_especial(self) -> None:
         if (self._special_full_charged is False) and (self._special_decrease is False):
             self.altera_special_cards()
         self._auto_incremente_special_bar.incrementa()
