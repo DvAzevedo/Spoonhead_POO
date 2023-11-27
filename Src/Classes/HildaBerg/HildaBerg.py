@@ -3,13 +3,11 @@ from Classes.Animacao import *
 from Classes.Personagem import *
 from Classes.HildaBerg.listasDeImagens import *
 from Classes.HildaBerg.trajetoria import *
-from Classes.HildaBerg.HildaBergLua import HildaBergLua
 from Classes.HildaBerg.Ataques.Avanco import Avanco, Explosao
 from Classes.HildaBerg.Ataques.Risada import Risada
 from Classes.HildaBerg.Ataques.Tornado import Tornado
 from Classes.HildaBerg.Ataques.estrela import EstrelaLua2
 from Classes.HildaBerg.Ataques.estrela import EstrelaLua
-from Classes.cena import Cena
 from Classes.bars_indicators import *
 from Classes.Contador import Contador
 from Classes.Hitbox import HitBox
@@ -26,17 +24,6 @@ QTD_IMGS_ESTADO_TORNADO = 38
 QTD_IMGS_ESTADO_SUMMONANDO = 21
 QTD_IMGS_ESTADO_TOURO = 16
 QTD_IMGS_ATQ_TOURO = 21
-
-
-
-# animacaoIntro = Animacao(QTD_IMGS_ESTADO_INTRO, hildaIntro, ATRASO_DE_ANIMACAO)
-# animacaoPadrao = Animacao(QTD_IMGS_ESTADO_NORMAL, hildaNormal, ATRASO_DE_ANIMACAO)
-# animacaoRindo = Animacao(QTD_IMGS_ESTADO_RINDO, hildaLaugh, 1)
-# animacaoDeTransicao = Animacao(QTD_IMGS_ESTADO_TRANSICAO, hildaTransition, ATRASO_DE_ANIMACAO)
-# animacaoTornado = Animacao(QTD_IMGS_ESTADO_TORNADO, hildaTornado, 1)
-# animacaoSummonando = Animacao(QTD_IMGS_ESTADO_SUMMONANDO, hildaSummon, ATRASO_DE_ANIMACAO)
-# animacaoTouro = Animacao(QTD_IMGS_ESTADO_TOURO, touroImgList, ATRASO_DE_ANIMACAO)
-# animacaoAtqTouro = Animacao(QTD_IMGS_ATQ_TOURO, touroAtkImgList, 1)
 
 QTD_IMG_MOON_STATE_NORMAL = 16
 QTD_IMG_MOON_STATE_ATK_INTRO = 12
@@ -79,8 +66,6 @@ class HildaBerg(Personagem):
         self._atacando = True
         self._contador = 0
         self._estrela = False
-        # DEFINICAO DA VIDA DE HILDA E IMAGEM
-        #self.teste_barraDeVida = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
     
     #Propriedades
@@ -279,8 +264,6 @@ class HildaBerg(Personagem):
         self.angulacao += 0.1
         self.posX = int(((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X))
         self.posY = int(((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y))
-        #self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
-        #self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
         pass 
     
     def movimento_summonando(self) -> None:
@@ -303,7 +286,7 @@ class HildaBerg(Personagem):
             self.estado = estado
         pass
         
-    def tipo_de_animacao(self) -> None: #Mudar para switch case
+    def tipo_de_animacao(self) -> None:
         if self.estado == "intro":
             self.animar(0)
             self.volta_ao_normal(self.animacaoIntro.ultimaImg, "normal")
@@ -327,13 +310,12 @@ class HildaBerg(Personagem):
             pass
         elif self.estado == "touro":
             self.animar(5)
-            #self.backToNormal(self.touroAnime.lastImg, "normal")
             pass
         elif self.estado == "touroAtq":
             self.animar(6)
             if self._collides_with(self.alvo.hitbox):
                 self.alvo.decrementa_vida()
-            if self.file == self.animacaoAtqTouro.ultimaImg: #Gambiarra para o touro chegar pra trás
+            if self.file == self.animacaoAtqTouro.ultimaImg:
                 self.posX += 30
                 self.estrela = False
             if self.estrela == False:
@@ -350,14 +332,12 @@ class HildaBerg(Personagem):
             self.volta_ao_normal(moon_idleAnime.ultimaImg, "luaAtkIntro")
         elif self.estado == "luaAtkIntro":
             self.animar(10)
-            # self.volta_ao_normal(moon_atkIntroAnime.ultimaImg, "luaAtk")
             if self.file == moon_atkIntroAnime.ultimaImg:
                 self.estado = "luaAtk"
             pass
         elif self.estado == "luaAtk":
             self.animar(11)
         else:
-            # moon_deathAnime, moon_idleAnime, moon_atkIntroAnime, moon_atkAnime
             pass
 
     #Ataques
@@ -409,16 +389,6 @@ class HildaBerg(Personagem):
                 EstrelaLua2(self.posX, self.posY, self.alvo)
         pass
     
-    '''
-    def atualiza_barra_de_vida(self) -> None:
-        if self.vida != self.teste_barraDeVida.life:
-            self.teste_barraDeVida.label.text = str(self.vida)
-            self.teste_barraDeVida._rectangle._width = self.teste_barraDeVida.label._width
-            self.teste_barraDeVida._rectangle._height = self.teste_barraDeVida.label._height
-        pass
-
-    '''
-    
     def update(self) -> None:
         self.contador +=1
         if self.atacando:
@@ -426,16 +396,13 @@ class HildaBerg(Personagem):
         self.ataca()
         self.tipo_de_animacao()
         self.movimenta()
-        #self.atualiza_barra_de_vida()
         if self.alvo.estaMorto:
             self.contadorParaAtaques.contador = 1
             self.atacando = False
-        if self.vida <= 350 and self.estado == "touro": #Isso vai ser definido de acordo com a vida
+        if self.vida <= 350 and self.estado == "touro":
             Explosao(self.posX, self.posY, self.alvo)
             self.estado = "transicao"
-        if self.vida <= 0: #Isso vai ser definido de acordo com a vida
+        if self.vida <= 0:
             self.estado = "morte"
             vitoria = Victory()
-        #if keyboard.is_key_just_down('l'):
-        #    new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
