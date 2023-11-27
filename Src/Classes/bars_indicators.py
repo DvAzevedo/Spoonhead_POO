@@ -32,7 +32,7 @@ class Life_vilao(BaseGroup):
 # run(globals())
 
 class Chalice_Life_bar(Image):
-    def __init__(self,life: int):
+    def __init__(self,life: int) -> None:
         self.hp_inicial = life
         self.hp = self.hp_inicial
         self.file = f"../Img/Chalice/Life/hp_0{life}.png"
@@ -60,7 +60,7 @@ class Chalice_Life_bar(Image):
                 self.alternate = not self.alternate
                 
 class Chalice_special_card(Image):
-    def __init__(self,k: int, level = 0):
+    def __init__(self,k: int, level: int = 0) -> None:
         self.s_inicial = level
         self.s_level = self.s_inicial
         self.file = f"../Img/Chalice/SpecialCards/SC00.png"
@@ -70,18 +70,18 @@ class Chalice_special_card(Image):
         self.contador_critical = Contador(2)
         self.alternate = False
 
-    def increase_special_bar(self):
+    def increase_special_bar(self) -> None:
         self.s_level += 1
         if self.s_level < 10:
             self.file = f"../Img/Chalice/SpecialCards/SC0{self.s_level}.png"
         elif (self.s_level >= 10 and self.s_level < 45):
             self.file = f"../Img/Chalice/SpecialCards/SC{self.s_level}.png"
     
-    def atualiza_imagem(self,img_numb:int):
+    def atualiza_imagem(self,img_numb:int) -> None:
         self.file = f"../Img/Chalice/SpecialCards/SC{img_numb}.png"
             
 
-    def update(self):
+    def update(self) -> None:
         if self.file == "../Img/Chalice/SpecialCards/SC00.png":
             self._hide()
         else:

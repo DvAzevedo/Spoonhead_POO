@@ -26,7 +26,7 @@ class Chalice(Personagem):
         self._animacaoEspecial = Animacao(Chalice.QTD_IMAGENS_ESPECIAL, ChaliceSpecial, 3)
         self._animacaoGhost = Animacao(Chalice.QTD_IMAGENS_GHOST, ChaliceGhost, 2)
         self._barraDeVida = Chalice_Life_bar(vida)
-        self._specialCards = []
+        self._specialCards: list[Chalice_special_card] = []
         self._barraDeSpecial = Chalice_special_card(0)
         self._contadorSpecial = Contador(24)
         self._contador_decreaseSpecial = Contador(33)
@@ -289,12 +289,12 @@ class Chalice(Personagem):
 
 
         
-    def cria_special_cards(self):
+    def cria_special_cards(self) -> None:
         if len(self._specialCards) == 0:
             for i in range(5):
                 self._specialCards.append(Chalice_special_card(i))
 
-    def altera_special_cards(self):
+    def altera_special_cards(self) -> None:
         if self._numero_cards_Special < 6:
             if self._specialCards[self._numero_cards_Special-1].s_level < 45:
                 self._specialCards[self._numero_cards_Special-1].increase_special_bar()
@@ -308,11 +308,11 @@ class Chalice(Personagem):
                     for i in range(5):
                         self._specialCards[i].s_level =0
 
-    def special_full(self):
+    def special_full(self) -> None:
         if self._special_full_charged is True:
             self.movimento_special_carregado()
 
-    def movimento_special_carregado(self):
+    def movimento_special_carregado(self) -> None:
         if (self._auto_incremente_special_bar.esta_zerado()) and (self._special_charged_stop is False):
             for i in range(5):
                 if self._contadorSpecial._contador < 12:
@@ -323,7 +323,7 @@ class Chalice(Personagem):
                     self._specialCards[i].atualiza_imagem((self._contadorSpecial._contador)+21)
             self._contadorSpecial.incrementa()
 
-    def special_full_decrease(self):
+    def special_full_decrease(self) -> None:
         if self._auto_incremente_special_bar.esta_zerado():
             k = self._contador_decreaseSpecial._contador
             self._contador_decreaseSpecial.incrementa()

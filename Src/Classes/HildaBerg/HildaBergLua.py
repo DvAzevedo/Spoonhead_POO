@@ -3,6 +3,7 @@ from Classes.Animacao import Animacao
 from Classes.bars_indicators import *
 from Classes.Personagem import *
 from Classes.HildaBerg.listasDeImagens import hildaMoon
+from Classes.Hitbox import HitBox
 
 class HildaBergLua(Personagem):
     QTD_IMAGENS = 16
@@ -13,13 +14,13 @@ class HildaBergLua(Personagem):
         self.file = hildaMoon[0]
         self.normalAnime = Animacao(HildaBergLua.QTD_IMAGENS, hildaMoon, HildaBergLua.ATRASO_DE_ANIMACAO)
 
-    def ataca(self):
+    def ataca(self) -> None:
         return super().ataca()
 
-    def movimenta(self):
+    def movimenta(self) -> None:
         return super().movimenta()
 
-    def update(self):
+    def update(self) -> None:
         self.normalAnime.animar()
         self.file = self.normalAnime.imagem
         self.hitbox.atualiza_posicao(self.posX - 80, self.posY - 55)

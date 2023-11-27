@@ -11,6 +11,9 @@ from Classes.HildaBerg.Ataques.estrela import EstrelaLua2
 from Classes.HildaBerg.Ataques.estrela import EstrelaLua
 from Classes.cena import Cena
 from Classes.bars_indicators import *
+from Classes.Contador import Contador
+from Classes.Hitbox import HitBox
+from Classes.Victory_screen import Victory
 
 ORIGEM_X = 700
 ORIGEM_Y = 240
@@ -172,11 +175,11 @@ class HildaBerg(Personagem):
         pass
     
     @property
-    def animacoes(self) -> list:
+    def animacoes(self) -> list[Animacao]:
         return self._animacoes
     
     @animacoes.setter
-    def animacoes(self, animacoes: list) -> None:
+    def animacoes(self, animacoes: list[Animacao]) -> None:
         self._animacoes = animacoes
         pass
     
@@ -268,14 +271,14 @@ class HildaBerg(Personagem):
     
     def movimento_de_transicao(self) -> None:
         if self.animacaoDeTransicao.imgsCont.contador > 37 and self.animacaoDeTransicao.imgsCont.contador < QTD_IMGS_ESTADO_TRANSICAO:
-            self.posX += (ORIGEM_X - self.posX) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
-            self.posY += (ORIGEM_Y - self.posY) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador)
+            self.posX += int((ORIGEM_X - self.posX) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador))
+            self.posY += int((ORIGEM_Y - self.posY) / (QTD_IMGS_ESTADO_TRANSICAO - self.animacaoDeTransicao.imgsCont.contador))
         pass 
     
     def movimento_padrao(self) -> None:
         self.angulacao += 0.1
-        self.posX = ((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X) 
-        self.posY = ((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y)
+        self.posX = int(((100 * math.sqrt(2) * math.cos(self.angulacao) * math.sin(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_X))
+        self.posY = int(((-100 * math.sqrt(2) * math.cos(self.angulacao) / (1 + math.sin(self.angulacao)**2)) + ORIGEM_Y))
         #self.teste_barraDeVida._x = self.posX + self.teste_barraDeVida.x0
         #self.teste_barraDeVida._y = self.posY + self.teste_barraDeVida.y0
         pass 
@@ -432,6 +435,7 @@ class HildaBerg(Personagem):
             self.estado = "transicao"
         if self.vida <= 0: #Isso vai ser definido de acordo com a vida
             self.estado = "morte"
+            vitoria = Victory()
         #if keyboard.is_key_just_down('l'):
         #    new_life_bar = Life_vilao(self, self.vida, self.posX, self.posY)
         pass
