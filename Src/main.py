@@ -11,9 +11,10 @@ pygame.mixer.music.load('Sound/Music/MusicaDoMenu.mp3')
 pygame.mixer.music.play(-1)
 
 Cenario.criar_cenario()
-
+pygame.mixer.music.load('Sound/Music/MusicaDoMenu.mp3')
+pygame.mixer.music.play(-1)
 mensagemDeReady = Ready()
-transicaoParaAGameplay = Transicao()    
+transicaoParaAGameplay = Transicao()
 fundoDoMenuInicial = FundoDoMenu()
 cupAndMugMenu = CupAndMug()
 mensagemDoMenu = PressioneTab()
