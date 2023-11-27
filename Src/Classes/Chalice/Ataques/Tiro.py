@@ -16,7 +16,7 @@ class Tiro(Ataque):
         self._deslocamentoX = deslocamentoX
         self._deslocamentoY = deslocamentoY
         self._velocidadeX = velocidade
-        super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 2)
+        super().__init__(x, y, alvo, Animacao(Tiro.QTD_IMAGENS, BulletDict[self.indiceDaAnimacao], 1), 4)
         self.file = BulletDict[0][0]
         self._velocidadeY = self.velocidadeX * (math.sin(self.angulo))
         self._animacaoAtual = self.animacao
